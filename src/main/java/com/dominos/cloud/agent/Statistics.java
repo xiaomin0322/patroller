@@ -1,5 +1,10 @@
 package com.dominos.cloud.agent;
 
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
+
+import com.dominos.cloud.common.util.SpringBeanUtils;
+
 public class Statistics {
 
 	private String method;
@@ -14,8 +19,14 @@ public class Statistics {
 
 	public void end() {
 		endTime = System.currentTimeMillis();
+		Tracer tracer = SpringBeanUtils.getBean(Tracer.class);
+		if (tracer != null) {
+			Span currentSpan = tracer.getCurrentSpan();
+			Span newSpan = tracer.createSpan(method, currentSpan);
+			newSpan.tag("time", String.valueOf(endTime - startTime));
+		}
 
-		System.out.println(this.toString());
+		System.out.println("end :"+this.toString());
 	}
 
 	public void error(Throwable e) {

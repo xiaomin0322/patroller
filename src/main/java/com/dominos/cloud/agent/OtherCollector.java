@@ -69,7 +69,7 @@ public class OtherCollector implements Collector {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && methodSet.contains(longName)) {
-					System.out.println("ctMethod.getname：" + ctMethod.getLongName() +" methodSet.size : "+methodSet.size());
+					//System.out.println("ctMethod.getname：" + ctMethod.getLongName() +" methodSet.size : "+methodSet.size());
 					
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
