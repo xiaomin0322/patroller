@@ -4,6 +4,7 @@ import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 
 import com.dominos.cloud.common.util.SpringBeanUtils;
+
 public class Statistics {
 
 	private String method;
@@ -19,13 +20,25 @@ public class Statistics {
 	public void end() {
 		endTime = System.currentTimeMillis();
 		Tracer tracer = SpringBeanUtils.getBean(Tracer.class);
-		if (tracer != null) {
-			Span currentSpan = tracer.getCurrentSpan();
-			Span newSpan = tracer.createSpan(method, currentSpan);
-			newSpan.tag("time", String.valueOf(endTime - startTime));
-			//System.out.println("加入span成功："+method);
+		Span newSpan = null;
+		try {
+			if (tracer != null) {
+				Span currentSpan = tracer.getCurrentSpan();
+				newSpan = tracer.createSpan(method, currentSpan);
+				newSpan.tag("time", String.valueOf(endTime - startTime));
+				// System.out.println("加入span成功："+method);
+			}
+		} catch (Exception e) {
+		} finally {
+			if (newSpan != null) {
+				newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);// 记录事件，告诉Spring Cloud
+																					// Sleuth捕获调用完成的时间
+				tracer.close(newSpan);// 关闭跟踪，否则报错
+			}
+
 		}
-		//System.out.println("end :"+this.toString());
+
+		// System.out.println("end :"+this.toString());
 	}
 
 	public void error(Throwable e) {
