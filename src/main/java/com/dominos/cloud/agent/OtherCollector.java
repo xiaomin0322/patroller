@@ -1,5 +1,8 @@
 package com.dominos.cloud.agent;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.Modifier;
@@ -14,6 +17,8 @@ public class OtherCollector implements Collector {
 	private static final String beginSrc;
 	private static final String endSrc = "inst.end(statistic);";
 	private static final String errorSrc;
+	
+	private static Set<String> targetSet = new HashSet<>();
 
 	static {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -22,11 +27,25 @@ public class OtherCollector implements Collector {
 		stringBuilder.append("com.dominos.cloud.agent.Statistics statistic = inst.start(\"%s\");");
 		beginSrc = stringBuilder.toString();
 		errorSrc = "inst.error(statistic,e);";
+		
+		
+		
+		targetSet.add("com.dominos.cloud.agent.TestService");
+		targetSet.add("com.mysql.jdbc.ConnectionImpl");
+		targetSet.add("com.mysql.jdbc.PreparedStatement");
+		targetSet.add("com.mysql.jdbc.PreparedStatement");
+		
+		targetSet.add("com.alibaba.druid.pool.DruidDataSource");
+		targetSet.add("com.alibaba.druid.pool.DruidPooledConnection");
+		
+		
 	}
+	
+	
 
 	@Override
 	public boolean isTarget(String className, ClassLoader classLoader, CtClass ctClass) {
-		return "com.dominos.cloud.agent.TestService".equals(className);
+		return  targetSet.contains(className);
 	}
 
 	@Override
@@ -34,14 +53,12 @@ public class OtherCollector implements Collector {
 		try {
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
-				String str;
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
-
 					replacer.replace(ctMethod, classWrapper);
 				}
 			}
