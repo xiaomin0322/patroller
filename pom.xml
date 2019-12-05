@@ -3,59 +3,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<!-- <parent> <artifactId>dominos-ecommerce</artifactId> <groupId>com.dominos.cloud</groupId> 
-		<version>1.0-SNAPSHOT</version> </parent> -->
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>zipkin-agent</artifactId>
-	<parent>
-		<groupId>com.dominos.common</groupId>
-		<artifactId>dominos-common-parent</artifactId>
-		<version>5.0.0-SNAPSHOT</version>
-		<relativePath>../dominos-common-parent</relativePath>
-	</parent>
-	<properties>
-		<hystrix.version>1.5.12</hystrix.version>
-		<!-- MyBatis Generator -->
-		<!-- Java接口和实体类 -->
-		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-		<targetMapperPackage>com.dominos.cloud.security.admin.mapper</targetMapperPackage>
-		<targetModelPackage>com.dominos.cloud.security.admin.entity</targetModelPackage>
-		<!-- XML生成路径 -->
-		<targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
-		<targetXMLPackage>mapper</targetXMLPackage>
-		<!-- 依赖版本 -->
-		<mapper.version>3.4.0</mapper.version>
-		<mybatis.version>3.3.1</mybatis.version>
-		<mybatis.spring.version>1.2.4</mybatis.spring.version>
-		<pagehelper.version>4.1.1</pagehelper.version>
-	</properties>
+	<groupId>zipkin</groupId>
+	<version>1.0.0</version>
+
+
 	<dependencies>
-		<!-- okhttp -->
 		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-		</dependency>
-		<!-- <dependency> <groupId>com.dominos.cloud</groupId> <artifactId>dominos-common</artifactId> 
-			<version>0.1.0-SNAPSHOT</version> </dependency> -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zuul</artifactId>
-		</dependency>
-		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
-			<version>0.6.0</version> </dependency> -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-redis</artifactId> 
-			</dependency> -->
-		<dependency>
-			<groupId>com.dominos.common</groupId>
-			<artifactId>dominos-common</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-starter-zipkin</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.25.0-GA</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -73,37 +32,19 @@
 					<classesDirectory>target/classes/</classesDirectory>
 					<archive>
 						<manifest>
-							<mainClass>com.dominos.cloud.gate.GateBootstrap</mainClass>
+							<mainClass>com.dominos.cloud.agent.TestService</mainClass>
 							<!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
 							<useUniqueVersions>false</useUniqueVersions>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 						<manifestEntries>
-							<Class-Path>.</Class-Path>
+							<Premain-Class>com.dominos.cloud.agent.APMAgentV1</Premain-Class>
+							<Can-Redefine-Classes>true</Can-Redefine-Classes>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
 						</manifestEntries>
 					</archive>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<type>jar</type>
-							<includeTypes>jar</includeTypes>
-							<outputDirectory>
-								${project.build.directory}/lib
-							</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
