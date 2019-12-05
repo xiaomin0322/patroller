@@ -1,6 +1,8 @@
 package com.dominos.cloud.agent;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javassist.CtClass;
@@ -17,8 +19,8 @@ public class OtherCollector implements Collector {
 	private static final String beginSrc;
 	private static final String endSrc = "inst.end(statistic);";
 	private static final String errorSrc;
-	
-	private static Set<String> targetSet = new HashSet<>();
+
+	private static Map<String, Set<String>> targetMap = new HashMap<>();
 
 	static {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -30,31 +32,45 @@ public class OtherCollector implements Collector {
 		
 		
 		
-		targetSet.add("com.dominos.cloud.agent.TestService");
-		targetSet.add("com.mysql.jdbc.ConnectionImpl");
-		targetSet.add("com.mysql.jdbc.PreparedStatement");
-		targetSet.add("com.mysql.jdbc.PreparedStatement");
-		
-		targetSet.add("com.alibaba.druid.pool.DruidDataSource");
-		targetSet.add("com.alibaba.druid.pool.DruidPooledConnection");
+		Set<String> methodSet = new HashSet<>();
+		methodSet.add("com.dominos.cloud.agent.TestService.print(java.lang.String)");
+		targetMap.put("com.dominos.cloud.agent.TestService", methodSet);
 		
 		
+		// targetSet.add("com.mysql.jdbc.ConnectionImpl");
+		// targetSet.add("com.mysql.jdbc.PreparedStatement");
+
+		methodSet = new HashSet<>();
+		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection()");
+		targetMap.put("com.alibaba.druid.pool.DruidDataSource", methodSet);
+		// targetMap.put("com.alibaba.druid.pool.DruidPooledConnection", null);
+
 	}
-	
-	
 
 	@Override
 	public boolean isTarget(String className, ClassLoader classLoader, CtClass ctClass) {
-		return  targetSet.contains(className);
+		return targetMap.containsKey(className);
+	}
+
+	@Override
+	public boolean isTarget(String className) {
+		return targetMap.containsKey(className);
 	}
 
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
+			Set<String> methodSet = targetMap.get(className);
+			if (methodSet == null || methodSet.isEmpty()) {
+				return classfileBuffer;
+			}
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
+				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
-						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
+						&& (!Modifier.isNative(ctMethod.getModifiers()))) && methodSet.contains(longName)) {
+					System.out.println("ctMethod.getname：" + ctMethod.getLongName() +" methodSet.size : "+methodSet.size());
+					
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
 					classWrapper.endSrc(endSrc);

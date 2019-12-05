@@ -33,6 +33,11 @@ public class APMAgentV1 implements ClassFileTransformer {
 			return null;
 		}
 
+		className = className.replaceAll("/", ".");
+		if (!OtherCollector.INSTANCE.isTarget(className)) {
+			return classfileBuffer;
+		}
+
 		// 不同的ClassLoader使用不同的ClassPool
 		ClassPool localClassPool;
 		if (!this.classPoolMap.containsKey(classLoader)) {
@@ -44,7 +49,7 @@ public class APMAgentV1 implements ClassFileTransformer {
 		}
 
 		try {
-			className = className.replaceAll("/", ".");
+
 			CtClass localCtClass = localClassPool.get(className);
 			for (Collector collector : collectors) {
 				if (collector.isTarget(className, classLoader, localCtClass)) {
@@ -57,7 +62,7 @@ public class APMAgentV1 implements ClassFileTransformer {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
 					.printStackTrace();
 		}
-		return new byte[0];
+		return classfileBuffer;
 	}
 
 	public static void premain(String agentArgs, Instrumentation inst) {
