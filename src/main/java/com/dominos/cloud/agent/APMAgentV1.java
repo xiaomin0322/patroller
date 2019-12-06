@@ -33,10 +33,10 @@ public class APMAgentV1 implements ClassFileTransformer {
 			return null;
 		}
 
-		/*className = className.replaceAll("/", ".");
+		className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {
-			return classfileBuffer;
-		}*/
+			return null;
+		}
 
 		// 不同的ClassLoader使用不同的ClassPool
 		ClassPool localClassPool;
@@ -62,7 +62,7 @@ public class APMAgentV1 implements ClassFileTransformer {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
 					.printStackTrace();
 		}
-		return classfileBuffer;
+		return null;
 	}
 
 	public static void premain(String agentArgs, Instrumentation inst) {
