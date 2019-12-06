@@ -2,9 +2,6 @@ package com.dominos.cloud.agent;
 
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
-
 
 public class Statistics {
 
@@ -20,19 +17,21 @@ public class Statistics {
 
 	public void end() {
 		endTime = System.currentTimeMillis();
-		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-		Tracer tracer = wac.getBean(Tracer.class);
+	
 		Span newSpan = null;
+		Tracer tracer  = null;
 		try {
+			 //WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+			 tracer = SpringBeanAgentUtils.getBean(Tracer.class);
 			if (tracer != null) {
 				Span currentSpan = tracer.getCurrentSpan();
 				newSpan = tracer.createSpan(method, currentSpan);
 				newSpan.tag("time", String.valueOf(endTime - startTime));
-				// System.out.println("加入span成功："+method);
+				 System.out.println("加入span成功："+method);
 			}
 		} catch (Exception e) {
 		} finally {
-			if (newSpan != null) {
+			if (newSpan != null && tracer!=null) {
 				newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);// 记录事件，告诉Spring Cloud
 																					// Sleuth捕获调用完成的时间
 				tracer.close(newSpan);// 关闭跟踪，否则报错

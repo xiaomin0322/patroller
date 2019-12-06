@@ -1,15 +1,18 @@
 package com.dominos.cloud.agent;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.LoaderClassPath;
-
+import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarFile;
+
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.LoaderClassPath;
 
 public class APMAgentV1 implements ClassFileTransformer {
 
@@ -20,6 +23,8 @@ public class APMAgentV1 implements ClassFileTransformer {
 	}
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
+	
+	
 
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined,
@@ -68,7 +73,18 @@ public class APMAgentV1 implements ClassFileTransformer {
 	public static void premain(String agentArgs, Instrumentation inst) {
 		System.out.println("Hello, world! JavaAgen");
 		System.out.println("agentArgs: " + agentArgs);
-
+		File jar = new File("C:\\eclipse-workspace\\zipkin-agent\\target\\lib");
+		/*try {
+			for(File f:jar.listFiles()) {
+				//inst.appendToBootstrapClassLoaderSearch(new JarFile(new File("C:\\eclipse-workspace\\zipkin-agent\\target\\zipkin-agent.jar")));
+				//inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
+				inst.appendToSystemClassLoaderSearch(new JarFile(f));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		inst.addTransformer(new APMAgentV1());
 	}
+	
+
 }

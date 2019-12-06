@@ -5,13 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
+
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.Modifier;
 
+@Component
 public class OtherCollector implements Collector {
 
-	public static final OtherCollector INSTANCE = new OtherCollector();
+	public static OtherCollector INSTANCE = new OtherCollector();
+	
 
 	private OtherCollector() {
 	}
@@ -29,14 +33,11 @@ public class OtherCollector implements Collector {
 		stringBuilder.append("com.dominos.cloud.agent.Statistics statistic = inst.start(\"%s\");");
 		beginSrc = stringBuilder.toString();
 		errorSrc = "inst.error(statistic,e);";
-		
-		
-		
+
 		Set<String> methodSet = new HashSet<>();
 		methodSet.add("com.dominos.cloud.agent.TestService.print(java.lang.String)");
 		targetMap.put("com.dominos.cloud.agent.TestService", methodSet);
-		
-		
+
 		// targetSet.add("com.mysql.jdbc.ConnectionImpl");
 		// targetSet.add("com.mysql.jdbc.PreparedStatement");
 
@@ -69,8 +70,9 @@ public class OtherCollector implements Collector {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && methodSet.contains(longName)) {
-					//System.out.println("ctMethod.getname：" + ctMethod.getLongName() +" methodSet.size : "+methodSet.size());
-					
+					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
+					// methodSet.size : "+methodSet.size());
+
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
 					classWrapper.endSrc(endSrc);
