@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>    
 
-         <define name="hostname" 
-  class="com.dominos.cloud.common.util.CanonicalHostNamePropertyDefiner"/>
-     <property scope="context" name="projectName" value="dominos-gate" />
-      <contextName>${projectName} | ${hostname}</contextName>  
+      <property scope="context" name="projectName" value="dominos-zipkin-agent" />
+      <contextName>${projectName} </contextName>  
        
        
       
@@ -12,7 +10,6 @@
     <!-- appender是configuration的子节点，是负责写日志的组件。 -->
     <!-- ConsoleAppender：把日志输出到控制台 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">  
-       <filter class="com.dominos.cloud.common.tracer.TracerLogFilter" />   
         <encoder>    
            <pattern> %cn | %date{yyyy-MM-dd HH:mm:ss.SSS} |  %X{X-B3-TraceId:-} | %X{X-B3-SpanId:-} | %thread | %-5level | %logger{36}.%M\(%line\) | %msg%n</pattern>         <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
             <charset>UTF-8</charset>   
@@ -36,7 +33,6 @@
                 <maxFileSize>100MB</maxFileSize>    
             </timeBasedFileNamingAndTriggeringPolicy>    
         </rollingPolicy>    
-        <filter class="com.dominos.cloud.common.tracer.TracerLogFilter" /> 
         <encoder>    
             <!-- pattern节点，用来设置日志的输入格式 -->
                  <pattern> %cn | %date{yyyy-MM-dd HH:mm:ss.SSS} |  %X{X-B3-TraceId:-} | %X{X-B3-SpanId:-} | %thread | %-5level | %logger{36}.%M\(%line\) | %msg%n</pattern>     

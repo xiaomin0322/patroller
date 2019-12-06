@@ -3,6 +3,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+   <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starters</artifactId>
+		<version>1.4.2.RELEASE</version>
+	</parent>
+    <!-- 
+      <parent>
+        <groupId>com.dominos.common</groupId>
+        <artifactId>dominos-common-parent</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+        <relativePath>../dominos-common-parent</relativePath>
+    </parent>
+     -->
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>zipkin-agent</artifactId>
@@ -25,22 +38,58 @@
 			<version>3.25.0-GA</version>
 		</dependency>
 		
+       <dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		    <version>1.1.0.RELEASE</version>
+		</dependency>
+		
+	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		
+		 <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+		  <!-- 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency> -->
+		<!-- 
+		   <dependency>
            <groupId>com.dominos.common</groupId>
            <artifactId>dominos-common</artifactId>
            <version>0.1.0-SNAPSHOT</version>
-         </dependency> 
+        </dependency> 
+         -->
+
 		
+
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+			</plugin> -->
 			<!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -48,7 +97,6 @@
 					<archive>
 						<manifest>
 							<mainClass>com.dominos.cloud.agent.TestService</mainClass>
-							打包时 MANIFEST.MF文件不记录的时间戳版本
 							<useUniqueVersions>false</useUniqueVersions>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
@@ -60,9 +108,9 @@
 						</manifestEntries>
 					</archive>
 				</configuration>
-			</plugin> -->
+			</plugin>
 			
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>1.4</version>
@@ -106,7 +154,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			
 		</plugins>
 	</build>

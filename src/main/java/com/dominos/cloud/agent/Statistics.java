@@ -2,8 +2,9 @@ package com.dominos.cloud.agent;
 
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.dominos.cloud.common.util.SpringBeanUtils;
 
 public class Statistics {
 
@@ -19,7 +20,8 @@ public class Statistics {
 
 	public void end() {
 		endTime = System.currentTimeMillis();
-		Tracer tracer = SpringBeanUtils.getBean(Tracer.class);
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		Tracer tracer = wac.getBean(Tracer.class);
 		Span newSpan = null;
 		try {
 			if (tracer != null) {
@@ -35,7 +37,6 @@ public class Statistics {
 																					// Sleuth捕获调用完成的时间
 				tracer.close(newSpan);// 关闭跟踪，否则报错
 			}
-
 		}
 
 		// System.out.println("end :"+this.toString());

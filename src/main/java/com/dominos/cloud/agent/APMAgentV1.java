@@ -33,10 +33,10 @@ public class APMAgentV1 implements ClassFileTransformer {
 			return null;
 		}
 
-		className = className.replaceAll("/", ".");
+		/*className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {
 			return classfileBuffer;
-		}
+		}*/
 
 		// 不同的ClassLoader使用不同的ClassPool
 		ClassPool localClassPool;
