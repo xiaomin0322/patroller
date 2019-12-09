@@ -1,14 +1,12 @@
 package com.dominos.cloud.agent;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.JarFile;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -37,6 +35,8 @@ public class APMAgentV1 implements ClassFileTransformer {
 				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))) {
 			return null;
 		}
+		
+		//System.out.println("transform.classLoader："+classLoader.getClass().getName());
 
 		className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {

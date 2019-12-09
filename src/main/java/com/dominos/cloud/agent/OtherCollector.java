@@ -1,17 +1,18 @@
 package com.dominos.cloud.agent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
+import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.Modifier;
 
-@Component
 public class OtherCollector implements Collector {
 
 	public static OtherCollector INSTANCE = new OtherCollector();
@@ -35,14 +36,18 @@ public class OtherCollector implements Collector {
 		errorSrc = "inst.error(statistic,e);";
 
 		Set<String> methodSet = new HashSet<>();
-		methodSet.add("com.dominos.cloud.agent.TestService.print(java.lang.String)");
-		targetMap.put("com.dominos.cloud.agent.TestService", methodSet);
+		methodSet.add("com.dominos.cloud.agent.TestServiceMain.print(java.lang.String)");
+		targetMap.put("com.dominos.cloud.agent.TestServiceMain", methodSet);
 
 		// targetSet.add("com.mysql.jdbc.ConnectionImpl");
 		// targetSet.add("com.mysql.jdbc.PreparedStatement");
 
 		methodSet = new HashSet<>();
+		methodSet = new HashSet<>();
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection()");
+		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(long)");
+		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnectionDirect(long)");
+		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(java.lang.String, java.lang.String)");
 		targetMap.put("com.alibaba.druid.pool.DruidDataSource", methodSet);
 		// targetMap.put("com.alibaba.druid.pool.DruidPooledConnection", null);
 
@@ -72,6 +77,13 @@ public class OtherCollector implements Collector {
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && methodSet.contains(longName)) {
 					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
 					// methodSet.size : "+methodSet.size());
+					
+					String methodName = ctMethod.getName();
+			    	
+			    	List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+			    	
+			    	System.out.println("方法名称："+methodName+" paramNameList："+Arrays.toString(paramNameList.toArray()));
+			    	
 
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));

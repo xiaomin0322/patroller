@@ -1,8 +1,5 @@
 package com.dominos.cloud.agent;
 
-import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.Tracer;
-
 public class Statistics {
 
 	private String method;
@@ -15,28 +12,21 @@ public class Statistics {
 		this.startTime = System.currentTimeMillis();
 	}
 
+	
+
 	public void end() {
 		endTime = System.currentTimeMillis();
-	
-		Span newSpan = null;
-		Tracer tracer  = null;
-		try {
-			 //WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-			 tracer = SpringBeanAgentUtils.getBean(Tracer.class);
-			if (tracer != null) {
-				Span currentSpan = tracer.getCurrentSpan();
-				newSpan = tracer.createSpan(method, currentSpan);
-				newSpan.tag("time", String.valueOf(endTime - startTime));
-				 System.out.println("加入span成功："+method);
-			}
-		} catch (Exception e) {
-		} finally {
-			if (newSpan != null && tracer!=null) {
-				newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);// 记录事件，告诉Spring Cloud
-																					// Sleuth捕获调用完成的时间
-				tracer.close(newSpan);// 关闭跟踪，否则报错
-			}
-		}
+
+		/*
+		 * Span newSpan = null; Tracer tracer = null; try { tracer =
+		 * com.dominos.cloud.common.util.SpringBeanUtils.getBean(Tracer.class); if
+		 * (tracer != null) { Span currentSpan = tracer.getCurrentSpan(); newSpan =
+		 * tracer.createSpan(method, currentSpan); newSpan.tag("time",
+		 * String.valueOf(endTime - startTime)); System.out.println("加入span成功："+method);
+		 * } } catch (Exception e) { } finally { if (newSpan != null && tracer!=null) {
+		 * newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);
+		 * tracer.close(newSpan); } }
+		 */
 
 		// System.out.println("end :"+this.toString());
 	}
