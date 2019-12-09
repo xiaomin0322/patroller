@@ -37,6 +37,7 @@ public class APMAgentV1 implements ClassFileTransformer {
 		}
 		
 		//System.out.println("transform.classLoader："+classLoader.getClass().getName());
+		//System.out.println("transform.classLoader："+classLoader.getClass().getName());
 
 		className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {
