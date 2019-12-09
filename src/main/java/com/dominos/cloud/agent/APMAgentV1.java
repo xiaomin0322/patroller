@@ -37,6 +37,8 @@ public class APMAgentV1 implements ClassFileTransformer {
 				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))) {
 			return null;
 		}
+		
+		System.out.println("transform.classLoader："+classLoader.getClass().getName());
 
 		className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {
