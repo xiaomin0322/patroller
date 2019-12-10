@@ -27,11 +27,19 @@
 			<version>3.25.0-GA</version>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
 		    <groupId>org.objectweb.asm</groupId>
 		    <artifactId>com.springsource.org.objectweb.asm</artifactId>
 		    <version>3.2.0</version>
-		</dependency>
+		</dependency> -->
+
+         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
+<dependency>
+    <groupId>org.ow2.asm</groupId>
+    <artifactId>asm</artifactId>
+    <version>7.2</version>
+</dependency>
+         
 		
 		<!--   <dependency>
             <groupId>com.alibaba</groupId>

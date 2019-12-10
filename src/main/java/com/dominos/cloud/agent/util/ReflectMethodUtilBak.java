@@ -1,4 +1,4 @@
-package com.dominos.cloud.agent.util;
+/*package com.dominos.cloud.agent.util;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import javassist.CtClass;
 import javassist.CtMethod;
 
-/** * 使用ASM获得JAVA类方法参数名 */
-public class ReflectMethodUtil {
+*//** * 使用ASM获得JAVA类方法参数名 *//*
+public class ReflectMethodUtilBak {
 	class Test {
 		void method(String name, Object value) {
 		}
@@ -29,7 +29,7 @@ public class ReflectMethodUtil {
 	void method(String name, Object value) {
 	}
 
-	/*
+	
 	 * public static void main(String[] args) throws SecurityException,
 	 * NoSuchMethodException, Exception { Method method1 =
 	 * Test.class.getDeclaredMethod("method", String.class, Object.class);
@@ -42,9 +42,9 @@ public class ReflectMethodUtil {
 	 * cc.getDeclaredMethod("method", paramTypes);
 	 * 
 	 * System.out.println(Arrays.toString(getMethodParamNames(cc, m))); }
-	 */
+	 
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(CtClass cc, CtMethod method) {
 		try {
 			String name = method.getName();
@@ -64,7 +64,7 @@ public class ReflectMethodUtil {
 
 	}
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(ClassLoader classLoader, CtClass cc, CtMethod method) {
 		try {
 			String name = method.getName();
@@ -85,14 +85,13 @@ public class ReflectMethodUtil {
 
 	}
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(ClassLoader classLoader, byte[] bytes, CtClass cc, CtMethod method) {
 		try {
 
-			/*
-			 * if (isContextClassLoader(classLoader)) { return getMethodParamNames(cc,
-			 * method); }
-			 */
+			if (isContextClassLoader(classLoader)) {
+				return getMethodParamNames(cc, method);
+			}
 			CtClass[] parameterTypes = method.getParameterTypes();
 			List<Class<?>> classes = new ArrayList<>();
 			for (CtClass c : parameterTypes) {
@@ -128,8 +127,8 @@ public class ReflectMethodUtil {
 		}
 
 		if (classLoader != null) {
-			// return Class.forName(className, false, classLoader);
-			return classLoader.loadClass(className);
+			//return Class.forName(className, false, classLoader);
+			 return classLoader.loadClass(className);
 		} else {
 			return Class.forName(className);
 		}
@@ -145,7 +144,7 @@ public class ReflectMethodUtil {
 		return true;
 	}
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(final Method method, byte[] bytes) throws IOException {
 		final String methodName = method.getName();
 		final Class<?>[] methodParameterTypes = method.getParameterTypes();
@@ -156,34 +155,30 @@ public class ReflectMethodUtil {
 		// ClassReader cr = new ClassReader(className);
 		ClassReader cr = new ClassReader(bytes);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		cr.accept(new ClassVisitor(Opcodes.ASM4) {
-			@Override
+		cr.accept(new ClassAdapter(cw) {
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
-				// 只处理指定的方法
-				Type[] argumentTypes = Type.getArgumentTypes(desc);
-				if (!method.getName().equals(name) || !matchTypes(argumentTypes, methodParameterTypes)) {
-					return null;
+				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
+				if (!methodName.equals(name) || !matchTypes(argTypes, methodParameterTypes)) {
+					return mv;
 				}
-				return new MethodVisitor(Opcodes.ASM4) {
-					@Override
+				return new MethodAdapter(mv) {
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
-							int index) {
-						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
+							int index) { // 如果是静态方法，第一个参数就是方法参数，非静态方法，则第一个参数是 this ,然后才是方法的参数
+						int methodParameterIndex = isStatic ? index : index - 1;
+						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
+							methodParametersNames[methodParameterIndex] = name;
 						}
+						super.visitLocalVariable(name, desc, signature, start, end, index);
 					}
 				};
-
 			}
 		}, 0);
 		return methodParametersNames;
 	}
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(ClassLoader classLoader, final CtMethod method, byte[] bytes)
 			throws Exception {
 		final String methodName = method.getName();
@@ -194,34 +189,30 @@ public class ReflectMethodUtil {
 		// ClassReader cr = new ClassReader(className);
 		ClassReader cr = new ClassReader(bytes);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		cr.accept(new ClassVisitor(Opcodes.ASM4) {
-			@Override
+		cr.accept(new ClassAdapter(cw) {
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
-				// 只处理指定的方法
-				Type[] argumentTypes = Type.getArgumentTypes(desc);
-				if (!method.getName().equals(name) || !matchTypes(classLoader, argumentTypes, methodParameterTypes)) {
-					return null;
+				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
+				if (!methodName.equals(name) || !matchTypes(classLoader, argTypes, methodParameterTypes)) {
+					return mv;
 				}
-				return new MethodVisitor(Opcodes.ASM4) {
-					@Override
+				return new MethodAdapter(mv) {
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
-							int index) {
-						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
+							int index) { // 如果是静态方法，第一个参数就是方法参数，非静态方法，则第一个参数是 this ,然后才是方法的参数
+						int methodParameterIndex = isStatic ? index : index - 1;
+						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
+							methodParametersNames[methodParameterIndex] = name;
 						}
+						super.visitLocalVariable(name, desc, signature, start, end, index);
 					}
 				};
-
 			}
 		}, 0);
 		return methodParametersNames;
 	}
 
-	/** 使用字节码工具ASM来获取方法的参数名 */
+	*//** 使用字节码工具ASM来获取方法的参数名 *//*
 	public static String[] getMethodParamNames(final Method method) throws IOException {
 		final String methodName = method.getName();
 		final Class<?>[] methodParameterTypes = method.getParameterTypes();
@@ -231,35 +222,33 @@ public class ReflectMethodUtil {
 		final String[] methodParametersNames = new String[methodParameterCount];
 		ClassReader cr = new ClassReader(className);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-
-		cr.accept(new ClassVisitor(Opcodes.ASM4) {
-			@Override
+		
+		cr.accept(classVisitor, parsingOptions);
+		
+		cr.accept(new ClassAdapter(cw) {
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
-				// 只处理指定的方法
-				Type[] argumentTypes = Type.getArgumentTypes(desc);
-				if (!method.getName().equals(name) || !matchTypes(argumentTypes, methodParameterTypes)) {
-					return null;
+				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
+				if (!methodName.equals(name) || !matchTypes(argTypes, methodParameterTypes)) {
+					return mv;
 				}
-				return new MethodVisitor(Opcodes.ASM4) {
-					@Override
+				return new MethodAdapter(mv) {
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
-							int index) {
-						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
+							int index) { // 如果是静态方法，第一个参数就是方法参数，非静态方法，则第一个参数是 this ,然后才是方法的参数
+						int methodParameterIndex = isStatic ? index : index - 1;
+						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
+							methodParametersNames[methodParameterIndex] = name;
 						}
+						super.visitLocalVariable(name, desc, signature, start, end, index);
 					}
 				};
-
 			}
 		}, 0);
 		return methodParametersNames;
 	}
 
-	/** * 比较参数是否一致 */
+	*//** * 比较参数是否一致 *//*
 	private static boolean matchTypes(Type[] types, Class<?>[] parameterTypes) {
 		if (types.length != parameterTypes.length) {
 			return false;
@@ -272,7 +261,7 @@ public class ReflectMethodUtil {
 		return true;
 	}
 
-	/** * 比较参数是否一致 */
+	*//** * 比较参数是否一致 *//*
 	private static boolean matchTypes(ClassLoader classLoader, Type[] types, CtClass[] parameterTypes) {
 		if (types.length != parameterTypes.length) {
 			return false;
@@ -292,4 +281,4 @@ public class ReflectMethodUtil {
 		return true;
 	}
 
-}
+}*/
