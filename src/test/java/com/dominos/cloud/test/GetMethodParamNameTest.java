@@ -3,7 +3,9 @@ package com.dominos.cloud.test;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.dominos.cloud.agent.util.ReflectMethodUtil;
+import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -20,15 +22,27 @@ public class GetMethodParamNameTest {
 	}
 
 	public static void main(String[] args) throws SecurityException, NoSuchMethodException, Exception {
-		Method method1 = Test.class.getDeclaredMethod("method", String.class, Object.class);
+		Method method1 = DruidDataSource.class.getDeclaredMethod("getConnection", long.class);
 		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(method1)));
 
-		ClassPool pool = ClassPool.getDefault();
+		/*ClassPool pool = ClassPool.getDefault();
 		CtClass cc = pool.get("com.dominos.cloud.test.GetMethodParamNameTest");
 		CtClass[] paramTypes = { pool.get(String.class.getName()), pool.get(Object.class.getName()) };
 		CtMethod m = cc.getDeclaredMethod("method", paramTypes);
 
-		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(cc, m)));
+		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(cc, m)));*/
+		
+		ClassPool pool = ClassPool.getDefault();
+		CtClass cc = pool.get("com.alibaba.druid.pool.DruidDataSource");
+		CtClass[] paramTypes = { pool.get(long.class.getName()) };
+		CtMethod m = cc.getDeclaredMethod("getConnection", paramTypes);
+
+		System.out.println(Arrays.toString(ReflectUtil.getParamNameList(m).toArray()));
+		
+		
+		
+		
+		
 	}
 
 }

@@ -3,7 +3,7 @@ package com.dominos.cloud.agent;
 import java.util.Arrays;
 import java.util.List;
 
-import com.dominos.cloud.agent.util.ReflectMethodUtil;
+import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -83,14 +83,15 @@ public class ClassWrapper {
 		return builder.toString();
 	}
 
-	public String beginSrc(CtClass ctClass, CtMethod ctMethod) {
+	public String beginSrc(ClassLoader classLoader,byte[] classfileBuffer,CtClass ctClass, CtMethod ctMethod) {
 
 		String methodName = ctMethod.getName();
 
-		List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(ctClass, ctMethod));
+		//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 
-		// System.out.println("方法名称："+methodName+"
-		// paramNameList："+Arrays.toString(paramNameList.toArray()));
+		List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+		
+		 //System.out.println("方法名称："+methodName+"paramNameList："+Arrays.toString(paramNameList.toArray()));
 
 		try {
 			  String template = ctMethod.getReturnType().getName().equals("void")

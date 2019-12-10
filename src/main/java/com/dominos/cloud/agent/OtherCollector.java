@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.dominos.cloud.agent.util.ReflectMethodUtil;
 import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.CtClass;
@@ -78,18 +79,22 @@ public class OtherCollector implements Collector {
 					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
 					// methodSet.size : "+methodSet.size());
 					
-					String methodName = ctMethod.getName();
+					//String methodName = ctMethod.getName();
 			    	
-			    	List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+					
+					//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 			    	
-			    	System.out.println("方法名称："+methodName+" paramNameList："+Arrays.toString(paramNameList.toArray()));
+					//List<String> paramNameList = Arrays.asList(ReflectUtil.getParamNameList(ctMethod));
+			    	
+					
+			    	//System.out.println("方法名称："+methodName+" paramNameList："+Arrays.toString(paramNameList.toArray()));
 			    	
 
 					ClassWrapper classWrapper = new ClassWrapper();
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
-					replacer.replace(ctClass,ctMethod, classWrapper);
+					replacer.replace(classLoader,classfileBuffer,ctClass,ctMethod, classWrapper);
 				}
 			}
 			return replacer.replace();
