@@ -16,7 +16,6 @@ import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 
@@ -89,17 +88,16 @@ public class ReflectMethodUtil {
 	/** 使用字节码工具ASM来获取方法的参数名 */
 	public static String[] getMethodParamNames(ClassLoader classLoader, byte[] bytes, CtClass cc, CtMethod method) {
 		try {
-			String name = method.getName();
 
+			if (isContextClassLoader(classLoader)) {
+				return getMethodParamNames(cc, method);
+			}
 			CtClass[] parameterTypes = method.getParameterTypes();
 			List<Class<?>> classes = new ArrayList<>();
 			for (CtClass c : parameterTypes) {
 				classes.add(getClass(classLoader, c.getName()));
 			}
-			/*Method method1 = getClass(classLoader, cc.getName()).getDeclaredMethod(name,
-					classes.toArray(new Class<?>[] {}));
-			return getMethodParamNames(method1, bytes);*/
-			return getMethodParamNames(classLoader,method, bytes);
+			return getMethodParamNames(classLoader, method, bytes);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -127,15 +125,23 @@ public class ReflectMethodUtil {
 		if (c != null) {
 			return c;
 		}
-		//Thread currentThread = Thread.currentThread();
-		//currentThread.getContextClassLoader() != classLoader
-		
-		if (classLoader != null ) {
-			  return Class.forName(className, false, classLoader);
-			//return classLoader.loadClass(className);
+
+		if (classLoader != null) {
+			return Class.forName(className, false, classLoader);
+			// return classLoader.loadClass(className);
 		} else {
 			return Class.forName(className);
 		}
+	}
+
+	public static boolean isContextClassLoader(ClassLoader classLoader) {
+		Thread currentThread = Thread.currentThread();
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+		System.out.println("当前getContextClassLoader:" + contextClassLoader + " 参数ClassLoader:" + classLoader);
+		if (contextClassLoader != classLoader) {
+			return false;
+		}
+		return true;
 	}
 
 	/** 使用字节码工具ASM来获取方法的参数名 */
@@ -171,10 +177,10 @@ public class ReflectMethodUtil {
 		}, 0);
 		return methodParametersNames;
 	}
-	
-	
+
 	/** 使用字节码工具ASM来获取方法的参数名 */
-	public static String[] getMethodParamNames(ClassLoader classLoader,final CtMethod method, byte[] bytes) throws Exception {
+	public static String[] getMethodParamNames(ClassLoader classLoader, final CtMethod method, byte[] bytes)
+			throws Exception {
 		final String methodName = method.getName();
 		final CtClass[] methodParameterTypes = method.getParameterTypes();
 		final int methodParameterCount = methodParameterTypes.length;
@@ -188,7 +194,7 @@ public class ReflectMethodUtil {
 					String[] exceptions) {
 				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
 				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
-				if (!methodName.equals(name) || !matchTypes(classLoader,argTypes, methodParameterTypes)) {
+				if (!methodName.equals(name) || !matchTypes(classLoader, argTypes, methodParameterTypes)) {
 					return mv;
 				}
 				return new MethodAdapter(mv) {
@@ -251,15 +257,15 @@ public class ReflectMethodUtil {
 		}
 		return true;
 	}
-	
+
 	/** * 比较参数是否一致 */
-	private static boolean matchTypes(ClassLoader classLoader,Type[] types, CtClass[] parameterTypes) {
+	private static boolean matchTypes(ClassLoader classLoader, Type[] types, CtClass[] parameterTypes) {
 		if (types.length != parameterTypes.length) {
 			return false;
 		}
 		for (int i = 0; i < types.length; i++) {
-			
-			Class<?> c=null;
+
+			Class<?> c = null;
 			try {
 				c = getClass(classLoader, parameterTypes[i].getName());
 			} catch (Exception e) {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.dominos.cloud.agent.util.ReflectMethodUtil;
 import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.CtClass;
@@ -52,9 +51,9 @@ public class OtherCollector implements Collector {
 		// targetMap.put("com.alibaba.druid.pool.DruidPooledConnection", null);
 		
 		
-		methodSet = new HashSet<>();
-		methodSet.add("com.dominos.cloud.im.dao.StoreGroupsMapper.selectByExampleWithBLOBs(com.dominos.cloud.im.model.StoreGroupsExample)");
-		targetMap.put("com.dominos.cloud.im.dao.StoreGroupsMapper", methodSet);
+		//methodSet = new HashSet<>();
+		//methodSet.add("com.dominos.cloud.im.dao.StoreGroupsMapper.selectByExampleWithBLOBs(com.dominos.cloud.im.model.StoreGroupsExample)");
+		//targetMap.put("com.dominos.cloud.im.dao.StoreGroupsMapper", methodSet);
 		
 		
 		methodSet = new HashSet<>();
@@ -93,13 +92,13 @@ public class OtherCollector implements Collector {
 					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
 					// methodSet.size : "+methodSet.size());
 					
-					String methodName = ctMethod.getName();
+					//String methodName = ctMethod.getName();
 					//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
-					List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
-					//List<String> paramNameList = Arrays.asList(ReflectUtil.getParamNameList(ctMethod));
-			    	
+					//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
+					//List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+					//List<String> paramNameList = null;
 					
-			    	System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+Arrays.toString(paramNameList.toArray()));
+			    	//System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+Arrays.toString(paramNameList.toArray()));
 			    	
 
 					ClassWrapper classWrapper = new ClassWrapper();

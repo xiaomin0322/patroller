@@ -102,10 +102,15 @@ public class ClassWrapper {
 		List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 
 		//List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+		//List<String> paramNameList = null;
 		
-		 //System.out.println("方法名称："+methodName+"paramNameList："+Arrays.toString(paramNameList.toArray()));
+		
 
 		try {
+			
+			System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+paramNameList.toArray());
+	    	
+			
 			  String template = ctMethod.getReturnType().getName().equals("void")
                 ?
                 "{\n" +

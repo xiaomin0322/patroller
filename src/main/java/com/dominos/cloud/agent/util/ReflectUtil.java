@@ -23,6 +23,7 @@ public class ReflectUtil {
 		if (cm == null) {
 			return null;
 		}
+		System.out.println("methodName="+cm.getLongName());
 		String methodName = cm.getName();
 		List<String> paramNameList = PARAM_MAP.get(methodName);
 		if (paramNameList == null || paramNameList.size() <= 0) {
@@ -41,7 +42,9 @@ public class ReflectUtil {
 						}
 					}
 				} catch (NotFoundException e) {
+					System.out.println("methodName="+cm.getLongName());
 					e.printStackTrace();
+					
 				}
 
 				PARAM_MAP.put(methodName, paramNameList);
