@@ -96,9 +96,10 @@ public class ReflectMethodUtil {
 			for (CtClass c : parameterTypes) {
 				classes.add(getClass(classLoader, c.getName()));
 			}
-			Method method1 = Class.forName(cc.getName(), false, classLoader).getDeclaredMethod(name,
+			/*Method method1 = getClass(classLoader, cc.getName()).getDeclaredMethod(name,
 					classes.toArray(new Class<?>[] {}));
-			return getMethodParamNames(method1, bytes);
+			return getMethodParamNames(method1, bytes);*/
+			return getMethodParamNames(method, bytes);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -127,7 +128,8 @@ public class ReflectMethodUtil {
 			return c;
 		}
 		if (classLoader != null) {
-			return Class.forName(className, false, classLoader);
+			//return Class.forName(className, false, classLoader);
+			return classLoader.loadClass(className);
 		} else {
 			return Class.forName(className);
 		}
@@ -139,6 +141,40 @@ public class ReflectMethodUtil {
 		final Class<?>[] methodParameterTypes = method.getParameterTypes();
 		final int methodParameterCount = methodParameterTypes.length;
 		final String className = method.getDeclaringClass().getName();
+		final boolean isStatic = Modifier.isStatic(method.getModifiers());
+		final String[] methodParametersNames = new String[methodParameterCount];
+		// ClassReader cr = new ClassReader(className);
+		ClassReader cr = new ClassReader(bytes);
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cr.accept(new ClassAdapter(cw) {
+			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+					String[] exceptions) {
+				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
+				if (!methodName.equals(name) || !matchTypes(argTypes, methodParameterTypes)) {
+					return mv;
+				}
+				return new MethodAdapter(mv) {
+					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
+							int index) { // 如果是静态方法，第一个参数就是方法参数，非静态方法，则第一个参数是 this ,然后才是方法的参数
+						int methodParameterIndex = isStatic ? index : index - 1;
+						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
+							methodParametersNames[methodParameterIndex] = name;
+						}
+						super.visitLocalVariable(name, desc, signature, start, end, index);
+					}
+				};
+			}
+		}, 0);
+		return methodParametersNames;
+	}
+	
+	
+	/** 使用字节码工具ASM来获取方法的参数名 */
+	public static String[] getMethodParamNames(final CtMethod method, byte[] bytes) throws Exception {
+		final String methodName = method.getName();
+		final CtClass[] methodParameterTypes = method.getParameterTypes();
+		final int methodParameterCount = methodParameterTypes.length;
 		final boolean isStatic = Modifier.isStatic(method.getModifiers());
 		final String[] methodParametersNames = new String[methodParameterCount];
 		// ClassReader cr = new ClassReader(className);
@@ -207,6 +243,26 @@ public class ReflectMethodUtil {
 		}
 		for (int i = 0; i < types.length; i++) {
 			if (!Type.getType(parameterTypes[i]).equals(types[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** * 比较参数是否一致 */
+	private static boolean matchTypes(Type[] types, CtClass[] parameterTypes) {
+		if (types.length != parameterTypes.length) {
+			return false;
+		}
+		for (int i = 0; i < types.length; i++) {
+			
+			Class<?> c=null;
+			try {
+				c = getClass(null, parameterTypes[i].getName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (!Type.getType(c).equals(types[i])) {
 				return false;
 			}
 		}

@@ -79,15 +79,13 @@ public class OtherCollector implements Collector {
 					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
 					// methodSet.size : "+methodSet.size());
 					
-					//String methodName = ctMethod.getName();
-			    	
-					
+					String methodName = ctMethod.getName();
 					//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
-			    	
+					List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 					//List<String> paramNameList = Arrays.asList(ReflectUtil.getParamNameList(ctMethod));
 			    	
 					
-			    	//System.out.println("方法名称："+methodName+" paramNameList："+Arrays.toString(paramNameList.toArray()));
+			    	System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+Arrays.toString(paramNameList.toArray()));
 			    	
 
 					ClassWrapper classWrapper = new ClassWrapper();

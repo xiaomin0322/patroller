@@ -1,10 +1,7 @@
 package com.dominos.cloud.test;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.dominos.cloud.agent.util.ReflectMethodUtil;
 import com.dominos.cloud.agent.util.ReflectUtil;
 
 import javassist.ClassPool;
@@ -22,8 +19,8 @@ public class GetMethodParamNameTest {
 	}
 
 	public static void main(String[] args) throws SecurityException, NoSuchMethodException, Exception {
-		Method method1 = DruidDataSource.class.getDeclaredMethod("getConnection", long.class);
-		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(method1)));
+	/*	Method method1 = DruidDataSource.class.getDeclaredMethod("getConnection", long.class);
+		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(method1)));*/
 
 		/*ClassPool pool = ClassPool.getDefault();
 		CtClass cc = pool.get("com.dominos.cloud.test.GetMethodParamNameTest");

@@ -3,7 +3,7 @@ package com.dominos.cloud.agent;
 import java.util.Arrays;
 import java.util.List;
 
-import com.dominos.cloud.agent.util.ReflectUtil;
+import com.dominos.cloud.agent.util.ReflectMethodUtil;
 
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -58,11 +58,23 @@ public class ClassWrapper {
 						+ " System.out.println(\"加入span成功：\"+" + toStr(methodName) + ");\r\n" + "			}");
 
 		if (argNameList != null) {
-			for (String arg : argNameList) {
+			/*for (String arg : argNameList) {
 				// builder.append("newSpan.tag("+toStr(arg)+", "+arg+");\r\n");
-				// builder.append(" System.out.println(\"参数名称:\"+"+ toStr(arg)
-				// +"\"参数值：\"+"+arg+");\r\n");
+				 builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
+				 +"\"参数值：\"+"+arg+");\r\n");
+			}*/
+			
+			for (int i=0;i<argNameList.size();i++) {
+				String arg = argNameList.get(i);
+				builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
+				 +"\"参数值：\"+"+"$args["+i+"]"+");\r\n");
+				
+				
 			}
+			
+			/*builder.append("for(Object o:$args){"+
+					 "System.out.println(\"参数值===：\"+o);"+
+					"}");*/
 		}
 
 		return builder.toString();
@@ -87,9 +99,9 @@ public class ClassWrapper {
 
 		String methodName = ctMethod.getName();
 
-		//List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
+		List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 
-		List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
+		//List<String> paramNameList = ReflectUtil.getParamNameList(ctMethod);
 		
 		 //System.out.println("方法名称："+methodName+"paramNameList："+Arrays.toString(paramNameList.toArray()));
 
@@ -121,12 +133,18 @@ public class ClassWrapper {
                 "    }\n" +
                 "    return ($r) result;\n" +
                 "}";
+			  
+		
 
 			String insertBeginSrc = this.beginSrc == null ? "" : this.beginSrc;
 			String insertErrorSrc = this.errorSrc == null ? "" : this.errorSrc;
 			String insertEndSrc = this.endSrc == null ? "" : this.endSrc;
 			String result = String.format(template,
 					new Object[] { insertBeginSrc, ctMethod.getName(), insertErrorSrc, insertEndSrc });
+			
+			  System.out.println("result:"+result);
+			
+			
 			return result;
 		} catch (NotFoundException localNotFoundException) {
 			throw new RuntimeException(localNotFoundException);
@@ -137,12 +155,24 @@ public class ClassWrapper {
 		String test = "12313";
 
 		String s = " System.out.println(\"加入span成功：\"+" + toStr(test) + ");\r\n";
-
+		
 		System.out.println(s);
+		
+		s = " System.out.println(\"参数名称:\"+"+ toStrto(test)
+		 +"\"参数值：\"+"+test+");\r\n";
+		
+		System.out.println(s);
+		
 
 	}
 
 	public static String toStr(String val) {
+		//return "\"" + val + "\"";
 		return "\"" + val + "\"";
+	}
+	
+	public static String toStrto(String val) {
+		//return "\"" + val + "\"";
+		return "\"" + val + "\"+";
 	}
 }
