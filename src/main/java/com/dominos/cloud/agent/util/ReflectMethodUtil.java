@@ -89,9 +89,9 @@ public class ReflectMethodUtil {
 	public static String[] getMethodParamNames(ClassLoader classLoader, byte[] bytes, CtClass cc, CtMethod method) {
 		try {
 
-			if (isContextClassLoader(classLoader)) {
+			/*if (isContextClassLoader(classLoader)) {
 				return getMethodParamNames(cc, method);
-			}
+			}*/
 			CtClass[] parameterTypes = method.getParameterTypes();
 			List<Class<?>> classes = new ArrayList<>();
 			for (CtClass c : parameterTypes) {
