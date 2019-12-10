@@ -142,7 +142,7 @@ public class ClassWrapper {
 			String result = String.format(template,
 					new Object[] { insertBeginSrc, ctMethod.getName(), insertErrorSrc, insertEndSrc });
 			
-			  System.out.println("result:"+result);
+			 // System.out.println("result:"+result);
 			
 			
 			return result;

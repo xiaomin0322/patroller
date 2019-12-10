@@ -44,13 +44,18 @@ public class OtherCollector implements Collector {
 		// targetSet.add("com.mysql.jdbc.PreparedStatement");
 
 		methodSet = new HashSet<>();
-		methodSet = new HashSet<>();
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection()");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(long)");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnectionDirect(long)");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(java.lang.String, java.lang.String)");
 		targetMap.put("com.alibaba.druid.pool.DruidDataSource", methodSet);
 		// targetMap.put("com.alibaba.druid.pool.DruidPooledConnection", null);
+		
+		
+		methodSet = new HashSet<>();
+		methodSet.add("com.dominos.cloud.im.dao.StoreGroupsMapper.selectByExampleWithBLOBs(com.dominos.cloud.im.model.StoreGroupsExample)");
+		targetMap.put("com.dominos.cloud.im.dao.StoreGroupsMapper", methodSet);
+		
 
 	}
 
