@@ -57,8 +57,8 @@ public class OtherCollector implements Collector {
 		
 		
 		methodSet = new HashSet<>();
-		
 		methodSet.add("com.dominos.cloud.im.controller.StoreController.test(com.dominos.cloud.im.controller.ProductController)");
+		methodSet.add("com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)");
 		targetMap.put("com.dominos.cloud.im.controller.StoreController", methodSet);
 		
 
@@ -72,6 +72,11 @@ public class OtherCollector implements Collector {
 	@Override
 	public boolean isTarget(String className) {
 		return targetMap.containsKey(className);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(targetMap.get("com.dominos.cloud.im.controller.StoreController")
+				.contains("com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)"));
 	}
 
 	@Override
