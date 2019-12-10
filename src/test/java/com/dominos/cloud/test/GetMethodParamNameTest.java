@@ -29,13 +29,23 @@ public class GetMethodParamNameTest {
 
 		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(cc, m)));*/
 		
-		ClassPool pool = ClassPool.getDefault();
+		/*ClassPool pool = ClassPool.getDefault();
 		CtClass cc = pool.get("com.alibaba.druid.pool.DruidDataSource");
 		CtClass[] paramTypes = { pool.get(long.class.getName()) };
 		CtMethod m = cc.getDeclaredMethod("getConnection", paramTypes);
 
-		System.out.println(Arrays.toString(ReflectUtil.getParamNameList(m).toArray()));
+		System.out.println(Arrays.toString(ReflectUtil.getParamNameList(m).toArray()));*/
 		
+		Thread currentThread = Thread.currentThread();
+		
+		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest");
+
+		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest");
+		
+		
+		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest",false,currentThread.getContextClassLoader());
+
+		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest",false,currentThread.getContextClassLoader());
 		
 		
 		

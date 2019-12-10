@@ -99,7 +99,7 @@ public class ReflectMethodUtil {
 			/*Method method1 = getClass(classLoader, cc.getName()).getDeclaredMethod(name,
 					classes.toArray(new Class<?>[] {}));
 			return getMethodParamNames(method1, bytes);*/
-			return getMethodParamNames(method, bytes);
+			return getMethodParamNames(classLoader,method, bytes);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -127,9 +127,12 @@ public class ReflectMethodUtil {
 		if (c != null) {
 			return c;
 		}
-		if (classLoader != null) {
-			//return Class.forName(className, false, classLoader);
-			return classLoader.loadClass(className);
+		//Thread currentThread = Thread.currentThread();
+		//currentThread.getContextClassLoader() != classLoader
+		
+		if (classLoader != null ) {
+			  return Class.forName(className, false, classLoader);
+			//return classLoader.loadClass(className);
 		} else {
 			return Class.forName(className);
 		}
@@ -171,7 +174,7 @@ public class ReflectMethodUtil {
 	
 	
 	/** 使用字节码工具ASM来获取方法的参数名 */
-	public static String[] getMethodParamNames(final CtMethod method, byte[] bytes) throws Exception {
+	public static String[] getMethodParamNames(ClassLoader classLoader,final CtMethod method, byte[] bytes) throws Exception {
 		final String methodName = method.getName();
 		final CtClass[] methodParameterTypes = method.getParameterTypes();
 		final int methodParameterCount = methodParameterTypes.length;
@@ -185,7 +188,7 @@ public class ReflectMethodUtil {
 					String[] exceptions) {
 				MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
 				final Type[] argTypes = Type.getArgumentTypes(desc); // 参数类型不一致
-				if (!methodName.equals(name) || !matchTypes(argTypes, methodParameterTypes)) {
+				if (!methodName.equals(name) || !matchTypes(classLoader,argTypes, methodParameterTypes)) {
 					return mv;
 				}
 				return new MethodAdapter(mv) {
@@ -250,7 +253,7 @@ public class ReflectMethodUtil {
 	}
 	
 	/** * 比较参数是否一致 */
-	private static boolean matchTypes(Type[] types, CtClass[] parameterTypes) {
+	private static boolean matchTypes(ClassLoader classLoader,Type[] types, CtClass[] parameterTypes) {
 		if (types.length != parameterTypes.length) {
 			return false;
 		}
@@ -258,7 +261,7 @@ public class ReflectMethodUtil {
 			
 			Class<?> c=null;
 			try {
-				c = getClass(null, parameterTypes[i].getName());
+				c = getClass(classLoader, parameterTypes[i].getName());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

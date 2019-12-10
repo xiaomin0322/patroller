@@ -56,6 +56,12 @@ public class OtherCollector implements Collector {
 		methodSet.add("com.dominos.cloud.im.dao.StoreGroupsMapper.selectByExampleWithBLOBs(com.dominos.cloud.im.model.StoreGroupsExample)");
 		targetMap.put("com.dominos.cloud.im.dao.StoreGroupsMapper", methodSet);
 		
+		
+		methodSet = new HashSet<>();
+		
+		methodSet.add("com.dominos.cloud.im.controller.StoreController.test(com.dominos.cloud.im.controller.ProductController)");
+		targetMap.put("com.dominos.cloud.im.controller.StoreController", methodSet);
+		
 
 	}
 
@@ -79,6 +85,9 @@ public class OtherCollector implements Collector {
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
+				if(longName.contains("com.dominos.cloud.im.controller.StoreController")) {
+					System.out.println("方法名称："+longName);
+				}
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && methodSet.contains(longName)) {
 					// System.out.println("ctMethod.getname：" + ctMethod.getLongName() +"
