@@ -127,8 +127,8 @@ public class ReflectMethodUtil {
 		}
 
 		if (classLoader != null) {
-			return Class.forName(className, false, classLoader);
-			// return classLoader.loadClass(className);
+			//return Class.forName(className, false, classLoader);
+			 return classLoader.loadClass(className);
 		} else {
 			return Class.forName(className);
 		}
