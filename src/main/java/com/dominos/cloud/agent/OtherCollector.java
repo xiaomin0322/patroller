@@ -89,7 +89,7 @@ public class OtherCollector implements Collector {
 					classWrapper.beginSrc(String.format(beginSrc, ctMethod.getLongName()));
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
-					replacer.replace(ctMethod, classWrapper);
+					replacer.replace(ctClass,ctMethod, classWrapper);
 				}
 			}
 			return replacer.replace();

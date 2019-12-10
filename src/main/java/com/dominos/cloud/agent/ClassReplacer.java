@@ -1,10 +1,10 @@
 package com.dominos.cloud.agent;
+import java.io.IOException;
+
 import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
-
-import java.io.IOException;
 
 public class ClassReplacer
 {
@@ -19,12 +19,12 @@ public ClassReplacer(String className, ClassLoader classLoader, CtClass ctClass)
     this.ctClass = ctClass;
 }
 
-public void replace(CtMethod ctMethod, ClassWrapper paramd) throws CannotCompileException {
+public void replace( CtClass ctClass,CtMethod ctMethod, ClassWrapper paramd) throws CannotCompileException {
     String methodName = ctMethod.getName();
     CtMethod localCtMethod2 = CtNewMethod.copy(ctMethod, methodName, this.ctClass, null);
     localCtMethod2.setName(methodName + "$agent");
     this.ctClass.addMethod(localCtMethod2);
-    ctMethod.setBody(paramd.beginSrc(ctMethod));
+    ctMethod.setBody(paramd.beginSrc(ctClass,ctMethod));
 }
 
 public byte[] replace() throws IOException, CannotCompileException {

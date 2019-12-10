@@ -26,6 +26,13 @@
 			<artifactId>javassist</artifactId>
 			<version>3.25.0-GA</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.objectweb.asm</groupId>
+		    <artifactId>com.springsource.org.objectweb.asm</artifactId>
+		    <version>3.2.0</version>
+		</dependency>
+		
 
 
 	</dependencies>
