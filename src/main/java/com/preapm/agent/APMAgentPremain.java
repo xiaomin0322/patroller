@@ -37,6 +37,7 @@ public class APMAgentPremain {
 				if(f.getName().endsWith(".jar")) {
 					log.info("load jar == " + f.getAbsolutePath());
 					inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
+					//inst.appendToSystemClassLoaderSearch(new JarFile(f));
 				}
 			}
 		} catch (Exception e) {

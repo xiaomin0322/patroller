@@ -6,6 +6,8 @@ import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.LoggerFactory;
+
 import com.preapm.agent.weave.Collector;
 import com.preapm.agent.weave.impl.BaseCollector;
 
@@ -14,6 +16,9 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 
 public class APMAgent implements ClassFileTransformer {
+	
+	
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgent.class);
 	
 	private static Collector collector = new BaseCollector();
 
@@ -49,7 +54,7 @@ public class APMAgent implements ClassFileTransformer {
 		try {
 			CtClass localCtClass = localClassPool.get(className);
 			byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
-			//log.info(String.format("%s APM agent insert success", new Object[] { className }));
+			log.info(String.format("%s APM agent insert success", new Object[] { className }));
 			return arrayOfByte;
 		} catch (Throwable localThrowable) {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
