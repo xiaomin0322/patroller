@@ -4,16 +4,20 @@ import java.io.File;
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.preapm.agent.util.PathUtil;
 
 
 public class APMAgentPremain {
 
-	private static Logger log = Logger.getLogger(APMAgentPremain.class);
+	
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgentPremain.class);
 
 	public static void premain(String agentArgs, Instrumentation inst) {
+		
+		//PropertyConfigurator.configure("C:\\eclipse-workspace\\zipkin-agent-main\\target\\lib\\log4j.properties");
+		
 		log.info("Hello, world! JavaAgen");
 		log.info("agentArgs: " + agentArgs);
 

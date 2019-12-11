@@ -2,11 +2,13 @@ package com.preapm.agent.test;
 
 import static com.preapm.agent.weave.ClassWrapper.toStr;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.preapm.agent.APMAgentPremain;
 
 public class FooTest {
 
-	static Logger log = Logger.getLogger(FooTest.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgentPremain.class);
 
 	public String getFoo() {
 		return "foo";
