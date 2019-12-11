@@ -29,20 +29,7 @@ public class ReflectMethodUtil {
 	void method(String name, Object value) {
 	}
 
-	/*
-	 * public static void main(String[] args) throws SecurityException,
-	 * NoSuchMethodException, Exception { Method method1 =
-	 * Test.class.getDeclaredMethod("method", String.class, Object.class);
-	 * System.out.println(Arrays.toString(getMethodParamNames(method1)));
-	 * 
-	 * ClassPool pool = ClassPool.getDefault(); CtClass cc =
-	 * pool.get("com.dominos.cloud.test.GetMethodParamNameTest"); CtClass[]
-	 * paramTypes = { pool.get(String.class.getName()),
-	 * pool.get(Object.class.getName()) }; CtMethod m =
-	 * cc.getDeclaredMethod("method", paramTypes);
-	 * 
-	 * System.out.println(Arrays.toString(getMethodParamNames(cc, m))); }
-	 */
+	public static final int OPCODES = Opcodes.ASM7;
 
 	/** 使用字节码工具ASM来获取方法的参数名 */
 	public static String[] getMethodParamNames(CtClass cc, CtMethod method) {
@@ -156,7 +143,7 @@ public class ReflectMethodUtil {
 		// ClassReader cr = new ClassReader(className);
 		ClassReader cr = new ClassReader(bytes);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		cr.accept(new ClassVisitor(Opcodes.ASM5) {
+		cr.accept(new ClassVisitor(OPCODES) {
 			@Override
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
@@ -165,16 +152,15 @@ public class ReflectMethodUtil {
 				if (!method.getName().equals(name) || !matchTypes(argumentTypes, methodParameterTypes)) {
 					return null;
 				}
-				return new MethodVisitor(Opcodes.ASM5) {
+				return new MethodVisitor(OPCODES) {
 					@Override
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
 							int index) {
 						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						/*if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
-						}*/
+						/*
+						 * if (Modifier.isStatic(method.getModifiers())) { methodParametersNames[index]
+						 * = name; } else if (index > 0) { methodParametersNames[index - 1] = name; }
+						 */
 					}
 				};
 
@@ -194,7 +180,7 @@ public class ReflectMethodUtil {
 		// ClassReader cr = new ClassReader(className);
 		ClassReader cr = new ClassReader(bytes);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		cr.accept(new ClassVisitor(Opcodes.ASM5) {
+		cr.accept(new ClassVisitor(OPCODES) {
 			@Override
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
@@ -203,22 +189,21 @@ public class ReflectMethodUtil {
 				if (!method.getName().equals(name) || !matchTypes(classLoader, argumentTypes, methodParameterTypes)) {
 					return null;
 				}
-				return new MethodVisitor(Opcodes.ASM5) {
+				return new MethodVisitor(OPCODES) {
 					@Override
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
 							int index) {
 						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						/*if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
-						}*/
-						
+						/*
+						 * if (Modifier.isStatic(method.getModifiers())) { methodParametersNames[index]
+						 * = name; } else if (index > 0) { methodParametersNames[index - 1] = name; }
+						 */
+
 						int methodParameterIndex = isStatic ? index : index - 1;
 						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
 							methodParametersNames[methodParameterIndex] = name;
 						}
-						
+
 					}
 				};
 
@@ -238,7 +223,7 @@ public class ReflectMethodUtil {
 		ClassReader cr = new ClassReader(className);
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-		cr.accept(new ClassVisitor(Opcodes.ASM5) {
+		cr.accept(new ClassVisitor(OPCODES) {
 			@Override
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions) {
@@ -247,17 +232,16 @@ public class ReflectMethodUtil {
 				if (!method.getName().equals(name) || !matchTypes(argumentTypes, methodParameterTypes)) {
 					return null;
 				}
-				return new MethodVisitor(Opcodes.ASM5) {
+				return new MethodVisitor(OPCODES) {
 					@Override
 					public void visitLocalVariable(String name, String desc, String signature, Label start, Label end,
 							int index) {
 						// 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-						/*if (Modifier.isStatic(method.getModifiers())) {
-							methodParametersNames[index] = name;
-						} else if (index > 0) {
-							methodParametersNames[index - 1] = name;
-						}*/
-						
+						/*
+						 * if (Modifier.isStatic(method.getModifiers())) { methodParametersNames[index]
+						 * = name; } else if (index > 0) { methodParametersNames[index - 1] = name; }
+						 */
+
 						int methodParameterIndex = isStatic ? index : index - 1;
 						if (0 <= methodParameterIndex && methodParameterIndex < methodParameterCount) {
 							methodParametersNames[methodParameterIndex] = name;

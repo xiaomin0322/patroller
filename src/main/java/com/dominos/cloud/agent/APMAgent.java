@@ -7,12 +7,13 @@ import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarFile;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
 
-public class APMAgentV1 implements ClassFileTransformer {
+public class APMAgent implements ClassFileTransformer {
 
 	private static Collector[] collectors;
 
@@ -70,22 +71,4 @@ public class APMAgentV1 implements ClassFileTransformer {
 		}
 		return null;
 	}
-
-	public static void premain(String agentArgs, Instrumentation inst) {
-		System.out.println("Hello, world! JavaAgen");
-		System.out.println("agentArgs: " + agentArgs);
-		File jar = new File("C:\\eclipse-workspace\\zipkin-agent\\target\\lib");
-		/*try {
-			for(File f:jar.listFiles()) {
-				//inst.appendToBootstrapClassLoaderSearch(new JarFile(new File("C:\\eclipse-workspace\\zipkin-agent\\target\\zipkin-agent.jar")));
-				//inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
-				inst.appendToSystemClassLoaderSearch(new JarFile(f));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		inst.addTransformer(new APMAgentV1());
-	}
-	
-
 }

@@ -26,29 +26,18 @@
 			<artifactId>javassist</artifactId>
 			<version>3.25.0-GA</version>
 		</dependency>
-		
-		<!-- <dependency>
-		    <groupId>org.objectweb.asm</groupId>
-		    <artifactId>com.springsource.org.objectweb.asm</artifactId>
-		    <version>3.2.0</version>
-		</dependency> -->
 
-         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
-<dependency>
-    <groupId>org.ow2.asm</groupId>
-    <artifactId>asm</artifactId>
-    <!-- <version>7.2</version> -->
-    <version>5.0.4</version>
-</dependency>
-         
-		
-		<!--   <dependency>
-            <groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.1.16</version>
-			<scope>test</scope>
-         </dependency>  -->
-		
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>7.2</version>
+			<!-- <version>5.0.4</version> -->
+		</dependency>
+
+
+		<!-- <dependency> <groupId>com.alibaba</groupId> <artifactId>druid</artifactId> 
+			<version>1.1.16</version> <scope>test</scope> </dependency> -->
+
 
 
 	</dependencies>
@@ -75,49 +64,53 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>copy</id>
 						<phase>package</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass>
-									<manifestEntries>
-										<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass>
-										<Premain-Class>com.dominos.cloud.agent.APMAgentMain</Premain-Class>
-										<Can-Redefine-Classes>true</Can-Redefine-Classes>
-										<Can-Retransform-Classes>true</Can-Retransform-Classes>
-									</manifestEntries>
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.handlers</resource>
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.schemas</resource>
-								</transformer>
-							</transformers>
-							<filters>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
+							<outputDirectory>${project.build.directory}/lib </outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Premain-Class>com.dominos.cloud.agent.APMAgentPremain</Premain-Class>
+							<Can-Redefine-Classes>true</Can-Redefine-Classes>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+				<version>1.4</version> <executions> <execution> <phase>package</phase> <goals> 
+				<goal>shade</goal> </goals> <configuration> <transformers> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+				<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass> <manifestEntries> 
+				<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass> <Premain-Class>com.dominos.cloud.agent.APMAgentMain</Premain-Class> 
+				<Can-Redefine-Classes>true</Can-Redefine-Classes> <Can-Retransform-Classes>true</Can-Retransform-Classes> 
+				</manifestEntries> </transformer> <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+				<resource>META-INF/spring.handlers</resource> </transformer> <transformer 
+				implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+				<resource>META-INF/spring.schemas</resource> </transformer> </transformers> 
+				<filters> <filter> <artifact>*:*</artifact> <excludes> <exclude>META-INF/*.SF</exclude> 
+				<exclude>META-INF/*.DSA</exclude> <exclude>META-INF/*.RSA</exclude> </excludes> 
+				</filter> </filters> </configuration> </execution> </executions> </plugin> -->
 
 		</plugins>
 	</build>
