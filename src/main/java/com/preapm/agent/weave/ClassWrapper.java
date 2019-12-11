@@ -58,14 +58,9 @@ public class ClassWrapper {
 						+ " System.out.println(\"加入span成功：\"+" + toStr(methodName) + ");\r\n" + "			}");
 
 		if (argNameList != null) {
-			/*for (String arg : argNameList) {
-				// builder.append("newSpan.tag("+toStr(arg)+", "+arg+");\r\n");
-				 builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
-				 +"\"参数值：\"+"+arg+");\r\n");
-			}*/
-			
 			for (int i=0;i<argNameList.size();i++) {
 				String arg = argNameList.get(i);
+				builder.append("newSpan.tag("+toStr(arg)+", "+"com.alibaba.fastjson.JSONObject.toJSONString($args["+i+"])"+");\r\n");
 				builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
 				 +"\"参数值：\"+"+"$args["+i+"]"+");\r\n");
 			}

@@ -1,5 +1,7 @@
 package com.preapm.agent.test;
 
+import com.preapm.agent.weave.ClassWrapper;
+
 public class FooTest {
 
 	public String getFoo() {
@@ -9,5 +11,9 @@ public class FooTest {
 	public static void main(String[] args) {
 		String filepath = System.getProperty("user.dir");
 		System.out.println(filepath);
+		String arg = "1";
+		
+		String s = "newSpan.tag("+ClassWrapper.toStr(arg)+", "+"$args["+2+"]"+");\r\n";
+		System.out.println(s);
 	}
 }
