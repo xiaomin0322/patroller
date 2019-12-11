@@ -12,11 +12,9 @@ import com.preapm.agent.weave.impl.BaseCollector;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class APMAgent implements ClassFileTransformer {
-
+	
 	private static Collector collector = new BaseCollector();
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
@@ -51,7 +49,7 @@ public class APMAgent implements ClassFileTransformer {
 		try {
 			CtClass localCtClass = localClassPool.get(className);
 			byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
-			log.info(String.format("%s APM agent insert success", new Object[] { className }));
+			//log.info(String.format("%s APM agent insert success", new Object[] { className }));
 			return arrayOfByte;
 		} catch (Throwable localThrowable) {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
