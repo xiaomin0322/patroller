@@ -54,11 +54,9 @@ public class APMAgent implements ClassFileTransformer {
 		try {
 			CtClass localCtClass = localClassPool.get(className);
 			for (Collector collector : collectors) {
-				if (collector.isTarget(className)) {
 					byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
 					System.out.println(String.format("%s APM agent insert success", new Object[] { className }));
 					return arrayOfByte;
-				}
 			}
 		} catch (Throwable localThrowable) {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
