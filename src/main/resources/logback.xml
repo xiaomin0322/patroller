@@ -72,16 +72,16 @@
         <appender-ref ref="FILE" />
     </root>     -->
     
-      <springProfile name="dev,test,uat,prod">
+  <!--     <springProfile name="dev,test,uat,prod">
          <root level="INFO">
              <appender-ref ref="STDOUT"/>
-             <!-- <appender-ref ref="FILE"/> -->
+             <appender-ref ref="FILE"/>
          </root>
       </springProfile>
-      
+       -->
       <root level="INFO">
              <appender-ref ref="STDOUT"/>
-             <!-- <appender-ref ref="FILE"/> -->
+             <appender-ref ref="FILE"/>
          </root>
      
       

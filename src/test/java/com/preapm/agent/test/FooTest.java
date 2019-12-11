@@ -2,6 +2,9 @@ package com.preapm.agent.test;
 
 import static com.preapm.agent.weave.ClassWrapper.toStr;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FooTest {
 
 	public String getFoo() {
@@ -19,5 +22,8 @@ public class FooTest {
 		String ss = " newSpan.tag(\"out\", "+"com.alibaba.fastjson.JSONObject.toJSONString("+arg+")"+");\r\n";
 		
 		System.out.println(ss);
+		
+		log.error("=============");
+		
 	}
 }
