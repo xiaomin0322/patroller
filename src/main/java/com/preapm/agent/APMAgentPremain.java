@@ -4,7 +4,7 @@ import java.io.File;
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
 
-import com.preapm.agent.util.PathUtils;
+import com.preapm.agent.util.PathUtil;
 
 public class APMAgentPremain {
 
@@ -19,7 +19,7 @@ public class APMAgentPremain {
 	}
 
 	public static void addLib(Instrumentation inst) {
-		String libPath = PathUtils.getProjectPath();
+		String libPath = PathUtil.getProjectPath();
 		System.out.println("当前jar包目录 ===" + libPath);
 		File jar = new File(libPath,"lib");
 		try {

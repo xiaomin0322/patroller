@@ -26,7 +26,7 @@ import javassist.bytecode.MethodInfo;
  * @author WangMi
  * @date 2016-11-30 9:30
  */
-public class ParameterNameUtils {
+public class ParameterNameUtil {
 
     /**
      * 方法一:

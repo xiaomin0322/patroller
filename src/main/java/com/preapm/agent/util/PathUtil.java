@@ -1,10 +1,10 @@
 package com.preapm.agent.util;
 
-public class PathUtils {
+public class PathUtil {
 
 	public static String getProjectPath() {
 
-		java.net.URL url = PathUtils.class.getProtectionDomain().getCodeSource().getLocation();
+		java.net.URL url = PathUtil.class.getProtectionDomain().getCodeSource().getLocation();
 
 		String filePath = null;
 
@@ -32,7 +32,7 @@ public class PathUtils {
 
 	public static String getRealPath() {
 
-		String realPath = PathUtils.class.getClassLoader().getResource("").getFile();
+		String realPath = PathUtil.class.getClassLoader().getResource("").getFile();
 
 		java.io.File file = new java.io.File(realPath);
 
