@@ -6,6 +6,7 @@ import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.preapm.agent.util.PreApmConfigUtil;
 import com.preapm.agent.weave.BaseCollector;
 import com.preapm.agent.weave.Collector;
 
@@ -32,6 +33,11 @@ public class APMAgent implements ClassFileTransformer {
 				|| (classLoader.getClass().getName().equals("javax.management.remote.rmi.NoCallStackClassLoader"))
 				|| (classLoader.getClass().getName().equals("com.alibaba.fastjson.util.ASMClassLoader"))
 				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))) {
+			return null;
+		}
+
+		className = className.replaceAll("/", ".");
+		if (PreApmConfigUtil.isTarget(className)) {
 			return null;
 		}
 

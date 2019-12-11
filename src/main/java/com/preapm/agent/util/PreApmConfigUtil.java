@@ -36,6 +36,24 @@ public class PreApmConfigUtil {
 	}
 	
 	
+	public static boolean isTarget(String className, String method) {
+		boolean flag = isTarget(className);
+		if(!flag) {
+			return flag;
+		}
+		flag = PreApmConfigUtil.get(className).contains(method);
+		return flag;
+	}
+
+	public static boolean isTarget(String className) {
+		Set<String> methodSet = PreApmConfigUtil.get(className);
+		if (methodSet == null || methodSet.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 
 }
