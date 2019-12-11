@@ -2,7 +2,7 @@ package com.dominos.cloud.test;
 
 import java.util.Arrays;
 
-import com.dominos.cloud.agent.util.ReflectUtil;
+import com.preapm.agent.util.ReflectUtil;
 
 import javassist.ClassPool;
 import javassist.CtClass;

@@ -1,10 +1,10 @@
-package com.dominos.cloud.agent;
+package com.preapm.agent;
 
 import java.io.File;
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
 
-import com.dominos.cloud.agent.util.PathUtils;
+import com.preapm.agent.util.PathUtils;
 
 public class APMAgentPremain {
 

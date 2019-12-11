@@ -1,4 +1,4 @@
-package com.dominos.cloud.agent;
+package com.preapm.agent.weave;
 import javassist.CtClass;
 
 public interface Collector {

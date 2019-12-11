@@ -1,13 +1,13 @@
-package com.dominos.cloud.agent;
+package com.preapm.agent;
 
-import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
-import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.JarFile;
+
+import com.preapm.agent.weave.Collector;
+import com.preapm.agent.weave.OtherCollector;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -22,8 +22,6 @@ public class APMAgent implements ClassFileTransformer {
 	}
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
-	
-	
 
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined,
@@ -36,9 +34,6 @@ public class APMAgent implements ClassFileTransformer {
 				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))) {
 			return null;
 		}
-		
-		//System.out.println("transform.classLoader："+classLoader.getClass().getName());
-		//System.out.println("transform.classLoader："+classLoader.getClass().getName());
 
 		className = className.replaceAll("/", ".");
 		if (!OtherCollector.INSTANCE.isTarget(className)) {

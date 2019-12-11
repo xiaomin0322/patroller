@@ -88,10 +88,10 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.dominos.cloud.agent.TestServiceMain</mainClass>
+							<mainClass>com.preapm.agent.Bootstrap</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Premain-Class>com.dominos.cloud.agent.APMAgentPremain</Premain-Class>
+							<Premain-Class>com.preapm.agent.APMAgentPremain</Premain-Class>
 							<Can-Redefine-Classes>true</Can-Redefine-Classes>
 							<Can-Retransform-Classes>true</Can-Retransform-Classes>
 						</manifestEntries>

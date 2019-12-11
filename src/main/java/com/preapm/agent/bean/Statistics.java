@@ -1,4 +1,4 @@
-package com.dominos.cloud.agent;
+package com.preapm.agent.bean;
 
 public class Statistics {
 
