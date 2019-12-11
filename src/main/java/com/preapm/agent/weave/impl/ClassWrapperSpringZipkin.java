@@ -1,8 +1,9 @@
-package com.preapm.agent.weave;
+package com.preapm.agent.weave.impl;
 
 import java.util.List;
 
 import com.preapm.agent.constant.BaseConstants;
+import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperSpringZipkin extends ClassWrapper {
 

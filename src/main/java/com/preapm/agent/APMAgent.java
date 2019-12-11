@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.preapm.agent.util.PreApmConfigUtil;
-import com.preapm.agent.weave.BaseCollector;
 import com.preapm.agent.weave.Collector;
+import com.preapm.agent.weave.impl.BaseCollector;
 
 import javassist.ClassPool;
 import javassist.CtClass;

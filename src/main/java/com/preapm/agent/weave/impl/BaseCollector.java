@@ -1,4 +1,8 @@
-package com.preapm.agent.weave;
+package com.preapm.agent.weave.impl;
+
+import com.preapm.agent.weave.ClassReplacer;
+import com.preapm.agent.weave.ClassWrapper;
+import com.preapm.agent.weave.Collector;
 
 import javassist.CtClass;
 import javassist.CtMethod;
