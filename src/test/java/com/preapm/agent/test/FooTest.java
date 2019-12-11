@@ -1,4 +1,4 @@
-package com.dominos.cloud.test;
+package com.preapm.agent.test;
 
 public class FooTest {
 
