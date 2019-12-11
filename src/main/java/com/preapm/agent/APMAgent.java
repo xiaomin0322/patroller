@@ -6,8 +6,8 @@ import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.preapm.agent.weave.BaseCollector;
 import com.preapm.agent.weave.Collector;
-import com.preapm.agent.weave.OtherCollector;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -18,7 +18,7 @@ public class APMAgent implements ClassFileTransformer {
 	private static Collector[] collectors;
 
 	static {
-		collectors = new Collector[] { OtherCollector.INSTANCE };
+		collectors = new Collector[] { new BaseCollector() };
 	}
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
@@ -35,11 +35,6 @@ public class APMAgent implements ClassFileTransformer {
 			return null;
 		}
 
-		className = className.replaceAll("/", ".");
-		if (!OtherCollector.INSTANCE.isTarget(className)) {
-			return null;
-		}
-
 		// 不同的ClassLoader使用不同的ClassPool
 		ClassPool localClassPool;
 		if (!this.classPoolMap.containsKey(classLoader)) {
@@ -51,10 +46,9 @@ public class APMAgent implements ClassFileTransformer {
 		}
 
 		try {
-
 			CtClass localCtClass = localClassPool.get(className);
 			for (Collector collector : collectors) {
-				if (collector.isTarget(className, classLoader, localCtClass)) {
+				if (collector.isTarget(className)) {
 					byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
 					System.out.println(String.format("%s APM agent insert success", new Object[] { className }));
 					return arrayOfByte;

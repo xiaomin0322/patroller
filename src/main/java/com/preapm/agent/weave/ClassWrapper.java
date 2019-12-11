@@ -3,16 +3,17 @@ package com.preapm.agent.weave;
 import java.util.Arrays;
 import java.util.List;
 
+import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.ReflectMethodUtil;
 
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-public class ClassWrapper {
-	private String beginSrc;
-	private String endSrc;
-	private String errorSrc;
+public abstract class ClassWrapper {
+	private String beginSrc=BaseConstants.NULL;
+	private String endSrc=BaseConstants.NULL;;
+	private String errorSrc=BaseConstants.NULL;;
 
 	public ClassWrapper beginSrc(String paramString) {
 		this.beginSrc = paramString;
@@ -29,68 +30,13 @@ public class ClassWrapper {
 		return this;
 	}
 
-	public static String beforAgent() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(" org.springframework.cloud.sleuth.Span newSpan = null;\r\n"
-				+ "		org.springframework.cloud.sleuth.Tracer tracer  = null;");
-		return builder.toString();
-	}
-
-	public static String doAgent() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(
-				" tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
-						+ "		if (tracer != null) {\r\n"
-						+ "				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();\r\n"
-						+ "				newSpan = tracer.createSpan(\"testMethod\", currentSpan);\r\n"
-						+ "				newSpan.tag(\"time\", \"time\");\r\n"
-						+ "				 System.out.println(\"加入span成功：\");\r\n" + "			}");
-		return builder.toString();
-	}
-
-	public static String doAgent(String methodName, List<String> argNameList) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(
-				" tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
-						+ "		if (tracer != null) {\r\n"
-						+ "				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();\r\n"
-						+ "				newSpan = tracer.createSpan(" + toStr(methodName) + ", currentSpan);\r\n"
-						+ " System.out.println(\"加入span成功：\"+" + toStr(methodName) + ");\r\n" + "			}");
-
-		if (argNameList != null) {
-			for (int i=0;i<argNameList.size();i++) {
-				String arg = argNameList.get(i);
-				builder.append("newSpan.tag("+toStr("in."+arg)+", "+"String.valueOf($args["+i+"])"+");\r\n");
-				builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
-				 +"\"参数值：\"+"+"$args["+i+"]"+");\r\n");
-			}
-		}
-
-		return builder.toString();
-	}
-
-	public static String afterAgent() {
-		return afterAgent(null);
-	}
-
-	public static String afterAgent(String resultName) {
-		StringBuilder builder = new StringBuilder();
-		if (resultName != null) {
-			builder.append(" newSpan.tag(\"out\", "+"String.valueOf("+resultName+")"+");\r\n");
-			builder.append(" System.out.println(\"返回值：\"+" + resultName + ");\r\n");
-		}
-		
-		builder.append(" if (newSpan != null && tracer!=null) {\r\n"
-				+ "				newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);\r\n"
-				+ "				tracer.close(newSpan);\r\n" + "			}");
-		return builder.toString();
-	}
+	
 
 	public String beginSrc(ClassLoader classLoader,byte[] classfileBuffer,CtClass ctClass, CtMethod ctMethod) {
 		String methodName = ctMethod.getName();
 		List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 		try {
-			System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+paramNameList.toArray());
+			 System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+paramNameList.toArray());
 			
 			  String template = ctMethod.getReturnType().getName().equals("void")
                 ?
@@ -112,10 +58,10 @@ public class ClassWrapper {
                 "    try {\n" +doAgent(methodName,paramNameList)+" \n"+
                 "        result=($w)%s$agent($$);\n" +
                 "    } catch (Throwable e) {\n" +
-                "        %s            \n" +
+                "        %s            \n" +doError(BaseConstants.THROWABLE_NAME_STR)+
                 "        throw e;\n" +
                 "    }finally{\n" +
-                "        %s        \n" + afterAgent("result")+" \n"+
+                "        %s        \n" + afterAgent(BaseConstants.RESULT_NAME_STR)+" \n"+
                 "    }\n" +
                 "    return ($r) result;\n" +
                 "}";
@@ -132,6 +78,40 @@ public class ClassWrapper {
 			throw new RuntimeException(localNotFoundException);
 		}
 	}
+	/**
+	 * 开始的方法
+	 * @return
+	 */
+	public abstract String beforAgent();
+
+
+	/**
+	 * 做事情的方法
+	 * @param methodName 方法名称
+	 * @param argNameList 方法参数
+	 * @return
+	 */
+	public abstract String doAgent(String methodName, List<String> argNameList);
+	
+	
+	/**
+	 *  异常的处理方法
+	 * @param methodName
+	 * @param argNameList
+	 * @return
+	 */
+	public abstract String doError(String error);
+
+	/**
+	 * 无返回值的结束方法
+	 * @return
+	 */
+	public abstract String afterAgent();
+	/**
+	 * 有返回值的结束方法
+	 * @return
+	 */
+	public abstract String afterAgent(String resultName);
 
 
 
