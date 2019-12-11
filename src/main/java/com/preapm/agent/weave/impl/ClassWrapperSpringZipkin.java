@@ -2,7 +2,6 @@ package com.preapm.agent.weave.impl;
 
 import java.util.List;
 
-import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperSpringZipkin extends ClassWrapper {
@@ -14,18 +13,6 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 		return builder.toString();
 	}
 
-	public String doAgent() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(
-				" tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
-						+ "		if (tracer != null) {\r\n"
-						+ "				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();\r\n"
-						+ "				newSpan = tracer.createSpan(\"testMethod\", currentSpan);\r\n"
-						+ "				newSpan.tag(\"time\", \"time\");\r\n"
-						+ "				 System.out.println(\"加入span成功：\");\r\n" + "			}");
-		return builder.toString();
-	}
-
 	public String doAgent(String methodName, List<String> argNameList) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(
@@ -33,18 +20,18 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 						+ "		if (tracer != null) {\r\n"
 						+ "				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();\r\n"
 						+ "				newSpan = tracer.createSpan(" + toStr(methodName) + ", currentSpan);\r\n"
-						+ " System.out.println(\"加入span成功：\"+" + toStr(methodName) + ");\r\n" + "			}");
-
-		if (argNameList != null) {
-			for (int i = 0; i < argNameList.size(); i++) {
-				String arg = argNameList.get(i);
-				builder.append(
-						"newSpan.tag(" + toStr("in." + arg) + ", " + "String.valueOf($args[" + i + "])" + ");\r\n");
-				builder.append(
-						" System.out.println(\"参数名称:\"+" + toStrto(arg) + "\"参数值：\"+" + "$args[" + i + "]" + ");\r\n");
-			}
-		}
-
+		                +" System.out.println(\"加入span成功：\"+" + toStr(methodName) + ");\r\n");
+		
+				if (argNameList != null) {
+					for (int i = 0; i < argNameList.size(); i++) {
+						String arg = argNameList.get(i);
+						builder.append(
+								"newSpan.tag(" + toStr("in." + arg) + ", " + "String.valueOf($args[" + i + "])" + ");\r\n");
+						builder.append(
+								" System.out.println(\"参数名称:\"+" + toStrto(arg) + "\"参数值：\"+" + "$args[" + i + "]" + ");\r\n");
+					}
+				}
+		builder.append("	}");
 		return builder.toString();
 	}
 
@@ -67,7 +54,13 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 
 	@Override
 	public String doError(String error) {
-		return BaseConstants.NULL;
+		StringBuilder builder = new StringBuilder();
+		builder.append(
+						 "		if (newSpan != null) {\r\n"+
+						 " newSpan.tag(\"error\", " + "org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(" + error + ")" + ");\r\n");
+		
+		builder.append("	}");
+		return builder.toString();
 	}
 
 }
