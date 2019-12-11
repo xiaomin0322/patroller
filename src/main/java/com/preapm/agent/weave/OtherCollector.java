@@ -21,20 +21,22 @@ public class OtherCollector implements Collector {
 	private static final String beginSrc;
 	private static final String endSrc = "inst.end(statistic);";
 	private static final String errorSrc;
+	private static final String weavePackageName = "com.preapm.agent.weave";
+	private static final String beanPackageName = "com.preapm.agent.bean";
 
 	private static Map<String, Set<String>> targetMap = new HashMap<>();
 
 	static {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder
-				.append("com.dominos.cloud.agent.OtherCollector inst=com.dominos.cloud.agent.OtherCollector.INSTANCE;");
-		stringBuilder.append("com.dominos.cloud.agent.Statistics statistic = inst.start(\"%s\");");
+				.append(weavePackageName+".OtherCollector inst="+weavePackageName+".OtherCollector.INSTANCE;");
+		stringBuilder.append(beanPackageName+".Statistics statistic = inst.start(\"%s\");");
 		beginSrc = stringBuilder.toString();
 		errorSrc = "inst.error(statistic,e);";
 
 		Set<String> methodSet = new HashSet<>();
-		methodSet.add("com.dominos.cloud.agent.TestServiceMain.print(java.lang.String)");
-		targetMap.put("com.dominos.cloud.agent.TestServiceMain", methodSet);
+		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String)");
+		targetMap.put("com.preapm.agent.Bootstrap", methodSet);
 
 		methodSet = new HashSet<>();
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection()");
