@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>    
 
-      <property scope="context" name="projectName" value="dominos-zipkin-agent" />
+      <property scope="context" name="projectName" value="dominos-agent" />
       <contextName>${projectName} </contextName>  
        
        
