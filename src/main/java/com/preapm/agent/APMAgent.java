@@ -37,7 +37,7 @@ public class APMAgent implements ClassFileTransformer {
 		}
 
 		className = className.replaceAll("/", ".");
-		if (PreApmConfigUtil.isTarget(className)) {
+		if (!PreApmConfigUtil.isTarget(className)) {
 			return null;
 		}
 
