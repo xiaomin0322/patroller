@@ -60,7 +60,7 @@ public class ClassWrapper {
 		if (argNameList != null) {
 			for (int i=0;i<argNameList.size();i++) {
 				String arg = argNameList.get(i);
-				builder.append("newSpan.tag("+toStr(arg)+", "+"com.alibaba.fastjson.JSONObject.toJSONString($args["+i+"])"+");\r\n");
+				builder.append("newSpan.tag(in."+toStr(arg)+", "+"com.alibaba.fastjson.JSONObject.toJSONString($args["+i+"])"+");\r\n");
 				builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
 				 +"\"参数值：\"+"+"$args["+i+"]"+");\r\n");
 			}
@@ -75,12 +75,14 @@ public class ClassWrapper {
 
 	public static String afterAgent(String resultName) {
 		StringBuilder builder = new StringBuilder();
+		if (resultName != null) {
+			builder.append("newSpan.tag(\"out\", "+"com.alibaba.fastjson.JSONObject.toJSONString("+resultName+")"+");\r\n");
+			builder.append(" System.out.println(\"返回值：\"+" + resultName + ");\r\n");
+		}
+		
 		builder.append(" if (newSpan != null && tracer!=null) {\r\n"
 				+ "				newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);\r\n"
 				+ "				tracer.close(newSpan);\r\n" + "			}");
-		if (resultName != null) {
-			builder.append(" System.out.println(\"返回值：\"+" + resultName + ");\r\n");
-		}
 		return builder.toString();
 	}
 

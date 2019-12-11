@@ -15,5 +15,9 @@ public class FooTest {
 		
 		String s = "newSpan.tag("+ClassWrapper.toStr(arg)+", "+"$args["+2+"]"+");\r\n";
 		System.out.println(s);
+		
+		String ss = "newSpan.tag(\"out\", "+"com.alibaba.fastjson.JSONObject.toJSONString(["+arg+")"+");\r\n";
+		
+		System.out.println(ss);
 	}
 }
