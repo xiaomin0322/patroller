@@ -16,11 +16,7 @@ import javassist.LoaderClassPath;
 
 public class APMAgent implements ClassFileTransformer {
 
-	private static Collector[] collectors;
-
-	static {
-		collectors = new Collector[] { new BaseCollector() };
-	}
+	private static Collector collector = new BaseCollector();
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
 
@@ -37,7 +33,7 @@ public class APMAgent implements ClassFileTransformer {
 		}
 
 		className = className.replaceAll("/", ".");
-		if (!PreApmConfigUtil.isTarget(className)) {
+		if (!collector.isTarget(className)) {
 			return null;
 		}
 
@@ -53,11 +49,9 @@ public class APMAgent implements ClassFileTransformer {
 
 		try {
 			CtClass localCtClass = localClassPool.get(className);
-			for (Collector collector : collectors) {
-					byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
-					System.out.println(String.format("%s APM agent insert success", new Object[] { className }));
-					return arrayOfByte;
-			}
+			byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
+			System.out.println(String.format("%s APM agent insert success", new Object[] { className }));
+			return arrayOfByte;
 		} catch (Throwable localThrowable) {
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
 					.printStackTrace();
