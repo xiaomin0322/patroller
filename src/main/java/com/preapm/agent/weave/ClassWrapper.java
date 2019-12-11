@@ -60,7 +60,7 @@ public class ClassWrapper {
 		if (argNameList != null) {
 			for (int i=0;i<argNameList.size();i++) {
 				String arg = argNameList.get(i);
-				builder.append("newSpan.tag("+toStr("in."+arg)+", "+"com.alibaba.fastjson.JSONObject.toJSONString($args["+i+"])"+");\r\n");
+				builder.append("newSpan.tag("+toStr("in."+arg)+", "+"String.valueOf($args["+i+"])"+");\r\n");
 				builder.append(" System.out.println(\"参数名称:\"+"+ toStrto(arg)
 				 +"\"参数值：\"+"+"$args["+i+"]"+");\r\n");
 			}
@@ -76,7 +76,7 @@ public class ClassWrapper {
 	public static String afterAgent(String resultName) {
 		StringBuilder builder = new StringBuilder();
 		if (resultName != null) {
-			builder.append(" newSpan.tag(\"out\", "+"com.alibaba.fastjson.JSONObject.toJSONString("+resultName+")"+");\r\n");
+			builder.append(" newSpan.tag(\"out\", "+"String.valueOf("+resultName+")"+");\r\n");
 			builder.append(" System.out.println(\"返回值：\"+" + resultName + ");\r\n");
 		}
 		
