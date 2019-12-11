@@ -45,7 +45,7 @@ public abstract class ClassWrapper {
                 "    try {\n" +  doAgent(methodName,paramNameList)+" \n"+
                 "        %s$agent($$);\n" +
                 "    } catch (Throwable e) {\n" +
-                "        %s\n" +
+                "        %s\n" +doError(BaseConstants.THROWABLE_NAME_STR)+
                 "        throw e;\n" +
                 "    }finally{\n" +
                 "        %s\n" + afterAgent()+" \n"+
