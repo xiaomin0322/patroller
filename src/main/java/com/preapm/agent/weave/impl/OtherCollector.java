@@ -1,6 +1,9 @@
 package com.preapm.agent.weave.impl;
 
+import java.util.logging.Logger;
+
 import com.preapm.agent.bean.Statistics;
+import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.ClassReplacer;
 import com.preapm.agent.weave.ClassWrapper;
 import com.preapm.agent.weave.Collector;
@@ -10,7 +13,8 @@ import javassist.CtMethod;
 import javassist.Modifier;
 
 public class OtherCollector extends Collector {
-
+	private static Logger log = LogManager.getLogger(OtherCollector.class);
+	
 	public static OtherCollector INSTANCE = new OtherCollector();
 
 	private OtherCollector() {
@@ -49,7 +53,7 @@ public class OtherCollector extends Collector {
 			}
 			return replacer.replace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 
 		return new byte[0];

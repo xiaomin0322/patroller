@@ -16,8 +16,6 @@ public class APMAgentPremain {
 
 	public static void premain(String agentArgs, Instrumentation inst) {
 		
-		//PropertyConfigurator.configure("C:\\eclipse-workspace\\zipkin-agent-main\\target\\lib\\log4j.properties");
-		
 		log.info("Hello, world! JavaAgen");
 		log.info("agentArgs: " + agentArgs);
 
@@ -37,11 +35,10 @@ public class APMAgentPremain {
 				if(f.getName().endsWith(".jar")) {
 					log.info("load jar == " + f.getAbsolutePath());
 					inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
-					//inst.appendToSystemClassLoaderSearch(new JarFile(f));
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 	}
 

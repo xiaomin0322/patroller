@@ -57,6 +57,7 @@ public class APMAgent implements ClassFileTransformer {
 			log.info(String.format("%s APM agent insert success", new Object[] { className }));
 			return arrayOfByte;
 		} catch (Throwable localThrowable) {
+			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(localThrowable));
 			new Exception(String.format("%s APM agent insert fail", new Object[] { className }), localThrowable)
 					.printStackTrace();
 		}

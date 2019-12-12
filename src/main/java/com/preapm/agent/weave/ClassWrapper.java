@@ -2,8 +2,11 @@ package com.preapm.agent.weave;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
+import com.preapm.agent.APMAgent;
 import com.preapm.agent.constant.BaseConstants;
+import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.ReflectMethodUtil;
 
 import javassist.CtClass;
@@ -11,6 +14,9 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 
 public abstract class ClassWrapper {
+	
+	private static Logger log = LogManager.getLogger(ClassWrapper.class);
+	
 	private String beginSrc=BaseConstants.NULL;
 	private String endSrc=BaseConstants.NULL;;
 	private String errorSrc=BaseConstants.NULL;;
@@ -75,6 +81,7 @@ public abstract class ClassWrapper {
 					new Object[] { insertBeginSrc, ctMethod.getName(), insertErrorSrc, insertEndSrc });
 			return result;
 		} catch (NotFoundException localNotFoundException) {
+			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(localNotFoundException));
 			throw new RuntimeException(localNotFoundException);
 		}
 	}
