@@ -2,6 +2,7 @@ package com.preapm.agent.weave.impl;
 
 import java.util.logging.Logger;
 
+import com.preapm.agent.util.ClassLoaderUtil;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.ClassReplacer;
 import com.preapm.agent.weave.ClassWrapper;
@@ -18,12 +19,14 @@ public class BaseCollector extends Collector {
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
+			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\plugin");
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					ClassWrapper classWrapper = new ClassWrapperSpringZipkin();
+					//ClassWrapper classWrapper = new ClassWrapperSpringZipkin();
+					ClassWrapper classWrapper = new ClassWrapperTest();
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
 				}
 			}
