@@ -3,16 +3,16 @@ package com.preapm.agent;
 import java.io.File;
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 
-import org.slf4j.LoggerFactory;
-
+import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PathUtil;
 
 
 public class APMAgentPremain {
 
 	
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgentPremain.class);
+	private static Logger log = LogManager.getLogger(APMAgentPremain.class);
 
 	public static void premain(String agentArgs, Instrumentation inst) {
 		

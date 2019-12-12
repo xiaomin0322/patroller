@@ -5,9 +5,9 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
-import org.slf4j.LoggerFactory;
-
+import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.Collector;
 import com.preapm.agent.weave.impl.BaseCollector;
 
@@ -18,7 +18,7 @@ import javassist.LoaderClassPath;
 public class APMAgent implements ClassFileTransformer {
 	
 	
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgent.class);
+	private static Logger log = LogManager.getLogger(APMAgent.class);
 	
 	private static Collector collector = new BaseCollector();
 

@@ -2,14 +2,18 @@ package com.preapm.agent.test;
 
 import static com.preapm.agent.weave.ClassWrapper.toStr;
 
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.preapm.agent.APMAgentPremain;
+import com.preapm.agent.util.LogManager;
 
 public class FooTest {
 
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgentPremain.class);
+	//private static org.slf4j.Logger log = LoggerFactory.getLogger(APMAgentPremain.class);
 
+	private static Logger log = LogManager.getLogger(APMAgentPremain.class);
+
+	
 	public String getFoo() {
 		return "foo";
 	}
@@ -27,7 +31,7 @@ public class FooTest {
 
 		System.out.println(ss);
 
-		log.error("=============");
+		log.info("=============");
 
 	}
 }
