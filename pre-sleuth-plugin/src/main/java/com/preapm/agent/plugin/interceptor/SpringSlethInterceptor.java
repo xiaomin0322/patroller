@@ -25,7 +25,7 @@ public class SpringSlethInterceptor implements AroundInterceptor {
 
 			org.springframework.cloud.sleuth.Span newSpan = null;
 			org.springframework.cloud.sleuth.Tracer tracer = null;
-			tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);
+			tracer =  SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);
 			if (tracer != null) {
 				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();
 				newSpan = tracer.createSpan(methodInfo.getMethodName(), currentSpan);
