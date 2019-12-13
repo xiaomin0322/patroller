@@ -29,18 +29,20 @@ public class SpringSlethInterceptor implements AroundInterceptor {
 			if (tracer != null) {
 				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();
 				newSpan = tracer.createSpan(methodInfo.getMethodName(), currentSpan);
-				System.out.println("加入span成功：" + " + toStr(methodName) + ");
+				System.out.println("加入span成功：" + methodInfo.getMethodName());
 				threadLocalTracer.set(tracer);
 				threadLocalSpan.set(newSpan);
-			}
-			if (methodInfo.getArgs() != null) {
-				for (int i = 0; i < methodInfo.getArgs().length; i++) {
-					String arg = methodInfo.getArgsName()[i];
-					Object o = methodInfo.getArgs()[i];
-					newSpan.tag(arg, String.valueOf(o));
-					System.out.println("参数名称:" + arg + "参数值：" + o);
+
+				if (methodInfo.getArgs() != null) {
+					for (int i = 0; i < methodInfo.getArgs().length; i++) {
+						String arg = methodInfo.getArgsName()[i];
+						Object o = methodInfo.getArgs()[i];
+						newSpan.tag(arg, String.valueOf(o));
+						System.out.println("参数名称:" + arg + "参数值：" + o);
+					}
 				}
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
