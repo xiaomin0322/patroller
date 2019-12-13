@@ -35,7 +35,7 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
 			//加载插件后，初始化插件
-			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\plugin");
+			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\pre-agent\\plugin");
 			
 			
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
