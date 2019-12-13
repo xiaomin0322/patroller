@@ -18,7 +18,7 @@ public class AroundInterceptorCollector extends Collector {
 
 	public static AroundInterceptorCollector INSTANCE = new AroundInterceptorCollector();
 
-	private AroundInterceptorCollector() {
+	public AroundInterceptorCollector() {
 	}
 
 	private static String beginSrc=BaseConstants.NULL;

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.Collector;
+import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 import com.preapm.agent.weave.impl.BaseCollector;
 
 import javassist.ClassPool;
@@ -20,7 +21,7 @@ public class APMAgent implements ClassFileTransformer {
 	
 	private static Logger log = LogManager.getLogger(APMAgent.class);
 	
-	private static Collector collector = new BaseCollector();
+	private static Collector collector = new AroundInterceptorCollector();
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
 
