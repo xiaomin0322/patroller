@@ -16,19 +16,6 @@ public class Statistics {
 
 	public void end() {
 		endTime = System.currentTimeMillis();
-
-		/*
-		 * Span newSpan = null; Tracer tracer = null; try { tracer =
-		 * com.dominos.cloud.common.util.SpringBeanUtils.getBean(Tracer.class); if
-		 * (tracer != null) { Span currentSpan = tracer.getCurrentSpan(); newSpan =
-		 * tracer.createSpan(method, currentSpan); newSpan.tag("time",
-		 * String.valueOf(endTime - startTime)); System.out.println("加入span成功："+method);
-		 * } } catch (Exception e) { } finally { if (newSpan != null && tracer!=null) {
-		 * newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);
-		 * tracer.close(newSpan); } }
-		 */
-
-		// System.out.println("end :"+this.toString());
 	}
 
 	public void error(Throwable e) {
