@@ -78,6 +78,7 @@ public abstract class ClassWrapper {
 			String insertEndSrc = this.endSrc == null ? "" : this.endSrc;
 			String result = String.format(template,
 					new Object[] { insertBeginSrc, ctMethod.getName(), insertErrorSrc, insertEndSrc });
+			log.info("result:"+result);
 			return result;
 		} catch (NotFoundException localNotFoundException) {
 			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(localNotFoundException));
@@ -113,6 +114,10 @@ public abstract class ClassWrapper {
 
 	public static String toStr(String val) {
 		return "\"" + val + "\"";
+	}
+	
+	public static String line() {
+		return "\n";
 	}
 
 	public static String toStrto(String val) {

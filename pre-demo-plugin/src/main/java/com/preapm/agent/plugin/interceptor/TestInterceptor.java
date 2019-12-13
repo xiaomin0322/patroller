@@ -10,9 +10,14 @@ public class TestInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		// TODO Auto-generated method stub
-		System.out.println("TestInterceptor  before taget :" + methodInfo.getTarget());
-		System.out.println("TestInterceptor  before args :" + Arrays.toString(methodInfo.getArgs()));
-		System.out.println("TestInterceptor  before getArgsName :" + Arrays.toString(methodInfo.getArgsName()));
+		try {
+			System.out.println("TestInterceptor  before taget :" + methodInfo.getTarget());
+			System.out.println("TestInterceptor  before args :" + Arrays.toString(methodInfo.getArgs()));
+			System.out.println("TestInterceptor  before getArgsName :" + Arrays.toString(methodInfo.getArgsName()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override

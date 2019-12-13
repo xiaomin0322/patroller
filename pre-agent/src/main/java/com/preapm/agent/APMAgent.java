@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.Collector;
 import com.preapm.agent.weave.impl.AroundInterceptorCollector;
-import com.preapm.agent.weave.impl.BaseCollector;
 
 import javassist.ClassPool;
 import javassist.CtClass;
