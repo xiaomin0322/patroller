@@ -30,7 +30,7 @@ public class PreApmConfigUtil {
 				"com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)");
 		targetMap.put("com.dominos.cloud.im.controller.StoreController", methodSet);
 		//methodSet.clear();
-		targetMap.put("org.springframework.cloud.sleuth.Tracer", methodSet);
+		targetMap.put("org.springframework.boot.SpringApplication", methodSet);
 
 	}
 	
