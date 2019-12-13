@@ -13,6 +13,7 @@ public class PreApmConfigUtil {
 
 		Set<String> methodSet = new HashSet<>();
 		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String)");
+		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String,java.lang.String)");
 		targetMap.put("com.preapm.agent.Bootstrap", methodSet);
 
 		methodSet = new HashSet<>();

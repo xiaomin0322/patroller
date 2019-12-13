@@ -5,6 +5,7 @@ public class Bootstrap {
 	public static void main(String[] args) {
 		new Bootstrap().print("123123");
 		new Bootstrap().print();
+		new Bootstrap().print("123123","123");
 	}
 
 	public void print() {
@@ -14,6 +15,10 @@ public class Bootstrap {
 	public String print(String s) {
 		System.out.println("zzm " + s);
 		return s;
+	}
+	public String print(String s,String s2) {
+		System.out.println("zzm " + s);
+		throw new RuntimeException("test");
 	}
 	
 }
