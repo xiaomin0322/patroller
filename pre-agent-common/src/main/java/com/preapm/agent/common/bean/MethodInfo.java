@@ -12,6 +12,9 @@ public class MethodInfo {
 	private Object result;
 
 	private Throwable throwable;
+	
+	private Object[] localVariable;
+	
 
 	public String getMethodName() {
 		return methodName;
@@ -59,6 +62,14 @@ public class MethodInfo {
 
 	public void setThrowable(Throwable throwable) {
 		this.throwable = throwable;
+	}
+
+	public Object[] getLocalVariable() {
+		return localVariable;
+	}
+
+	public void setLocalVariable(Object[] localVariable) {
+		this.localVariable = localVariable;
 	}
 
 }
