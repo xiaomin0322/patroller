@@ -7,16 +7,8 @@ import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperNull extends ClassWrapper {
 
-	public String beforAgent() {
+	public String beforAgent(String methodName, List<String> argNameList) {
 		return BaseConstants.NULL;
-	}
-
-	public String doAgent(String methodName, List<String> argNameList) {
-		return BaseConstants.NULL;
-	}
-
-	public String afterAgent() {
-		return afterAgent(null);
 	}
 
 	public String afterAgent(String resultName) {

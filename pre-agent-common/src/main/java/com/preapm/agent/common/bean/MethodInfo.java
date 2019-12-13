@@ -1,0 +1,64 @@
+package com.preapm.agent.common.bean;
+
+public class MethodInfo {
+
+	private String methodName;
+
+	private Object target;
+	private String[] argsName;
+
+	private Object[] args;
+
+	private Object result;
+
+	private Throwable throwable;
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	public Object getTarget() {
+		return target;
+	}
+
+	public void setTarget(Object target) {
+		this.target = target;
+	}
+
+	public String[] getArgsName() {
+		return argsName;
+	}
+
+	public void setArgsName(String[] argsName) {
+		this.argsName = argsName;
+	}
+
+	public Object[] getArgs() {
+		return args;
+	}
+
+	public void setArgs(Object[] args) {
+		this.args = args;
+	}
+
+	public Object getResult() {
+		return result;
+	}
+
+	public void setResult(Object result) {
+		this.result = result;
+	}
+
+	public Throwable getThrowable() {
+		return throwable;
+	}
+
+	public void setThrowable(Throwable throwable) {
+		this.throwable = throwable;
+	}
+
+}

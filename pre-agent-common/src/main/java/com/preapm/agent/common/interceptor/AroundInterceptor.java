@@ -1,9 +1,13 @@
 
 package com.preapm.agent.common.interceptor;
 
+import com.preapm.agent.common.bean.MethodInfo;
+
 public interface AroundInterceptor extends Interceptor {
 
-	void before(Object target, Object[] args);
+	void before(MethodInfo methodInfo);
+	
+	void exception(MethodInfo methodInfo);
 
-	void after(Object target, Object[] args, Object result, Throwable throwable);
+	void after(MethodInfo methodInfo);
 }

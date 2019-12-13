@@ -21,31 +21,25 @@ public class AroundInterceptorCollector extends Collector {
 	public AroundInterceptorCollector() {
 	}
 
-	private static String beginSrc=BaseConstants.NULL;
-	private static String endSrc=BaseConstants.NULL;
-
-	static {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(this, $args);");
-		beginSrc = stringBuilder.toString();
-		//endSrc = "com.preapm.agent.common.context.AroundInterceptorContext.target(this, $args, result, e);";
-	}
+	private static String beginSrc = BaseConstants.NULL;
+	private static String endSrc = BaseConstants.NULL;
+	private static String errorSrc = BaseConstants.NULL;
 
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
-			//加载插件后，初始化插件
+			// 加载插件后，初始化插件
 			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\pre-agent\\plugin");
-			
-			
+
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					ClassWrapper classWrapper = new ClassWrapperNull();
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor();
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
+					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
 				}
 			}

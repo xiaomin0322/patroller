@@ -13,8 +13,9 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 		return builder.toString();
 	}
 
-	public String doAgent(String methodName, List<String> argNameList) {
+	public String beforAgent(String methodName, List<String> argNameList) {
 		StringBuilder builder = new StringBuilder();
+		builder.append(beforAgent());
 		builder.append(
 				" tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
 						+ "		if (tracer != null) {\r\n"
@@ -35,9 +36,6 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 		return builder.toString();
 	}
 
-	public String afterAgent() {
-		return afterAgent(null);
-	}
 
 	public String afterAgent(String resultName) {
 		StringBuilder builder = new StringBuilder();

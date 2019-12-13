@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.Set;
 
+import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 
 public class AroundInterceptorContext {
@@ -14,9 +15,9 @@ public class AroundInterceptorContext {
 
 	public static Set<AroundInterceptor> interceptors = new HashSet<AroundInterceptor>();
 
-	public static void start(Object target, Object[] args) {
+	public static void start(MethodInfo methodInfo) {
 		for (AroundInterceptor i : interceptors) {
-			i.before(target, args);
+			i.before(methodInfo);
 		}
 	}
 
@@ -24,9 +25,15 @@ public class AroundInterceptorContext {
 		init();
 	}
 
-	public static void target(Object target, Object[] args, Object result, Throwable throwable) {
+	public static void after(MethodInfo methodInfo) {
 		for (AroundInterceptor i : interceptors) {
-			i.after(target, args, result, throwable);
+			i.after(methodInfo);
+		}
+	}
+	
+	public static void exception(MethodInfo methodInfo) {
+		for (AroundInterceptor i : interceptors) {
+			i.exception(methodInfo);
 		}
 	}
 

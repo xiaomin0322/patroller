@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.preapm.agent.APMAgent;
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.ReflectMethodUtil;
@@ -47,21 +46,21 @@ public abstract class ClassWrapper {
 			  String template = ctMethod.getReturnType().getName().equals("void")
                 ?
                 "{\n" +
-                "    %s        \n" + beforAgent()+" \n"+
-                "    try {\n" +  doAgent(methodName,paramNameList)+" \n"+
+                "    %s        \n" +  beforAgent(methodName,paramNameList)+" \n"+
+                "    try {\n" + 
                 "        %s$agent($$);\n" +
                 "    } catch (Throwable e) {\n" +
                 "        %s\n" +doError(BaseConstants.THROWABLE_NAME_STR)+
                 "        throw e;\n" +
                 "    }finally{\n" +
-                "        %s\n" + afterAgent()+" \n"+
+                "        %s\n" + afterAgent(null)+" \n"+
                 "    }\n" +
                 "}"
                 :
                 "{\n" +
-                "    %s        \n" + beforAgent()+" \n"+
-                "    Object result=null;\n" +
-                "    try {\n" +doAgent(methodName,paramNameList)+" \n"+
+                "    %s        \n" +
+                "    Object result=null;\n" +beforAgent(methodName,paramNameList)+" \n"+
+                "    try {\n" +
                 "        result=($w)%s$agent($$);\n" +
                 "    } catch (Throwable e) {\n" +
                 "        %s            \n" +doError(BaseConstants.THROWABLE_NAME_STR)+
@@ -85,11 +84,6 @@ public abstract class ClassWrapper {
 			throw new RuntimeException(localNotFoundException);
 		}
 	}
-	/**
-	 * 开始的方法
-	 * @return
-	 */
-	public abstract String beforAgent();
 
 
 	/**
@@ -98,7 +92,7 @@ public abstract class ClassWrapper {
 	 * @param argNameList 方法参数
 	 * @return
 	 */
-	public abstract String doAgent(String methodName, List<String> argNameList);
+	public abstract String beforAgent(String methodName, List<String> argNameList);
 	
 	
 	/**
@@ -109,11 +103,6 @@ public abstract class ClassWrapper {
 	 */
 	public abstract String doError(String error);
 
-	/**
-	 * 无返回值的结束方法
-	 * @return
-	 */
-	public abstract String afterAgent();
 	/**
 	 * 有返回值的结束方法
 	 * @return

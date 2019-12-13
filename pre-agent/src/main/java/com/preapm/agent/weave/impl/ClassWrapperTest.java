@@ -7,14 +7,11 @@ import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperTest extends ClassWrapper {
 
-	public String beforAgent() {
+
+	public String beforAgent(String methodName, List<String> argNameList) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(" zzm.test.JoddTest j = new zzm.test.JoddTest(); " + " j.get();");
 		return builder.toString();
-	}
-
-	public String doAgent(String methodName, List<String> argNameList) {
-		return BaseConstants.NULL;
 	}
 
 	public String afterAgent() {
