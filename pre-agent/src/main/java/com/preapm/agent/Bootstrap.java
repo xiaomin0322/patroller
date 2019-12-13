@@ -11,7 +11,9 @@ public class Bootstrap {
 		System.out.println("zzm");
 	}
 
-	public void print(String s) {
+	public String print(String s) {
 		System.out.println("zzm " + s);
+		return s;
 	}
+	
 }

@@ -17,7 +17,7 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		stringBuilder.append("preMethondInfo.setArgs($args);").append(line());
 		stringBuilder.append("preMethondInfo.setMethodName(" + toStr(methodName) + ");").append(line());
 		if (argNameList != null && argNameList.size() != 0) {
-			stringBuilder.append("String preMethodArgsStr = ").append(toStr(StringUtils.join(argNameList,",")))
+			stringBuilder.append("String preMethodArgsStr = ").append(toStr(StringUtils.join(argNameList,","))).append(";")
 					.append(line());
 			stringBuilder.append("preMethondInfo.setArgsName(preMethodArgsStr.split(" + toStr(",") + "));")
 					.append(line());
