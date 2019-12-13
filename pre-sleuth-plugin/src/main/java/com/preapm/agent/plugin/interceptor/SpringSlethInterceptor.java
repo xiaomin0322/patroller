@@ -7,7 +7,7 @@ import org.springframework.cloud.sleuth.Tracer;
 
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
-import com.preapm.agent.plugin.interceptor.util.SpringBeanUtils;
+import com.preapm.agent.plugin.interceptor.util.PreSpringBeanUtils;
 
 public class SpringSlethInterceptor implements AroundInterceptor {
 
@@ -25,7 +25,7 @@ public class SpringSlethInterceptor implements AroundInterceptor {
 
 			org.springframework.cloud.sleuth.Span newSpan = null;
 			org.springframework.cloud.sleuth.Tracer tracer = null;
-			tracer =  SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);
+			tracer =  PreSpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);
 			if (tracer != null) {
 				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();
 				newSpan = tracer.createSpan(methodInfo.getMethodName(), currentSpan);
