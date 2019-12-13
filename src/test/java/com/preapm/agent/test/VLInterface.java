@@ -12,7 +12,7 @@ import javassist.bytecode.MethodInfo;
 public class VLInterface {
 
 	public static void main(String[] args) throws NotFoundException {
-		String className = "com.dominos.cloud.agent.util.ReflectUtil";
+		String className = "com.XXX.cloud.agent.util.ReflectUtil";
 		String methodName = "getParamNameList";
 		String[] methodVariableName = getMethodParams(className, methodName);
 		for (String s : methodVariableName) {

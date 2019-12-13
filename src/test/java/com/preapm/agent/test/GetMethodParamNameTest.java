@@ -23,7 +23,7 @@ public class GetMethodParamNameTest {
 		System.out.println(Arrays.toString(ReflectMethodUtil.getMethodParamNames(method1)));*/
 
 		/*ClassPool pool = ClassPool.getDefault();
-		CtClass cc = pool.get("com.dominos.cloud.test.GetMethodParamNameTest");
+		CtClass cc = pool.get("com.XXX.cloud.test.GetMethodParamNameTest");
 		CtClass[] paramTypes = { pool.get(String.class.getName()), pool.get(Object.class.getName()) };
 		CtMethod m = cc.getDeclaredMethod("method", paramTypes);
 
@@ -35,19 +35,6 @@ public class GetMethodParamNameTest {
 		CtMethod m = cc.getDeclaredMethod("getConnection", paramTypes);
 
 		System.out.println(Arrays.toString(ReflectUtil.getParamNameList(m).toArray()));*/
-		
-		Thread currentThread = Thread.currentThread();
-		
-		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest");
-
-		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest");
-		
-		
-		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest",false,currentThread.getContextClassLoader());
-
-		Class.forName("com.dominos.cloud.test.GetMethodParamNameTest",false,currentThread.getContextClassLoader());
-		
-		
 		
 		
 	}
