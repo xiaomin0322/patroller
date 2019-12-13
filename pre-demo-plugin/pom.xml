@@ -25,6 +25,7 @@
 			<groupId>pre</groupId>
 			<artifactId>pre-agent-common</artifactId>
 			<version>1.0.0</version>
+			 <scope>provided</scope>
 		</dependency>
 
 	</dependencies>

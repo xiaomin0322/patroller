@@ -2,6 +2,7 @@ package com.preapm.agent.weave.impl;
 
 import java.util.logging.Logger;
 
+import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.ClassLoaderUtil;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.ClassReplacer;
@@ -20,14 +21,14 @@ public class AroundInterceptorCollector extends Collector {
 	private AroundInterceptorCollector() {
 	}
 
-	private static String beginSrc;
-	private static String endSrc;
+	private static String beginSrc=BaseConstants.NULL;
+	private static String endSrc=BaseConstants.NULL;
 
 	static {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(this, $args);");
 		beginSrc = stringBuilder.toString();
-		endSrc = "com.preapm.agent.common.context.AroundInterceptorContext.target(this, $args, result, e);";
+		//endSrc = "com.preapm.agent.common.context.AroundInterceptorContext.target(this, $args, result, e);";
 	}
 
 	@Override
