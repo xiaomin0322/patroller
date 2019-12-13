@@ -23,13 +23,9 @@
 
 		<dependency>
 			<groupId>pre</groupId>
-			<artifactId>pre-commons</artifactId>
+			<artifactId>pre-agent-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
-
-
-
 
 	</dependencies>
 	<build>
