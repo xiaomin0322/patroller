@@ -54,4 +54,8 @@ public class ClassLoaderUtil {
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+		  loadJar("C:\\eclipse-workspace\\test\\target");
+	}
 }
