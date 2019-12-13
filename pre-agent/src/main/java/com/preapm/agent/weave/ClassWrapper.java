@@ -41,7 +41,7 @@ public abstract class ClassWrapper {
 		String methodName = ctMethod.getName();
 		List<String> paramNameList = Arrays.asList(ReflectMethodUtil.getMethodParamNames(classLoader,classfileBuffer,ctClass, ctMethod));
 		try {
-			 System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+paramNameList.toArray());
+			 //System.out.println("方法名称："+methodName+" 参数类型大小："+ctMethod.getParameterTypes().length+" paramNameList："+paramNameList.toArray());
 			
 			  String template = ctMethod.getReturnType().getName().equals("void")
                 ?
@@ -78,7 +78,7 @@ public abstract class ClassWrapper {
 			String insertEndSrc = this.endSrc == null ? "" : this.endSrc;
 			String result = String.format(template,
 					new Object[] { insertBeginSrc, ctMethod.getName(), insertErrorSrc, insertEndSrc });
-			log.info("result:"+result);
+			//log.info("result:"+result);
 			return result;
 		} catch (NotFoundException localNotFoundException) {
 			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(localNotFoundException));
