@@ -25,21 +25,21 @@
 			<groupId>pre</groupId>
 			<artifactId>pre-agent-common</artifactId>
 			<version>1.0.0</version>
-			 <scope>provided</scope>
+			<!-- <scope>provided</scope> -->
 		</dependency>
-		
+
 		<dependency>
 			<groupId>pre</groupId>
 			<artifactId>pre-zipkin-sdk</artifactId>
 			<version>1.0.0</version>
-			 <scope>provided</scope>
+			<!-- <scope>provided</scope> -->
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
-			<scope>provided</scope>
+			<!-- <scope>provided</scope> -->
 		</dependency>
 
 	</dependencies>
@@ -64,11 +64,33 @@
 				</configuration>
 			</plugin>
 
+
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>
