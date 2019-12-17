@@ -10,4 +10,6 @@ public interface AroundInterceptor extends Interceptor {
 	void exception(MethodInfo methodInfo);
 
 	void after(MethodInfo methodInfo);
+	
+	void name();
 }

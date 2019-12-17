@@ -1,7 +1,9 @@
 package com.preapm.agent.common.context;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
@@ -13,6 +15,9 @@ public class AroundInterceptorContext {
 	public static String agentId = "test";
 
 	public static Set<AroundInterceptor> interceptors = new HashSet<AroundInterceptor>();
+	
+	
+	public static Map<String,AroundInterceptor> interceptorsMap = new HashMap<String,AroundInterceptor>();
 
 	public static void start(MethodInfo methodInfo) {
 		for (AroundInterceptor i : interceptors) {
@@ -44,6 +49,8 @@ public class AroundInterceptorContext {
 				while (iterator.hasNext()) {
 					AroundInterceptor animal = iterator.next();
 					interceptors.add(animal);
+					String name = animal.getClass().getName();
+					interceptorsMap.put(name, animal);
 				}
 			}
 		}
