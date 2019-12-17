@@ -28,4 +28,9 @@ public class ThreadLocalTraceStore {
 	public static void remove() {
 		LOCAL_TRACE.remove();
 	}
+
+	public static void set(Long id) {
+		LOCAL_TRACE.set(id);
+	}
+
 }
