@@ -27,6 +27,7 @@ public class ClassLoaderUtil {
 					continue;
 				}
 				File pFile = new File(pluginDir, p + ".jar");
+				System.out.println("加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+pFile.getAbsolutePath());
 				if (pFile.exists()) {
 					loadJar(pFile.getAbsolutePath());
 					loadPluginsJar.add(p);
