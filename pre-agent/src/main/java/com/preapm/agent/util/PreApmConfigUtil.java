@@ -27,7 +27,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.preapm.agent.Bootstrap");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add("pre-zipkin-plugin");
+		methodSet.add("pre-Zipkin-plugin");
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
@@ -42,7 +42,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.alibaba.druid.pool.DruidDataSource");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add("pre-zipkin-plugin");
+		methodSet.add("pre-Zipkin-plugin");
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
@@ -59,7 +59,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.dominos.cloud.im.controller.StoreController");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add("pre-zipkin-plugin");
+		methodSet.add("pre-Zipkin-plugin");
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
