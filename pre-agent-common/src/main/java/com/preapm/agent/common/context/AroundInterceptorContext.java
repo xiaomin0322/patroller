@@ -58,9 +58,12 @@ public class AroundInterceptorContext {
 	}
 
 	public static List<AroundInterceptor> get(Set<String> names) {
+		System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)参数："+names.size());
+		System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)interceptorsMap参数："+interceptorsMap.size());
 		List<AroundInterceptor> list = new ArrayList<AroundInterceptor>();
 		for (Entry<String, AroundInterceptor> e : interceptorsMap.entrySet()) {
 			String name = e.getKey();
+			System.out.println("插件map包的名字："+name);
 			if (names.contains(name)) {
 				list.add(e.getValue());
 				System.out.println("执行插件名称："+name);
