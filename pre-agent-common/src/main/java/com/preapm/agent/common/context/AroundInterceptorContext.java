@@ -28,6 +28,8 @@ public class AroundInterceptorContext {
 
 	public static void start(MethodInfo methodInfo, String... names) {
 		System.out.println("start Plugins :"+Arrays.toString(names));
+		List<AroundInterceptor> aroundInterceptors = get(names);
+		System.out.println("start Plugins aroundInterceptors :"+aroundInterceptors.size());
 		for (AroundInterceptor i : get(names)) {
 			i.before(methodInfo);
 		}
