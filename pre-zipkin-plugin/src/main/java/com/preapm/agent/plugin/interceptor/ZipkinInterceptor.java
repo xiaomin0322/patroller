@@ -1,7 +1,6 @@
 package com.preapm.agent.plugin.interceptor;
 
 import com.preapm.agent.common.bean.MethodInfo;
-import com.preapm.agent.common.context.AroundInterceptorContext;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClient;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
