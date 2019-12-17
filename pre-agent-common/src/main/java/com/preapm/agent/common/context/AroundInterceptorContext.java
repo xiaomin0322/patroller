@@ -10,8 +10,7 @@ import com.preapm.agent.common.interceptor.AroundInterceptor;
 
 public class AroundInterceptorContext {
 
-	// public static Map<String, AroundInterceptor> interceptors = new
-	// HashMap<String, AroundInterceptor>();
+	public static String agentId = "test";
 
 	public static Set<AroundInterceptor> interceptors = new HashSet<AroundInterceptor>();
 
@@ -30,7 +29,7 @@ public class AroundInterceptorContext {
 			i.after(methodInfo);
 		}
 	}
-	
+
 	public static void exception(MethodInfo methodInfo) {
 		for (AroundInterceptor i : interceptors) {
 			i.exception(methodInfo);
