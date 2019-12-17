@@ -18,6 +18,7 @@ public class Bootstrap {
 	}
 	public String print(String s,String s2) {
 		System.out.println("zzm " + s);
+		print(s2);
 		throw new RuntimeException("test");
 	}
 	
