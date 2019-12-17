@@ -46,9 +46,10 @@ public class ZipkinClient {
 
     public Span startSpan(String name) {
         long id = ThreadLocalTraceStore.get();
+        long spanId = GenerateKey.longKey();
         try {
             Span.Builder parentSpan = this.spanStore.getSpan();
-            Span.Builder builder = Span.builder().id(id).traceId(id).name(name).timestamp(nanoTime());
+            Span.Builder builder = Span.builder().id(spanId).traceId(id).name(name).timestamp(nanoTime());
             if (parentSpan != null) {
                 Span span = parentSpan.build();
                 builder.traceId(span.traceId).parentId(span.id);
