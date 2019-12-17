@@ -19,8 +19,8 @@ public class PreApmConfigUtil {
 		Set<String> methodSet = new HashSet<>();
 		
 		
-		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String)");
-		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String,java.lang.String)");
+		methodSet.add("com.preapm.agent.Bootstrap.print2(java.lang.String)");
+		methodSet.add("com.preapm.agent.Bootstrap.print3(java.lang.String,java.lang.String)");
 		PluginConfigBean bean  = new PluginConfigBean();
 		bean.setName("BootstrapTest");
 		bean.setLoadPatterns("com.preapm.agent.Bootstrap");
