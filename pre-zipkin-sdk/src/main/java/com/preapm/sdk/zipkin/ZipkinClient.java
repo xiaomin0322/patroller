@@ -45,7 +45,7 @@ public class ZipkinClient {
     }
 
     public Span startSpan(String name) {
-        long id = GenerateKey.longKey();
+        long id = ThreadLocalTraceStore.get();
         try {
             Span.Builder parentSpan = this.spanStore.getSpan();
             Span.Builder builder = Span.builder().id(id).traceId(id).name(name).timestamp(nanoTime());
@@ -90,6 +90,7 @@ public class ZipkinClient {
                 logger.error("you must use startSpan before finishSpan");
             }
             this.spanStore.removeSpan();
+            ThreadLocalTraceStore.remove();
         } catch (Exception e) {
             e.printStackTrace();
         }
