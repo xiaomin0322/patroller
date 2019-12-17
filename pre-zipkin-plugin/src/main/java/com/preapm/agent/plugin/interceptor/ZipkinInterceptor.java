@@ -15,7 +15,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
-
+            System.out.println("当前方法名称："+methodInfo.getMethodName());
 			int ipv4 = InetAddressUtils.localIpv4();
 			Endpoint endpoint = Endpoint.builder().serviceName("test").ipv4(ipv4).build();
 			methodInfo.setLocalVariable(new Object[] { endpoint });
