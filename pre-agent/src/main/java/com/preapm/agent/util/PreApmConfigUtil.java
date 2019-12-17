@@ -80,7 +80,7 @@ public class PreApmConfigUtil {
 		methodSet = new HashSet<>();
 		methodSet.add("org.apache.http.impl.client.CloseableHttpClient.execute(org.apache.http.client.methods.HttpUriRequest)");
 		bean  = new PluginConfigBean();
-		bean.setName("HttpClient4");
+		bean.setName("httpClient4");
 		bean.setLoadPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setContainPatterns(methodSet);
