@@ -33,6 +33,16 @@ public class PreApmConfigUtil {
 		targetMap.put("com.dominos.cloud.im.controller.StoreController", methodSet);
 		//methodSet.clear();
 		targetMap.put("org.springframework.boot.SpringApplication", methodSet);
+		
+		
+		methodSet = new HashSet<>();
+		methodSet.add("org.apache.catalina.connector.Request.getRequest()");
+		targetMap.put("org.apache.catalina.connector.Request", methodSet);
+		
+		
+		methodSet = new HashSet<>();
+		methodSet.add("org.apache.http.impl.client.CloseableHttpClient.execute(org.apache.http.client.methods.HttpUriRequest)");
+		targetMap.put("org.apache.http.impl.client.CloseableHttpClient", methodSet);
 
 	}
 	
