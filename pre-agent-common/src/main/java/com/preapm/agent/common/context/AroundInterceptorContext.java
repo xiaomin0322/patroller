@@ -22,12 +22,10 @@ public class AroundInterceptorContext {
 	public static Map<String, AroundInterceptor> interceptorsMap = new HashMap<String, AroundInterceptor>();
 
 	public static void start(MethodInfo methodInfo) {
-		for (AroundInterceptor i : interceptors) {
-			i.before(methodInfo);
-		}
+		start(methodInfo, methodInfo.getPlugins());
 	}
 
-	public static void start(MethodInfo methodInfo, Set<String> names) {
+	public static void start(MethodInfo methodInfo, String... names) {
 		for (AroundInterceptor i : get(names)) {
 			i.before(methodInfo);
 		}
@@ -38,24 +36,20 @@ public class AroundInterceptorContext {
 	}
 
 	public static void after(MethodInfo methodInfo) {
-		for (AroundInterceptor i : interceptors) {
-			i.after(methodInfo);
-		}
+		after(methodInfo, methodInfo.getPlugins());
 	}
 
 	public static void exception(MethodInfo methodInfo) {
-		for (AroundInterceptor i : interceptors) {
-			i.exception(methodInfo);
-		}
+		exception(methodInfo, methodInfo.getPlugins());
 	}
 
-	public static void after(MethodInfo methodInfo, Set<String> names) {
+	public static void after(MethodInfo methodInfo, String... names) {
 		for (AroundInterceptor i : get(names)) {
 			i.after(methodInfo);
 		}
 	}
 
-	public static void exception(MethodInfo methodInfo, Set<String> names) {
+	public static void exception(MethodInfo methodInfo, String... names) {
 		for (AroundInterceptor i : get(names)) {
 			i.exception(methodInfo);
 		}
@@ -70,6 +64,14 @@ public class AroundInterceptorContext {
 			}
 		}
 		return list;
+	}
+
+	public static List<AroundInterceptor> get(String... names) {
+		Set<String> set = new HashSet<>();
+		for (String n : names) {
+			set.add(n);
+		}
+		return get(set);
 	}
 
 	public static void init() {

@@ -26,7 +26,9 @@ public class PreApmConfigUtil {
 		bean.setLoadPatterns("com.preapm.agent.Bootstrap");
 		bean.setPatterns("com.preapm.agent.Bootstrap");
 		bean.setContainPatterns(methodSet);
-		bean.setPlugins(plugins);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-zipkin-plugin");
+		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
 		methodSet = new HashSet<>();
@@ -39,6 +41,9 @@ public class PreApmConfigUtil {
 		bean.setLoadPatterns("com.alibaba.druid.pool.DruidDataSource");
 		bean.setPatterns("com.alibaba.druid.pool.DruidDataSource");
 		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-zipkin-plugin");
+		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
 		methodSet = new HashSet<>();
@@ -53,6 +58,9 @@ public class PreApmConfigUtil {
 		bean.setLoadPatterns("com.dominos.cloud.im.controller.StoreController");
 		bean.setPatterns("com.dominos.cloud.im.controller.StoreController");
 		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-zipkin-plugin");
+		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
 		
@@ -63,6 +71,9 @@ public class PreApmConfigUtil {
 		bean.setLoadPatterns("org.apache.catalina.connector.Request");
 		bean.setPatterns("org.apache.catalina.connector.Request");
 		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-Tomcat-plugin");
+		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
 		
@@ -73,6 +84,9 @@ public class PreApmConfigUtil {
 		bean.setLoadPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-HttpClient4-plugin");
+		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
 	}
@@ -89,6 +103,14 @@ public class PreApmConfigUtil {
 		}
 		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
 		return flag;
+	}
+	
+	public static Set<String> getPlugins(String className) {
+		boolean flag = isTarget(className);
+		if(!flag) {
+			return null;
+		}
+		return PreApmConfigUtil.get(className).getPlugins();
 	}
 
 	public static boolean isTarget(String className) {

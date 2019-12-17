@@ -1,10 +1,12 @@
 package com.preapm.agent.weave.impl;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.ClassLoaderUtil;
 import com.preapm.agent.util.LogManager;
+import com.preapm.agent.util.PreApmConfigUtil;
 import com.preapm.agent.weave.ClassReplacer;
 import com.preapm.agent.weave.ClassWrapper;
 import com.preapm.agent.weave.Collector;
@@ -29,14 +31,15 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
 			// 加载插件后，初始化插件
-			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\pre-agent\\plugin");
+			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(className);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor();
+					Set<String> plugins = PreApmConfigUtil.getPlugins(className);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);

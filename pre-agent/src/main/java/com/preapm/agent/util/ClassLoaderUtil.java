@@ -5,19 +5,52 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.preapm.agent.bean.PluginConfigBean;
 
 public class ClassLoaderUtil {
+
+	private static Set<String> loadPluginsJar = new HashSet<String>();
+
+	public static void loadJarByClassName(String className) {
+		PluginConfigBean pluginConfigBean = PreApmConfigUtil.get(className);
+		if (pluginConfigBean == null) {
+			return;
+		}
+		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
+		Set<String> plugins = pluginConfigBean.getPlugins();
+		if (plugins != null) {
+			for (String p : plugins) {
+				if (loadPluginsJar.contains(p)) {
+					continue;
+				}
+				File pFile = new File(pluginDir, p + ".jar");
+				if (pFile.exists()) {
+					loadJar(pFile.getAbsolutePath());
+					loadPluginsJar.add(p);
+				}
+			}
+		}
+
+	}
 
 	public static void loadJar(String path) {
 		// 系统类库路径
 		File libPath = new File(path);
 
-		// 获取所有的.jar和.zip文件
-		File[] jarFiles = libPath.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".jar") || name.endsWith(".zip");
-			}
-		});
+		File[] jarFiles = null;
+		if (!libPath.isFile()) {
+			// 获取所有的.jar和.zip文件
+			jarFiles = libPath.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.endsWith(".jar") || name.endsWith(".zip");
+				}
+			});
+		} else {
+			jarFiles = new File[] { libPath };
+		}
 
 		if (jarFiles != null) {
 			// 从URLClassLoader类中获取类所在文件夹的方法
@@ -54,8 +87,8 @@ public class ClassLoaderUtil {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
-		  loadJar("C:\\eclipse-workspace\\test\\target");
+		loadJar("C:\\eclipse-workspace\\test\\target");
 	}
 }

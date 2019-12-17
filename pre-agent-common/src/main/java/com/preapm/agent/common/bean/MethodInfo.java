@@ -15,6 +15,19 @@ public class MethodInfo {
 	
 	private Object[] localVariable;
 	
+	private String[] plugins;
+	
+	public String[] getPlugins() {
+		return plugins;
+	}
+
+	public void setPlugins(String[] plugins) {
+		this.plugins = plugins;
+	}
+
+	public String getClassName() {
+		return target.getClass().getName();
+	}
 
 	public String getMethodName() {
 		return methodName;
