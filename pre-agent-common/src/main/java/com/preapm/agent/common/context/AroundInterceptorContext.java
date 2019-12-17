@@ -80,7 +80,7 @@ public class AroundInterceptorContext {
 				while (iterator.hasNext()) {
 					AroundInterceptor animal = iterator.next();
 					interceptors.add(animal);
-					String name = animal.getClass().getName();
+					String name = animal.name();
 					interceptorsMap.put(name, animal);
 				}
 			}

@@ -34,4 +34,9 @@ public class TestInterceptor implements AroundInterceptor {
 		System.out.println("TestInterceptor  after result :" + methodInfo.getResult());
 	}
 
+	@Override
+	public String name() {
+		return "pre-Test-plugin";
+	}
+
 }

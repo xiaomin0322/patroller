@@ -84,4 +84,10 @@ public class SpringSlethInterceptor implements AroundInterceptor {
 		
 	}
 
+
+	@Override
+	public String name() {
+		return "pre-sleuth-plugin";
+	}
+
 }

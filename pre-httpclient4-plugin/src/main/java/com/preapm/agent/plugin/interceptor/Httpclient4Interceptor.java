@@ -34,5 +34,9 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 	public void after(MethodInfo methodInfo) {
 
 	}
+	@Override
+	public String name() {
+		return "pre-httpclient4-plugin";
+	}
 
 }

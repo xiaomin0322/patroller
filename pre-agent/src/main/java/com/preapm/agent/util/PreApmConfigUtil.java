@@ -5,23 +5,41 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.preapm.agent.bean.PluginConfigBean;
+
 public class PreApmConfigUtil {
 	
-	private static Map<String, Set<String>> targetMap = new HashMap<>();
+	private static Map<String, PluginConfigBean> targetMap = new HashMap<>();
+	
 
 	static {
-
+		
+		
+		
 		Set<String> methodSet = new HashSet<>();
+		
+		
 		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String)");
 		methodSet.add("com.preapm.agent.Bootstrap.print(java.lang.String,java.lang.String)");
-		targetMap.put("com.preapm.agent.Bootstrap", methodSet);
+		PluginConfigBean bean  = new PluginConfigBean();
+		bean.setName("BootstrapTest");
+		bean.setLoadPatterns("com.preapm.agent.Bootstrap");
+		bean.setPatterns("com.preapm.agent.Bootstrap");
+		bean.setContainPatterns(methodSet);
+		bean.setPlugins(plugins);
+		targetMap.put(bean.getPatterns(), bean);
 
 		methodSet = new HashSet<>();
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection()");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(long)");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnectionDirect(long)");
 		methodSet.add("com.alibaba.druid.pool.DruidDataSource.getConnection(java.lang.String, java.lang.String)");
-		targetMap.put("com.alibaba.druid.pool.DruidDataSource", methodSet);
+		bean  = new PluginConfigBean();
+		bean.setName("DruidDataSource");
+		bean.setLoadPatterns("com.alibaba.druid.pool.DruidDataSource");
+		bean.setPatterns("com.alibaba.druid.pool.DruidDataSource");
+		bean.setContainPatterns(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
 
 		methodSet = new HashSet<>();
 		methodSet.add(
@@ -30,23 +48,36 @@ public class PreApmConfigUtil {
 				"com.dominos.cloud.im.controller.StoreController.test(com.dominos.cloud.im.controller.ProductController)");
 		methodSet.add(
 				"com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)");
-		targetMap.put("com.dominos.cloud.im.controller.StoreController", methodSet);
-		//methodSet.clear();
-		targetMap.put("org.springframework.boot.SpringApplication", methodSet);
+		bean  = new PluginConfigBean();
+		bean.setName("StoreController");
+		bean.setLoadPatterns("com.dominos.cloud.im.controller.StoreController");
+		bean.setPatterns("com.dominos.cloud.im.controller.StoreController");
+		bean.setContainPatterns(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
 		
 		
 		methodSet = new HashSet<>();
 		methodSet.add("org.apache.catalina.connector.Request.getRequest()");
-		targetMap.put("org.apache.catalina.connector.Request", methodSet);
+		bean  = new PluginConfigBean();
+		bean.setName("Request");
+		bean.setLoadPatterns("org.apache.catalina.connector.Request");
+		bean.setPatterns("org.apache.catalina.connector.Request");
+		bean.setContainPatterns(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
 		
 		
 		methodSet = new HashSet<>();
 		methodSet.add("org.apache.http.impl.client.CloseableHttpClient.execute(org.apache.http.client.methods.HttpUriRequest)");
-		targetMap.put("org.apache.http.impl.client.CloseableHttpClient", methodSet);
+		bean  = new PluginConfigBean();
+		bean.setName("HttpClient4");
+		bean.setLoadPatterns("org.apache.http.impl.client.CloseableHttpClient");
+		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
+		bean.setContainPatterns(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
 
 	}
 	
-	public static Set<String>  get(String key){
+	public static PluginConfigBean  get(String key){
 		return targetMap.get(key);
 	}
 	
@@ -56,12 +87,12 @@ public class PreApmConfigUtil {
 		if(!flag) {
 			return flag;
 		}
-		flag = PreApmConfigUtil.get(className).contains(method);
+		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
 		return flag;
 	}
 
 	public static boolean isTarget(String className) {
-		Set<String> methodSet = PreApmConfigUtil.get(className);
+		Set<String> methodSet = PreApmConfigUtil.get(className).getContainPatterns();
 		if (methodSet == null || methodSet.isEmpty()) {
 			return false;
 		}

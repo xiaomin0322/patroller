@@ -11,5 +11,5 @@ public interface AroundInterceptor extends Interceptor {
 
 	void after(MethodInfo methodInfo);
 	
-	//void name();
+	String name();
 }

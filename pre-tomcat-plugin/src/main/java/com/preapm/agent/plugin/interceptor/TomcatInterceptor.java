@@ -37,5 +37,11 @@ public class TomcatInterceptor implements AroundInterceptor {
 	public void after(MethodInfo methodInfo) {
 
 	}
+	
+
+	@Override
+	public String name() {
+		return "pre-Tomcat-plugin";
+	}
 
 }
