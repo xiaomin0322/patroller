@@ -38,13 +38,13 @@ public class ZipkinInterceptor implements AroundInterceptor {
 	@Override
 	public void exception(MethodInfo methodInfo) {
 		String stackTrace = org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(methodInfo.getThrowable());
-		Endpoint endpoint = (Endpoint) methodInfo.getArgs()[0];
+		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 		client.sendBinaryAnnotation("error", stackTrace, endpoint);
 	}
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		Endpoint endpoint = (Endpoint) methodInfo.getArgs()[0];
+		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 		client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
 		client.finishSpan();
 
