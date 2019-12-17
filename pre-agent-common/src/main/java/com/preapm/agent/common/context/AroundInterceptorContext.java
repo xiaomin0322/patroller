@@ -1,6 +1,7 @@
 package com.preapm.agent.common.context;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ public class AroundInterceptorContext {
 	}
 
 	public static void start(MethodInfo methodInfo, String... names) {
+		System.out.println("start Plugins :"+Arrays.toString(names));
 		for (AroundInterceptor i : get(names)) {
 			i.before(methodInfo);
 		}
@@ -61,6 +63,7 @@ public class AroundInterceptorContext {
 			String name = e.getKey();
 			if (names.contains(name)) {
 				list.add(e.getValue());
+				System.out.println("执行插件名称："+name);
 			}
 		}
 		return list;
