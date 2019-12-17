@@ -65,6 +65,24 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
+		methodSet.add(
+				"org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer(int)");
+		bean  = new PluginConfigBean();
+		bean.setName("CustomerController");
+		bean.setLoadPatterns("org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController");
+		bean.setPatterns("org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController");
+		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add("pre-Zipkin-plugin");
+		bean.setPlugins(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
+		
+		
+		
+		
+		
+		
+		methodSet = new HashSet<>();
 		methodSet.add("org.apache.catalina.connector.Request.getRequest()");
 		bean  = new PluginConfigBean();
 		bean.setName("Request");
