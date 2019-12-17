@@ -90,7 +90,7 @@ public class ZipkinClient {
                 logger.error("you must use startSpan before finishSpan");
             }
             this.spanStore.removeSpan();
-            ThreadLocalTraceStore.remove();
+            //ThreadLocalTraceStore.remove();
         } catch (Exception e) {
             e.printStackTrace();
         }

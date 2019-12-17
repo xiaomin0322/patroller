@@ -44,6 +44,8 @@ public class TraceKeys {
     public static final String SUFFIX_ERROR = ".error";
     public static final String RESULT_FAILED = "failed";
     public static final String RESULT_SUCCESS = "success";
+    
+    public static final String TRACE_ID = "pre_traceId";
 
     private TraceKeys() {
     }
