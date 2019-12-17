@@ -25,6 +25,8 @@ public class PreApmConfigUtil {
 
 		methodSet = new HashSet<>();
 		methodSet.add(
+				"com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll()");
+		methodSet.add(
 				"com.dominos.cloud.im.controller.StoreController.test(com.dominos.cloud.im.controller.ProductController)");
 		methodSet.add(
 				"com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)");
