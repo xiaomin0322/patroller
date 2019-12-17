@@ -85,7 +85,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add("pre-HttpClient4-plugin");
+		methodSet.add("pre-httpClient4-plugin");
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
