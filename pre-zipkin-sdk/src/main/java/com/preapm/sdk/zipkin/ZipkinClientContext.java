@@ -24,7 +24,7 @@ public class ZipkinClientContext {
 
 	private static void init() {
 		logger.info("ZipkinClientContext init start ");
-		File file = new File(PathUtil.getRealPath(), "zipkin.properties");
+		File file = new File(PathUtil.getProjectPath(), "zipkin.properties");
 		propertiesUtil = new PropertiesUtil(file);
 		String url = propertiesUtil.getProperty("zipkin.url");
 		logger.info("zipkin.url  {}", url);
