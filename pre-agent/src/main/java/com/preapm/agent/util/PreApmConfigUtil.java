@@ -108,7 +108,7 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
-		methodSet.add("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request, org.apache.catalina.connector.Response)");
+		methodSet.add("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response)");
 		//methodSet.add("org.apache.catalina.core.ApplicationFilterChain.doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse)");
 		bean  = new PluginConfigBean();
 		bean.setName("tomcat");
