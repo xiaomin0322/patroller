@@ -19,11 +19,11 @@ public class PreApmConfigUtil {
 	private static String pre_Tomcat_plugin = "com.preapm.agent.plugin.interceptor.TomcatInterceptor";
 	
 	
-    private static String pre_Zipkin_plugin_jar = "pre_Zipkin_plugin";
+    private static String pre_Zipkin_plugin_jar = "pre_zipkin_plugin";
 	
 	private static String pre_httpclient4_plugin_jar = "pre_httpclient4_plugin";
 	
-	private static String pre_Tomcat_plugin_jar = "pre_Tomcat_plugin";
+	private static String pre_Tomcat_plugin_jar = "pre-tomcat-plugin";
 
 	static {
 		PluginJarBean jarBeanZipkin = new PluginJarBean();
