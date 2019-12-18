@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
+import com.preapm.sdk.zipkin.util.InetAddressUtils;
+import com.preapm.sdk.zipkin.util.TraceKeys;
+
+import zipkin.Endpoint;
 
 /**
  * org.apache.catalina.connector.Request.Request()
@@ -26,7 +30,9 @@ public class TomcatInterceptor implements AroundInterceptor {
 
 	@Override
 	public void before(MethodInfo methodInfo) {
-
+		int ipv4 = InetAddressUtils.localIpv4();
+		Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
+		methodInfo.setLocalVariable(new Object[] {endpoint});
 		try {
 			HttpServletRequest request = (HttpServletRequest) methodInfo.getArgs()[0];
 			//System.out.println("request================="+request);
@@ -40,8 +46,10 @@ public class TomcatInterceptor implements AroundInterceptor {
 				BigInteger span_id_bi = new BigInteger(span_id, 16);
 				ZipkinClientContext.getClient().startSpan(trace_id_bi.longValue(), span_id_bi.longValue(), url);
 			}else {
-				ZipkinClientContext.getClient().startSpan(ZipkinClientContext.serverName);
+				ZipkinClientContext.getClient().startSpan(url);
 			}
+			
+			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,6 +63,8 @@ public class TomcatInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
+		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint );
 		ZipkinClientContext.getClient().finishSpan();
 
 	}
