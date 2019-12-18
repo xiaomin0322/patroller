@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PluginConfigBean;
 import com.preapm.agent.bean.PluginJarBean;
 
 public class PreApmConfigUtil {
+	
+	private static Logger log = LogManager.getLogger(PreApmConfigUtil.class);
 	
 	private static Map<String, PluginConfigBean> targetMap = new HashMap<>();
 	
@@ -150,11 +153,7 @@ public class PreApmConfigUtil {
 		}
 		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
 		if(flag) {
-			System.out.println("className="+className+ " method"+method + "匹配到了！！！！！");
-		}else {
-			if(method.startsWith("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response)")) {
-				System.out.println("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response)不匹配！！");
-			}
+			log.info("className="+className+ " method"+method + "匹配到了！！！！！");
 		}
 		return flag;
 	}

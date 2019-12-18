@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PluginJarBean;
 import com.preapm.agent.constant.BaseConstants;
-import com.preapm.agent.util.ClassLoaderUtil;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PreApmConfigUtil;
 import com.preapm.agent.weave.ClassReplacer;
