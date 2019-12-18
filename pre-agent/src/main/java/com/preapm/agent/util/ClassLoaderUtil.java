@@ -14,6 +14,19 @@ public class ClassLoaderUtil {
 
 	private static Set<String> loadPluginsJar = new HashSet<String>();
 
+	static {
+		init();
+	}
+
+	public static void init() {
+		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
+		File commonFile = new File(pluginDir, "pre-agent-common.jar");
+		File preZipkinSdkFile = new File(pluginDir, "pre-zipkin-sdk.jar");
+		loadJar(commonFile.getAbsolutePath());
+		loadJar(preZipkinSdkFile.getAbsolutePath());
+
+	}
+
 	public static void loadJarByClassName(String className) {
 		PluginConfigBean pluginConfigBean = PreApmConfigUtil.get(className);
 		if (pluginConfigBean == null) {
@@ -27,7 +40,7 @@ public class ClassLoaderUtil {
 					continue;
 				}
 				File pFile = new File(pluginDir, p + ".jar");
-				System.out.println("加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+pFile.getAbsolutePath());
+				System.out.println("加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
 					loadJar(pFile.getAbsolutePath());
 					loadPluginsJar.add(p);
