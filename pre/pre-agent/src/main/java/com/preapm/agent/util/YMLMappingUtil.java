@@ -21,8 +21,6 @@ public class YMLMappingUtil {
     }
 
     private static YamlReader yamlReader;
-    private static YMLMappingUtil configMappingUtil;
-
 
     private static Object reader(Class<?> clazz) throws YamlException {
         return yamlReader.read(clazz);
