@@ -60,6 +60,7 @@ public class AroundInterceptorContext {
 	}
 
 	public static List<AroundInterceptor> get(Set<String> names) {
+		checkName(names);
 		System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)参数："+names.size());
 		System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)interceptorsMap参数："+interceptorsMap.size());
 		List<AroundInterceptor> list = new ArrayList<AroundInterceptor>();
@@ -73,6 +74,15 @@ public class AroundInterceptorContext {
 		}
 		return list;
 	}
+	
+    public static void checkName(Set<String> names) {
+    	for(String n :names) {
+    		if(!interceptorsMap.containsKey(n)) {
+    			init();
+    			System.out.println("重新加载AroundInterceptor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    		}
+    	}
+    }
 
 	public static List<AroundInterceptor> get(String... names) {
 		Set<String> set = new HashSet<>();
@@ -84,7 +94,7 @@ public class AroundInterceptorContext {
 
 	public static void init() {
 		synchronized (AroundInterceptorContext.class) {
-			if (interceptors == null || interceptors.size() == 0) {
+			//if (interceptors == null || interceptors.size() == 0) {
 				ServiceLoader<AroundInterceptor> serviceLoader = ServiceLoader.load(AroundInterceptor.class);
 				Iterator<AroundInterceptor> iterator = serviceLoader.iterator();
 				while (iterator.hasNext()) {
@@ -93,7 +103,7 @@ public class AroundInterceptorContext {
 					String name = animal.name();
 					interceptorsMap.put(name, animal);
 				}
-			}
+		//	}
 		}
 
 	}
