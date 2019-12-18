@@ -124,7 +124,7 @@ public class PreApmConfigUtil {
 		methodSet.add("org.apache.http.impl.client.CloseableHttpClient.execute(org.apache.http.client.methods.HttpUriRequest)");
 		bean  = new PluginConfigBean();
 		bean.setName("httpClient4");
-		bean.setLoadPatterns("org.springframework.boot.SpringApplication");
+		bean.setLoadPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
