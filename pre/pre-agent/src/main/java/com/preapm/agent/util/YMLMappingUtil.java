@@ -13,10 +13,11 @@ public class YMLMappingUtil {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(path);
+            yamlReader = new YamlReader(fileReader);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        yamlReader = new YamlReader(fileReader);
+
     }
 
     private static YamlReader yamlReader;
