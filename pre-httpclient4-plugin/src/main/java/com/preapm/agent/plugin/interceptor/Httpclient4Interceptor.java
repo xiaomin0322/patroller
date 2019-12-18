@@ -18,8 +18,12 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 	public void before(MethodInfo methodInfo) {
 		try {
 			HttpUriRequest request = (HttpUriRequest) methodInfo.getArgs()[0];
-			request.addHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID,
-					String.valueOf(ThreadLocalTraceStore.get()));
+			if(request!=null) {
+				System.out.println("放入traceId到http请求头："+ThreadLocalTraceStore.get());
+				request.addHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID,
+						String.valueOf(ThreadLocalTraceStore.get()));
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
