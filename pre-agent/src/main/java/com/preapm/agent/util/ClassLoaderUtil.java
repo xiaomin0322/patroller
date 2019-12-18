@@ -92,7 +92,7 @@ public class ClassLoaderUtil {
 					try {
 						URL url = file.toURI().toURL();
 						method.invoke(classLoader, url);
-						System.out.println("读取jar文件成功" + file.getName());
+						System.out.println("classLoaderName:"+classLoader.getClass().getName()+" 读取jar文件成功" + file.getName());
 					} catch (Exception e) {
 						System.out.println("读取jar文件失败");
 					}
