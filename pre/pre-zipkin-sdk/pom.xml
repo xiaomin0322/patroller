@@ -101,6 +101,15 @@
                                         <include name="${project.artifactId}.jar" />
                                     </fileset>
                                 </copy>
+                                
+                                <copy todir="../../target/pre-agent/plugin">
+                                    <!-- 从哪里拷贝 -->
+                                    <fileset dir="${project.build.directory}/classes">
+                                        <!-- 拷贝内容 -->
+                                        <include name="zipkin.properties" />
+                                    </fileset>
+                                </copy>
+                                
                             </tasks>
                         </configuration>
                         <goals>
