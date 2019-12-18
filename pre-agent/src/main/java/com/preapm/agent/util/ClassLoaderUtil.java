@@ -23,12 +23,12 @@ public class ClassLoaderUtil {
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
 		File commonFile = new File(pluginDir, "pre-agent-common.jar");
 		File preZipkinSdkFile = new File(pluginDir, "pre-zipkin-sdk.jar");
-		loadJar(commonFile.getAbsolutePath());
-		loadJar(preZipkinSdkFile.getAbsolutePath());
+		loadJar(null,commonFile.getAbsolutePath());
+		loadJar(null,preZipkinSdkFile.getAbsolutePath());
 
 	}
 
-	public static void loadJarByClassName(String className) {
+	public static void loadJarByClassName(ClassLoader classLoader,String className) {
 		PluginConfigBean pluginConfigBean = PreApmConfigUtil.get(className);
 		if (pluginConfigBean == null) {
 			return;
@@ -43,7 +43,7 @@ public class ClassLoaderUtil {
 				File pFile = new File(pluginDir, p.getNameJar() + ".jar");
 				System.out.println("className:"+className+"   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
-					loadJar(pFile.getAbsolutePath());
+					loadJar(classLoader,pFile.getAbsolutePath());
 					loadPluginsJar.add(p.getNameJar());
 				}
 			}
@@ -51,7 +51,7 @@ public class ClassLoaderUtil {
 
 	}
 
-	public static void loadJar(String path) {
+	public static void loadJar(ClassLoader classLoader,String path) {
 		// 系统类库路径
 		File libPath = new File(path);
 
@@ -86,7 +86,9 @@ public class ClassLoaderUtil {
 					method.setAccessible(true); // 设置方法的访问权限
 				}
 				// 获取系统类加载器
-				URLClassLoader classLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+				if(classLoader == null) {
+					 classLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+				}
 				;
 				for (File file : jarFiles) {
 					try {
@@ -104,6 +106,6 @@ public class ClassLoaderUtil {
 	}
 
 	public static void main(String[] args) {
-		loadJar("C:\\eclipse-workspace\\test\\target");
+		loadJar(null,"C:\\eclipse-workspace\\test\\target");
 	}
 }

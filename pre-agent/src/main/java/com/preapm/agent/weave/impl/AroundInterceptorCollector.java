@@ -32,7 +32,7 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
 			// 加载插件后，初始化插件
-			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(className);
+			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader,className);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {

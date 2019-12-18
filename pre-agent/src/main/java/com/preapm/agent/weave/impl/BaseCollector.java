@@ -19,7 +19,7 @@ public class BaseCollector extends Collector {
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
-			ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\plugin");
+			//ClassLoaderUtil.loadJar("C:\\eclipse-workspace\\zipkin-agent-main\\plugin");
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
