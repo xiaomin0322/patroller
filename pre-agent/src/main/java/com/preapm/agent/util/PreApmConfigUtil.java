@@ -108,11 +108,14 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
-		methodSet.add("org.apache.catalina.connector.Request.getRequest()");
+		//methodSet.add("org.apache.catalina.connector.Request.getRequest()");
+		methodSet.add("org.apache.catalina.core.ApplicationFilterChain.doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse)");
 		bean  = new PluginConfigBean();
-		bean.setName("Request");
+		bean.setName("tomcat");
 		bean.setLoadPatterns("org.apache.catalina.connector.Request");
-		bean.setPatterns("org.apache.catalina.connector.Request");
+		//bean.setPatterns("org.apache.catalina.connector.Request");
+		//bean.setLoadPatterns("org.apache.catalina.core.ApplicationFilterChain");
+		bean.setPatterns("org.apache.catalina.core.ApplicationFilterChain");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanTomcat);
@@ -145,6 +148,9 @@ public class PreApmConfigUtil {
 			return flag;
 		}
 		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
+		if(flag) {
+			System.out.println("className="+className+ " method"+method + "匹配到了！！！！！");
+		}
 		return flag;
 	}
 	

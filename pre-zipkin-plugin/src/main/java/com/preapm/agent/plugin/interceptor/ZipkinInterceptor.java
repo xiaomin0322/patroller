@@ -17,7 +17,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 	public void before(MethodInfo methodInfo) {
 		try {
 			int ipv4 = InetAddressUtils.localIpv4();
-			Endpoint endpoint = Endpoint.builder().serviceName("test").ipv4(ipv4).build();
+			Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 			methodInfo.setLocalVariable(new Object[] { endpoint });
 			client.startSpan(methodInfo.getMethodName());
 			client.sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
