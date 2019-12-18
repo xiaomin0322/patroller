@@ -3,6 +3,7 @@ package com.preapm.agent.plugin.interceptor;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClient;
+import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
@@ -10,12 +11,11 @@ import zipkin.Endpoint;
 
 public class ZipkinInterceptor implements AroundInterceptor {
 
-	private static final ZipkinClient client = new ZipkinClient("http://10.23.191.242:5005");
+	private static final ZipkinClient client = ZipkinClientContext.getClient();
 
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
-            System.out.println("当前方法名称："+methodInfo.getMethodName());
 			int ipv4 = InetAddressUtils.localIpv4();
 			Endpoint endpoint = Endpoint.builder().serviceName("test").ipv4(ipv4).build();
 			methodInfo.setLocalVariable(new Object[] { endpoint });
