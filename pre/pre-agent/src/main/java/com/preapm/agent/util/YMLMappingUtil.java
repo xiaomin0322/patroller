@@ -8,7 +8,17 @@ import java.io.FileReader;
 
 public class YMLMappingUtil {
 
-    static {
+    private static YamlReader yamlReader;
+
+
+    public static Object reader(Class<?> clazz) throws YamlException {
+        if(yamlReader == null){
+            init();
+        }
+        return yamlReader.read(clazz);
+    }
+
+    private static void init() {
         String path = ClassLoaderUtil.getJARPath() + "/test3.yml";
         FileReader fileReader = null;
         try {
@@ -17,20 +27,6 @@ public class YMLMappingUtil {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
-    private static YamlReader yamlReader;
-
-    private static Object reader(Class<?> clazz) throws YamlException {
-        return yamlReader.read(clazz);
-    }
-
-//    public static void main(String[] args) throws YamlException, FileNotFoundException {
-////        YMLMappingUtil instance = YMLMappingUtil.reader();
-//
-//
-//        System.out.println( YMLMappingUtil.reader(PluginsBean.class));
-//
-//    }
 }
