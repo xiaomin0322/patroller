@@ -5,7 +5,7 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>pre-zipkin-plugin</artifactId>
+	<artifactId>pre-tomcat-plugin</artifactId>
 	<groupId>pre</groupId>
 	<version>1.0.0</version>
 
@@ -36,10 +36,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.9</version>
-			<scope>provided</scope>
+		    <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+		    <version>9.0.30</version>
+		    <scope>provided</scope>
 		</dependency>
 
 	</dependencies>
@@ -92,7 +92,7 @@
 				<version>2.4</version>
 			</plugin> -->
 			
-			 <!-- 复制生成的jar包到其他位置 -->
+				 <!-- 复制生成的jar包到其他位置 -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -102,7 +102,7 @@
                         <configuration>
                             <tasks>
                                 <!-- 你将要拷贝的位置 -->
-                                <copy todir="C:\eclipse-workspace\zipkin-agent-main\pre-agent\target\plugin">
+                               <copy todir="../../target/pre-agent/plugin">
                                     <!-- 从哪里拷贝 -->
                                     <fileset dir="${project.build.directory}">
                                         <!-- 拷贝内容 -->

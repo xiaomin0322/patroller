@@ -5,7 +5,7 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>pre-agent-common</artifactId>
+	<artifactId>pre-zipkin-plugin</artifactId>
 	<groupId>pre</groupId>
 	<version>1.0.0</version>
 
@@ -20,6 +20,27 @@
 
 	<dependencies>
 
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-agent-common</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-zipkin-sdk</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -42,13 +63,36 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
-			</plugin>
+			</plugin> -->
 			
-				 <!-- 复制生成的jar包到其他位置 -->
+			 <!-- 复制生成的jar包到其他位置 -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -58,7 +102,7 @@
                         <configuration>
                             <tasks>
                                 <!-- 你将要拷贝的位置 -->
-                                <copy todir="C:\eclipse-workspace\zipkin-agent-main\pre-agent\target\plugin">
+                                <copy todir="../../target/pre-agent/plugin">
                                     <!-- 从哪里拷贝 -->
                                     <fileset dir="${project.build.directory}">
                                         <!-- 拷贝内容 -->
@@ -73,6 +117,7 @@
                     </execution>
                 </executions>
             </plugin>
+            
 		</plugins>
 	</build>
 </project>

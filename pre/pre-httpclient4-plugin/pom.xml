@@ -5,7 +5,7 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>pre-zipkin-sdk</artifactId>
+	<artifactId>pre-httpclient4-plugin</artifactId>
 	<groupId>pre</groupId>
 	<version>1.0.0</version>
 
@@ -19,24 +19,28 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.zipkin.java</groupId>
-			<artifactId>zipkin</artifactId>
-			<version>1.28.1</version>
-		</dependency>
-		
-		 <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>
-        
-         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-        </dependency>
 
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-agent-common</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-zipkin-sdk</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
+            <scope>provided</scope>
+        </dependency>
 
 	</dependencies>
 	<build>
@@ -59,12 +63,9 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-			</plugin> -->
-				<plugin>
+
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>2.3</version>
@@ -84,6 +85,13 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+			</plugin> -->
+			
 				 <!-- 复制生成的jar包到其他位置 -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -94,7 +102,7 @@
                         <configuration>
                             <tasks>
                                 <!-- 你将要拷贝的位置 -->
-                                <copy todir="C:\eclipse-workspace\zipkin-agent-main\pre-agent\target\plugin">
+                                <copy todir="../../target/pre-agent/plugin">
                                     <!-- 从哪里拷贝 -->
                                     <fileset dir="${project.build.directory}">
                                         <!-- 拷贝内容 -->
@@ -109,6 +117,7 @@
                     </execution>
                 </executions>
             </plugin>
+            
 		</plugins>
 	</build>
 </project>
