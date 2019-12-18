@@ -1,5 +1,7 @@
 package com.preapm.agent.plugin.interceptor;
 
+import java.math.BigInteger;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.preapm.agent.common.bean.MethodInfo;
@@ -22,10 +24,14 @@ public class TomcatInterceptor implements AroundInterceptor {
 			if(request!=null) {
 				String trace_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
 				System.out.println("获取trace_id："+trace_id);
-				//String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
-				if (trace_id != null) {
-					ThreadLocalTraceStore.set(Long.valueOf(trace_id));
+				if(trace_id != null) {
+					BigInteger trace_id_bi = new BigInteger(trace_id, 16);
+					//String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
+					if (trace_id != null) {
+						ThreadLocalTraceStore.set(trace_id_bi.longValue());
+					}
 				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
