@@ -108,14 +108,15 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
-		//methodSet.add("org.apache.catalina.connector.Request.getRequest()");
-		methodSet.add("org.apache.catalina.core.ApplicationFilterChain.doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse)");
+		methodSet.add("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request, org.apache.catalina.connector.Response)");
+		//methodSet.add("org.apache.catalina.core.ApplicationFilterChain.doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse)");
 		bean  = new PluginConfigBean();
 		bean.setName("tomcat");
-		bean.setLoadPatterns("org.apache.catalina.connector.Request");
-		//bean.setPatterns("org.apache.catalina.connector.Request");
-		//bean.setLoadPatterns("org.apache.catalina.core.ApplicationFilterChain");
-		bean.setPatterns("org.apache.catalina.core.ApplicationFilterChain");
+		//bean.setLoadPatterns("org.apache.catalina.connector.Request");
+		//bean.setPatterns("org.apache.catalina.core.ApplicationFilterChain");
+		
+		bean.setPatterns("org.apache.catalina.core.StandardWrapperValve");
+		bean.setLoadPatterns("org.apache.catalina.core.StandardWrapperValve");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanTomcat);
