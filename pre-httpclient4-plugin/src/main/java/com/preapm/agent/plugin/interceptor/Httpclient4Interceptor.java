@@ -3,6 +3,7 @@ package com.preapm.agent.plugin.interceptor;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.preapm.agent.common.bean.MethodInfo;
+import com.preapm.agent.common.context.AroundInterceptorContext;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ThreadLocalTraceStore;
 
@@ -40,7 +41,7 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 	}
 	@Override
 	public String name() {
-		return "pre-httpclient4-plugin";
+		return this.getClass().getName();
 	}
-
+	
 }

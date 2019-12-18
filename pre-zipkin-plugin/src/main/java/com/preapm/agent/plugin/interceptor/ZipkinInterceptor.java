@@ -52,6 +52,6 @@ public class ZipkinInterceptor implements AroundInterceptor {
 
 	@Override
 	public String name() {
-		return "pre-Zipkin-plugin";
+		return this.getClass().getName();
 	}
 }
