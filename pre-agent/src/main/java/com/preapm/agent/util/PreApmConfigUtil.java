@@ -151,6 +151,10 @@ public class PreApmConfigUtil {
 		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
 		if(flag) {
 			System.out.println("className="+className+ " method"+method + "匹配到了！！！！！");
+		}else {
+			if(method.startsWith("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response)")) {
+				System.out.println("org.apache.catalina.core.StandardWrapperValve.invoke(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response)不匹配！！");
+			}
 		}
 		return flag;
 	}
