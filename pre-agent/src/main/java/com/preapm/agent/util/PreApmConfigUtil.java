@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.preapm.agent.bean.PluginConfigBean;
+import com.preapm.agent.bean.PluginJarBean;
 
 public class PreApmConfigUtil {
 	
@@ -16,12 +17,31 @@ public class PreApmConfigUtil {
 	private static String pre_httpclient4_plugin = "com.preapm.agent.plugin.interceptor.Httpclient4Interceptor";
 	
 	private static String pre_Tomcat_plugin = "com.preapm.agent.plugin.interceptor.TomcatInterceptor";
+	
+	
+    private static String pre_Zipkin_plugin_jar = "pre_Zipkin_plugin";
+	
+	private static String pre_httpclient4_plugin_jar = "pre_httpclient4_plugin";
+	
+	private static String pre_Tomcat_plugin_jar = "pre_Tomcat_plugin";
 
 	static {
+		PluginJarBean jarBeanZipkin = new PluginJarBean();
+		jarBeanZipkin.setName(pre_Zipkin_plugin);
+		jarBeanZipkin.setNameJar(pre_Zipkin_plugin_jar);
+		
+		PluginJarBean jarBeanhttpclient4 = new PluginJarBean();
+		jarBeanZipkin.setName(pre_httpclient4_plugin);
+		jarBeanZipkin.setNameJar(pre_httpclient4_plugin_jar);
+		
+		
+		PluginJarBean jarBeanTomcat = new PluginJarBean();
+		jarBeanZipkin.setName(pre_Tomcat_plugin);
+		jarBeanZipkin.setNameJar(pre_Tomcat_plugin_jar);
 		
 		
 		
-		Set<String> methodSet = new HashSet<>();
+		Set methodSet = new HashSet<>();
 		
 		
 		methodSet.add("com.preapm.agent.Bootstrap.print2(java.lang.String)");
@@ -32,7 +52,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.preapm.agent.Bootstrap");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_Zipkin_plugin);
+		methodSet.add(jarBeanZipkin);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
@@ -47,7 +67,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.alibaba.druid.pool.DruidDataSource");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_Zipkin_plugin);
+		methodSet.add(jarBeanZipkin);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
@@ -64,7 +84,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("com.dominos.cloud.im.controller.StoreController");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_Zipkin_plugin);
+		methodSet.add(jarBeanZipkin);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
@@ -78,7 +98,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_Zipkin_plugin);
+		methodSet.add(jarBeanZipkin);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
@@ -95,7 +115,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("org.apache.catalina.connector.Request");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_Tomcat_plugin);
+		methodSet.add(jarBeanTomcat);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 		
@@ -108,7 +128,7 @@ public class PreApmConfigUtil {
 		bean.setPatterns("org.apache.http.impl.client.CloseableHttpClient");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
-		methodSet.add(pre_httpclient4_plugin);
+		methodSet.add(jarBeanhttpclient4);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
@@ -128,7 +148,7 @@ public class PreApmConfigUtil {
 		return flag;
 	}
 	
-	public static Set<String> getPlugins(String className) {
+	public static Set<PluginJarBean> getPlugins(String className) {
 		boolean flag = isTarget(className);
 		if(!flag) {
 			return null;

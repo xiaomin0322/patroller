@@ -1,19 +1,21 @@
 package com.preapm.agent.weave.impl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.preapm.agent.bean.PluginJarBean;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	
-	private Set<String> plugins;
+	private Set<PluginJarBean> plugins;
 	
 	public ClassWrapperAroundInterceptor() {}
 	
-	public ClassWrapperAroundInterceptor(Set<String> plugins) {
+	public ClassWrapperAroundInterceptor(Set<PluginJarBean> plugins) {
 		this.plugins = plugins;
 	}
 	
@@ -37,7 +39,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 					.append(line());
 		}
 		if (plugins != null && plugins.size() != 0) {
-			stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(plugins,","))).append(";")
+			Set<String> pluginNameSet = new HashSet<>();
+			for(PluginJarBean p :plugins) {
+				pluginNameSet.add(p.getName());
+			}
+			stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(pluginNameSet,","))).append(";")
 					.append(line());
 			stringBuilder.append("preMethondInfo.setPlugins(prePluginsStr.split(" + toStr(",") + "));")
 					.append(line());

@@ -9,13 +9,13 @@ public class PluginConfigBean {
 	private String patterns;
 	private Set<String> containPatterns;
 	private Set<String> excludedPatterns;
-	private Set<String>  plugins;
+	private Set<PluginJarBean>  plugins;
 
-	public Set<String> getPlugins() {
+	public Set<PluginJarBean> getPlugins() {
 		return plugins;
 	}
 
-	public void setPlugins(Set<String> plugins) {
+	public void setPlugins(Set<PluginJarBean> plugins) {
 		this.plugins = plugins;
 	}
 

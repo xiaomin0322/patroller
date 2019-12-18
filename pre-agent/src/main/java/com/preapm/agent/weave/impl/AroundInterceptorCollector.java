@@ -3,6 +3,7 @@ package com.preapm.agent.weave.impl;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.preapm.agent.bean.PluginJarBean;
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.ClassLoaderUtil;
 import com.preapm.agent.util.LogManager;
@@ -38,7 +39,7 @@ public class AroundInterceptorCollector extends Collector {
 				String longName = ctMethod.getLongName();
 				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					Set<String> plugins = PreApmConfigUtil.getPlugins(className);
+					Set<PluginJarBean> plugins = PreApmConfigUtil.getPlugins(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);

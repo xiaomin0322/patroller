@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.preapm.agent.bean.PluginConfigBean;
+import com.preapm.agent.bean.PluginJarBean;
 
 public class ClassLoaderUtil {
 
@@ -33,17 +34,17 @@ public class ClassLoaderUtil {
 			return;
 		}
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
-		Set<String> plugins = pluginConfigBean.getPlugins();
+		Set<PluginJarBean> plugins = pluginConfigBean.getPlugins();
 		if (plugins != null) {
-			for (String p : plugins) {
+			for (PluginJarBean p : plugins) {
 				if (loadPluginsJar.contains(p)) {
 					continue;
 				}
-				File pFile = new File(pluginDir, p + ".jar");
+				File pFile = new File(pluginDir, p.getNameJar() + ".jar");
 				System.out.println("加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
 					loadJar(pFile.getAbsolutePath());
-					loadPluginsJar.add(p);
+					loadPluginsJar.add(p.getNameJar());
 				}
 			}
 		}
