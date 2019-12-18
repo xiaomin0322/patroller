@@ -1,5 +1,8 @@
 package com.preapm.sdk.zipkin;
 
+import java.math.BigInteger;
+
+import com.preapm.sdk.zipkin.util.GenerateKey;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
@@ -9,7 +12,15 @@ public class Bootstrap {
 	static ZipkinClient client = new ZipkinClient("http://10.23.191.242:5005");
 
 	public static void main(String[] args) {
-		new Bootstrap().print3("123123", "123");
+		//new Bootstrap().print3("123123", "123");
+		long id = GenerateKey.longKey();
+		String hexString = Long.toHexString(id);
+		System.out.println("hexString:"+hexString + " id =="+id);
+		
+		
+		BigInteger bi = new BigInteger(hexString, 16);
+		
+		System.out.println(bi.longValue());
 	}
 
 	public void print() {
