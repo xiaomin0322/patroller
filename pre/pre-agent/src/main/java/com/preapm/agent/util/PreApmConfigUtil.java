@@ -27,8 +27,15 @@ public class PreApmConfigUtil {
 	private static String pre_httpclient4_plugin_jar = "pre-httpclient4-plugin";
 	
 	private static String pre_Tomcat_plugin_jar = "pre-tomcat-plugin";
+	
+	public static Set<String>  basePlginName = new HashSet<>();
+	
 
 	static {
+		basePlginName.add("pre-agent-common");
+		basePlginName.add("pre-zipkin-sdk");
+		
+		
 		PluginJarBean jarBeanZipkin = new PluginJarBean();
 		jarBeanZipkin.setName(pre_Zipkin_plugin);
 		jarBeanZipkin.setNameJar(pre_Zipkin_plugin_jar);
