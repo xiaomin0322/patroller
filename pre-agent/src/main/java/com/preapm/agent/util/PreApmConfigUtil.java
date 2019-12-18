@@ -19,9 +19,9 @@ public class PreApmConfigUtil {
 	private static String pre_Tomcat_plugin = "com.preapm.agent.plugin.interceptor.TomcatInterceptor";
 	
 	
-    private static String pre_Zipkin_plugin_jar = "pre_zipkin_plugin";
+    private static String pre_Zipkin_plugin_jar = "pre-zipkin-plugin";
 	
-	private static String pre_httpclient4_plugin_jar = "pre_httpclient4_plugin";
+	private static String pre_httpclient4_plugin_jar = "pre-httpclient4-plugin";
 	
 	private static String pre_Tomcat_plugin_jar = "pre-tomcat-plugin";
 
@@ -31,13 +31,13 @@ public class PreApmConfigUtil {
 		jarBeanZipkin.setNameJar(pre_Zipkin_plugin_jar);
 		
 		PluginJarBean jarBeanhttpclient4 = new PluginJarBean();
-		jarBeanZipkin.setName(pre_httpclient4_plugin);
-		jarBeanZipkin.setNameJar(pre_httpclient4_plugin_jar);
+		jarBeanhttpclient4.setName(pre_httpclient4_plugin);
+		jarBeanhttpclient4.setNameJar(pre_httpclient4_plugin_jar);
 		
 		
 		PluginJarBean jarBeanTomcat = new PluginJarBean();
-		jarBeanZipkin.setName(pre_Tomcat_plugin);
-		jarBeanZipkin.setNameJar(pre_Tomcat_plugin_jar);
+		jarBeanTomcat.setName(pre_Tomcat_plugin);
+		jarBeanTomcat.setNameJar(pre_Tomcat_plugin_jar);
 		
 		
 		

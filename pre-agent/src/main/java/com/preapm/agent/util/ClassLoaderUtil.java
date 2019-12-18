@@ -37,11 +37,11 @@ public class ClassLoaderUtil {
 		Set<PluginJarBean> plugins = pluginConfigBean.getPlugins();
 		if (plugins != null) {
 			for (PluginJarBean p : plugins) {
-				if (loadPluginsJar.contains(p)) {
+				if (loadPluginsJar.contains(p.getNameJar())) {
 					continue;
 				}
 				File pFile = new File(pluginDir, p.getNameJar() + ".jar");
-				System.out.println("加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
+				System.out.println("className:"+className+"   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
 					loadJar(pFile.getAbsolutePath());
 					loadPluginsJar.add(p.getNameJar());
