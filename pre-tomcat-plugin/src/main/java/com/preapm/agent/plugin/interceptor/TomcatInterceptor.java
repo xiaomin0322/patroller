@@ -19,9 +19,13 @@ public class TomcatInterceptor implements AroundInterceptor {
 	public void before(MethodInfo methodInfo) {
 		try {
 			HttpServletRequest request = (HttpServletRequest) methodInfo.getResult();
-			String trace_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
-			if (trace_id != null) {
-				ThreadLocalTraceStore.set(Long.valueOf(trace_id));
+			if(request!=null) {
+				String trace_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
+				System.out.println("获取trace_id："+trace_id);
+				//String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
+				if (trace_id != null) {
+					ThreadLocalTraceStore.set(Long.valueOf(trace_id));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

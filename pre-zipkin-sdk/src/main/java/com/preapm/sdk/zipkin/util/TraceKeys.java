@@ -46,6 +46,8 @@ public class TraceKeys {
     public static final String RESULT_SUCCESS = "success";
     
     public static final String TRACE_ID = "pre_traceId";
+    
+    public static final String SPAN_ID = "pre_spanId";
 
     private TraceKeys() {
     }
