@@ -24,7 +24,7 @@ public class ATraceFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-
+		logger.info("初始化>>>>>>>>>>>>>>>>>>>>>>>>>ATraceFilter");
 	}
 
 	@Override
