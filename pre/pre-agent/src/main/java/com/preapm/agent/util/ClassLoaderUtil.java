@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PluginConfigBean;
 import com.preapm.agent.bean.PluginJarBean;
+import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 
 public class ClassLoaderUtil {
 
@@ -54,6 +55,13 @@ public class ClassLoaderUtil {
 			}
 		}
 
+	}
+
+	public static String getJARPath() {
+		String decode = AroundInterceptorCollector.class.getProtectionDomain()
+				.getCodeSource().getLocation().getFile();
+
+		return decode.substring(0,decode.lastIndexOf("/"));
 	}
 
 	public static void loadJar(ClassLoader classLoader, String path) {
