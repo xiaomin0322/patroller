@@ -1,11 +1,7 @@
 package com.preapm.agent.test.okhttp;
 
-import java.io.IOException;
-
 import com.preapm.agent.plugin.interceptor.filter.OkHttpFilter;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -19,7 +15,8 @@ public class OkhttpTest {
 				.header("User-Agent", "OkHttp Example").build();
 
 		Response response = client.newCall(request).execute();
-		response.body().close();
+		String s = response.body().byteString().toString();
+		System.out.println(s);
 	}
 
 }
