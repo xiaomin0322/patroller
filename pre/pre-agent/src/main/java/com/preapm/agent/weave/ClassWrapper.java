@@ -9,6 +9,7 @@ import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.ReflectMethodUtil;
 
 import javassist.CtClass;
+import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
@@ -33,6 +34,18 @@ public abstract class ClassWrapper {
 	public ClassWrapper errorSrc(String paramString) {
 		this.errorSrc = paramString;
 		return this;
+	}
+	
+	public String beginSrc(ClassLoader classLoader,byte[] classfileBuffer,CtClass ctClass, CtConstructor ctMethod) {
+		String methodName=ctMethod.getName();
+		try {
+			ctMethod.insertBeforeBody(beforAgent(methodName, null));
+			ctMethod.insertAfter(afterAgent(null));
+			//ctMethod.insertBefore("System.out.println(\"方法名\");");
+		} catch (Exception e) {
+			log.severe(e.getMessage());
+		}
+		return null;
 	}
 
 	

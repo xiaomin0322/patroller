@@ -30,7 +30,7 @@ public class OkHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		okhttp3.OkHttpClient.Builder builder = (okhttp3.OkHttpClient.Builder) methodInfo.getResult();
+		okhttp3.OkHttpClient.Builder builder = (okhttp3.OkHttpClient.Builder) methodInfo.getTarget();
 		if (builder != null) {
 			builder.addInterceptor(filter);
 			logger.info("add filter to OkHttpFilter>>>>>>>>>>>>>>>>>>>>>>>");
@@ -40,6 +40,10 @@ public class OkHttpInterceptor implements AroundInterceptor {
 	@Override
 	public String name() {
 		return this.getClass().getName();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(okhttp3.OkHttpClient.Builder.class.getName());
 	}
 
 }

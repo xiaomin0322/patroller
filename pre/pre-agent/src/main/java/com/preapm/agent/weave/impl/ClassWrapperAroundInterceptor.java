@@ -22,17 +22,14 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 
 	public String beforAgent(String methodName, List<String> argNameList) {
 		
-		
-		
-		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(
 				"com.preapm.agent.common.bean.MethodInfo preMethondInfo = new com.preapm.agent.common.bean.MethodInfo();")
 				.append(line());
 		stringBuilder.append("preMethondInfo.setTarget(this);").append(line());
-		stringBuilder.append("preMethondInfo.setArgs($args);").append(line());
 		stringBuilder.append("preMethondInfo.setMethodName(" + toStr(methodName) + ");").append(line());
 		if (argNameList != null && argNameList.size() != 0) {
+			stringBuilder.append("preMethondInfo.setArgs($args);").append(line());
 			stringBuilder.append("String preMethodArgsStr = ").append(toStr(StringUtils.join(argNameList,","))).append(";")
 					.append(line());
 			stringBuilder.append("preMethondInfo.setArgsName(preMethodArgsStr.split(" + toStr(",") + "));")
@@ -57,7 +54,9 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 
 	public String afterAgent(String resultName) {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());
+		if(resultName!=null) {
+			stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());
+		}
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.after(preMethondInfo);")
 				.append(line());
 		return stringBuilder.toString();

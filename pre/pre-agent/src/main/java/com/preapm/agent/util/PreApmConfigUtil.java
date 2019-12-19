@@ -60,7 +60,7 @@ public class PreApmConfigUtil {
 		
 		Set methodSet = new HashSet<>();
 		
-		
+		methodSet.add("com.preapm.agent.Bootstrap()");
 		methodSet.add("com.preapm.agent.Bootstrap.print2(java.lang.String)");
 		methodSet.add("com.preapm.agent.Bootstrap.print3(java.lang.String,java.lang.String)");
 		PluginConfigBean bean  = new PluginConfigBean();
@@ -168,11 +168,11 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
-		methodSet.add("okhttp3.OkHttpClient.Builder.Builder()");
+		methodSet.add("okhttp3.OkHttpClient$Builder.Builder()");
 		bean  = new PluginConfigBean();
 		bean.setName("okhttp");
-		bean.setLoadPatterns("okhttp3.OkHttpClient.Builder");
-		bean.setPatterns("okhttp3.OkHttpClient.Builder");
+		bean.setLoadPatterns("okhttp3.OkHttpClient$Builder");
+		bean.setPatterns("okhttp3.OkHttpClient$Builder");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanokHttp);

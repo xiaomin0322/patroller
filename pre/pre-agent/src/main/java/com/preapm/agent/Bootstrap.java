@@ -1,11 +1,23 @@
 package com.preapm.agent;
 
 public class Bootstrap {
+	
+	public String s = "123";
+	
+	public Object o;
+	
+	public Bootstrap() {
+	 this.o =  new APMAgent() ;
+		
+	}
 
 	public static void main(String[] args) {
+		new Bootstrap();
+		System.out.println("asd");
+		
 		new Bootstrap().print2("123123");
-		new Bootstrap().print();
-		new Bootstrap().print3("123123","123");
+		//new Bootstrap().print();
+		//new Bootstrap().print3("123123","123");
 	}
 
 	public void print() {

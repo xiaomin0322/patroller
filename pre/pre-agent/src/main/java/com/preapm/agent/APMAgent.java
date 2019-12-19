@@ -36,7 +36,7 @@ public class APMAgent implements ClassFileTransformer {
 			return null;
 		}
 
-		className = className.replaceAll("/", ".").replace("$", ".");
+		className = className.replaceAll("/", ".");
 		if (!collector.isTarget(className)) {
 			return null;
 		}
