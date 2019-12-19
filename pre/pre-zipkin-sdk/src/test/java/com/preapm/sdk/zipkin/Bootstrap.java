@@ -12,7 +12,7 @@ public class Bootstrap {
 	static ZipkinClient client = new ZipkinClient("http://10.23.191.242:5005");
 
 	public static void main(String[] args) {
-		//new Bootstrap().print3("123123", "123");
+		new Bootstrap().print3("123123", "123");
 		long id = GenerateKey.longKey();
 		String hexString = Long.toHexString(id);
 		System.out.println("hexString:"+hexString + " id =="+id);
@@ -48,7 +48,7 @@ public class Bootstrap {
 		Endpoint endpoint = Endpoint.builder().serviceName("test").ipv4(ipv4).build();
 		client.startSpan("print3");
 		client.sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
-		client.sendBinaryAnnotation("in", "in", endpoint);
+		client.sendBinaryAnnotation("in", "in",null);
 		System.out.println("zzm " + s);
 
 		print2(s2);
