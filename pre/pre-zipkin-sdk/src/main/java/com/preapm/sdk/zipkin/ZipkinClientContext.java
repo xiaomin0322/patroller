@@ -15,7 +15,9 @@ public class ZipkinClientContext {
 
 	public static PropertiesUtil propertiesUtil = null;
 	
-	public static String serverName = null;
+	public static String serverName = System.getProperty("server.name");
+	
+	public static String zipkinUrl = System.getProperty("zipkin.url");
 
 	private ZipkinClientContext() {
 	}
@@ -28,11 +30,15 @@ public class ZipkinClientContext {
 		logger.info("ZipkinClientContext init start ");
 		File file = new File(PathUtil.getProjectPath(), "zipkin.properties");
 		propertiesUtil = new PropertiesUtil(file);
-		String url = propertiesUtil.getProperty("zipkin.url");
-		logger.info("zipkin.url  {}", url);
-		serverName =  propertiesUtil.getProperty("server.name");
-		logger.info("zipkin.url  {}", url); 
-		client = new ZipkinClient(url);
+		if(zipkinUrl == null) {
+			zipkinUrl = propertiesUtil.getProperty("zipkin.url");
+		}
+		logger.info("zipkin.url  {}", zipkinUrl);
+		if(serverName == null) {
+			serverName =  propertiesUtil.getProperty("server.name");
+		}
+		logger.info("serverName  {}", serverName); 
+		client = new ZipkinClient(zipkinUrl);
 		logger.info("ZipkinClientContext init end ");
 	}
 
