@@ -54,13 +54,33 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 
 	public String afterAgent(String resultName) {
 		StringBuilder stringBuilder = new StringBuilder();
-		if(resultName!=null) {
-			stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());
+		
+		if(com.preapm.agent.constant.BaseConstants.ONLY_AFTER.equals(resultName)) {
+			stringBuilder.append(
+					"com.preapm.agent.common.bean.MethodInfo preMethondInfo = new com.preapm.agent.common.bean.MethodInfo();")
+					.append(line());
+			stringBuilder.append("preMethondInfo.setTarget(this);").append(line());
+			if (plugins != null && plugins.size() != 0) {
+				Set<String> pluginNameSet = new HashSet<>();
+				for(PluginJarBean p :plugins) {
+					pluginNameSet.add(p.getName());
+				}
+				stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(pluginNameSet,","))).append(";")
+						.append(line());
+				stringBuilder.append("preMethondInfo.setPlugins(prePluginsStr.split(" + toStr(",") + "));")
+						.append(line());
+			}
+			
+		}else {
+			if(resultName!=null) {
+				stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());
+			}
 		}
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.after(preMethondInfo);")
-				.append(line());
+		.append(line());
 		return stringBuilder.toString();
 	}
+	
 
 	@Override
 	public String doError(String error) {

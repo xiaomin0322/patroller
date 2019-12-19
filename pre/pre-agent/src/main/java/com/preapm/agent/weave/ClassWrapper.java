@@ -20,6 +20,7 @@ public abstract class ClassWrapper {
 	private String beginSrc=BaseConstants.NULL;
 	private String endSrc=BaseConstants.NULL;;
 	private String errorSrc=BaseConstants.NULL;;
+	
 
 	public ClassWrapper beginSrc(String paramString) {
 		this.beginSrc = paramString;
@@ -35,14 +36,17 @@ public abstract class ClassWrapper {
 		this.errorSrc = paramString;
 		return this;
 	}
-	
+	//构造方法的insertAfter是不在构造方法结构体内的
 	public String beginSrc(ClassLoader classLoader,byte[] classfileBuffer,CtClass ctClass, CtConstructor ctMethod) {
 		String methodName=ctMethod.getName();
 		try {
 			ctMethod.insertBeforeBody(beforAgent(methodName, null));
-			ctMethod.insertAfter(afterAgent(null));
-			//ctMethod.insertBeforeBody("System.out.println(\"方法名\"+this.i);");
-			//ctMethod.insertAfter("System.out.println(\"方法名end\"+this.i);");
+			ctMethod.insertAfter(afterAgent(com.preapm.agent.constant.BaseConstants.ONLY_AFTER));
+			///ctMethod.insertBeforeBody("System.out.println(\"方法名\"+this.i);");//内部没有被初始化完
+			//ctMethod.insertAfter("System.out.println(\"方法名end\"+this.i);");//被初始化完可以访问内初始化变量
+			//ctMethod.insertBeforeBody("int zzm = 555;");
+			//ctMethod.insertAfter("System.out.println(\"方法名end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\");");
+			//ctMethod.insertAfter("System.out.println(\"方法名end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\"+zzm);",true);//访问不了构造方法内部的
 		} catch (Exception e) {
 			log.severe(e.getMessage());
 		}

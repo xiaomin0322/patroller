@@ -21,6 +21,8 @@ public class OkHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void before(MethodInfo methodInfo) {
+		okhttp3.OkHttpClient.Builder builder = (okhttp3.OkHttpClient.Builder) methodInfo.getTarget();
+		logger.info("okhttp3.OkHttpClient.Builder before >>>>>>>>>>>>>>>>>>>>>>>"+builder);
 	}
 
 	@Override
