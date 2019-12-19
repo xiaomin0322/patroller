@@ -49,6 +49,10 @@ public class PreApmConfigUtil {
 		jarBeanTomcat.setName(pre_Tomcat_plugin);
 		jarBeanTomcat.setNameJar(pre_Tomcat_plugin_jar);
 		
+		PluginJarBean jarBeanlogback = new PluginJarBean();
+		jarBeanlogback.setName("com.preapm.agent.plugin.interceptor.LogbackInterceptor");
+		jarBeanlogback.setNameJar("pre-logback-plugin");
+		
 		
 		
 		Set methodSet = new HashSet<>();
@@ -143,6 +147,19 @@ public class PreApmConfigUtil {
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanhttpclient4);
+		bean.setPlugins(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
+		
+		
+		methodSet = new HashSet<>();
+		methodSet.add("ch.qos.logback.core.joran.action.AppenderAction.begin(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes)");
+		bean  = new PluginConfigBean();
+		bean.setName("logback");
+		bean.setLoadPatterns("ch.qos.logback.core.joran.action.AppenderAction");
+		bean.setPatterns("ch.qos.logback.core.joran.action.AppenderAction");
+		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add(jarBeanlogback);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
