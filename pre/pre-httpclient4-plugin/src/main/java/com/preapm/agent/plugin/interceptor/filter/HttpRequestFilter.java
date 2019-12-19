@@ -5,12 +5,10 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.preapm.agent.plugin.interceptor.Httpclient4Interceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
 
 import zipkin.Span;
