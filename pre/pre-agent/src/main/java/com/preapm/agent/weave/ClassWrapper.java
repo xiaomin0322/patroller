@@ -41,7 +41,8 @@ public abstract class ClassWrapper {
 		try {
 			ctMethod.insertBeforeBody(beforAgent(methodName, null));
 			ctMethod.insertAfter(afterAgent(null));
-			//ctMethod.insertBefore("System.out.println(\"方法名\");");
+			//ctMethod.insertBeforeBody("System.out.println(\"方法名\"+this.i);");
+			//ctMethod.insertAfter("System.out.println(\"方法名end\"+this.i);");
 		} catch (Exception e) {
 			log.severe(e.getMessage());
 		}

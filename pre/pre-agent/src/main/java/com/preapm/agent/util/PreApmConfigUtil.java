@@ -168,7 +168,7 @@ public class PreApmConfigUtil {
 		
 		
 		methodSet = new HashSet<>();
-		methodSet.add("okhttp3.OkHttpClient$Builder.Builder()");
+		methodSet.add("okhttp3.OkHttpClient$Builder()");
 		bean  = new PluginConfigBean();
 		bean.setName("okhttp");
 		bean.setLoadPatterns("okhttp3.OkHttpClient$Builder");

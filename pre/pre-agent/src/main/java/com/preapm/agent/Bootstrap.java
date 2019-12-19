@@ -2,12 +2,13 @@ package com.preapm.agent;
 
 public class Bootstrap {
 	
-	public String s = "123";
+	public Integer i = new Integer(5);
 	
 	public Object o;
 	
 	public Bootstrap() {
-	 this.o =  new APMAgent() ;
+		 System.out.println("Bootstrap start");
+	 System.out.println("Bootstrapend");
 		
 	}
 
