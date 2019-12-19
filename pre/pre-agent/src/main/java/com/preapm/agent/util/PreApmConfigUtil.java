@@ -53,6 +53,9 @@ public class PreApmConfigUtil {
 		jarBeanlogback.setName("com.preapm.agent.plugin.interceptor.LogbackInterceptor");
 		jarBeanlogback.setNameJar("pre-logback-plugin");
 		
+		PluginJarBean jarBeanokHttp = new PluginJarBean();
+		jarBeanokHttp.setName("com.preapm.agent.plugin.interceptor.OkHttpInterceptor");
+		jarBeanokHttp.setNameJar("pre-okhttp-plugin");
 		
 		
 		Set methodSet = new HashSet<>();
@@ -160,6 +163,19 @@ public class PreApmConfigUtil {
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanlogback);
+		bean.setPlugins(methodSet);
+		targetMap.put(bean.getPatterns(), bean);
+		
+		
+		methodSet = new HashSet<>();
+		methodSet.add("okhttp3.OkHttpClient.Builder.Builder()");
+		bean  = new PluginConfigBean();
+		bean.setName("okhttp");
+		bean.setLoadPatterns("okhttp3.OkHttpClient.Builder");
+		bean.setPatterns("okhttp3.OkHttpClient.Builder");
+		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add(jarBeanokHttp);
 		bean.setPlugins(methodSet);
 		targetMap.put(bean.getPatterns(), bean);
 
