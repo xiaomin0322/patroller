@@ -19,7 +19,7 @@ public class BackLogFilter extends Filter<ILoggingEvent> {
 		}
 
 		String message = event.getMessage();
-		if (message.startsWith("pre.")) {
+		if (message.startsWith("tracer")) {
 			try {
 				ZipkinClientContext.getClient().sendBinaryAnnotation(message, Arrays.toString(argumentArray), null);
 				;
