@@ -30,6 +30,7 @@
         <module>pre-tomcat-plugin</module>
         <module>pre-zipkin-plugin</module>
 		<module>pre-logback-plugin</module>
+		<module>pre-okhttp-plugin</module>
         <module>pre-zipkin-sdk</module>
     </modules>
 
