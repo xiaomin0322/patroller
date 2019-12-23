@@ -52,11 +52,11 @@ public class PreConfigUtil {
 		}
 		boolean matchesPattern = false;
 		List<String> patternsList = patterns.getIncludedPatterns();
-		if (patternsList != null) {
+		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
 		patternsList = patterns.getExcludedPatterns();
-		if (patternsList != null) {
+		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
 		log.info("isTarget  :   calssName:"+className +" method:"+method + " matchesPattern:"+matchesPattern);
