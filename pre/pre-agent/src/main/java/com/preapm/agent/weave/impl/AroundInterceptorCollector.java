@@ -37,17 +37,18 @@ public class AroundInterceptorCollector extends Collector {
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
-				if(longName.contains("okhttp3.OkHttpClient$Builder")) {
-					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+longName);
-				}
-				if ((Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
+				if (/*(Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
+					if(longName.contains("okhttp3.OkHttpClient$Builder")) {
+						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+longName);
+					}
 					Set<PluginJarBean> plugins = PreApmConfigUtil.getPlugins(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
+					return replacer.replace();
 				}
 			}
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
@@ -62,11 +63,10 @@ public class AroundInterceptorCollector extends Collector {
 						classWrapper.endSrc(endSrc);
 						classWrapper.errorSrc(errorSrc);
 						replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
+						return replacer.replace();
 					}
 				}
 			}
-		
-			return replacer.replace();
 		} catch (Exception e) {
 			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}

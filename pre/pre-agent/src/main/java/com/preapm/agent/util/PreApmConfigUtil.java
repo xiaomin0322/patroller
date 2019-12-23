@@ -141,7 +141,7 @@ public class PreApmConfigUtil {
 		targetMap.put(bean.getPatterns(), bean);
 		
 		
-		methodSet = new HashSet<>();
+		/*methodSet = new HashSet<>();
 		methodSet.add("org.apache.http.impl.client.CloseableHttpClient.execute(org.apache.http.client.methods.HttpUriRequest)");
 		bean  = new PluginConfigBean();
 		bean.setName("httpClient4");
@@ -151,9 +151,19 @@ public class PreApmConfigUtil {
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanhttpclient4);
 		bean.setPlugins(methodSet);
-		targetMap.put(bean.getPatterns(), bean);
+		targetMap.put(bean.getPatterns(), bean);*/
 		
-		
+		methodSet = new HashSet<>();
+		methodSet.add("org.apache.http.impl.client.InternalHttpClient.doExecute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)");
+		bean  = new PluginConfigBean();
+		bean.setName("httpClient4");
+		bean.setLoadPatterns("org.apache.http.impl.client.InternalHttpClient");
+		bean.setPatterns("org.apache.http.impl.client.InternalHttpClient");
+		bean.setContainPatterns(methodSet);
+		methodSet = new HashSet<>();
+		methodSet.add(jarBeanhttpclient4);
+		bean.setPlugins(methodSet);
+		targetMap.put(bean.getPatterns(), bean);		
 		methodSet = new HashSet<>();
 		methodSet.add("ch.qos.logback.core.joran.action.AppenderAction.begin(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes)");
 		bean  = new PluginConfigBean();
