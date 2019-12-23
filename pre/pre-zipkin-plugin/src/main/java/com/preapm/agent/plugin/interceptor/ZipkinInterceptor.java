@@ -20,6 +20,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 			Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 			methodInfo.setLocalVariable(new Object[] { endpoint });
 			client.startSpan(methodInfo.getMethodName());
+			client.sendBinaryAnnotation("className", methodInfo.getClassName(), endpoint);
 			client.sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
 			String[] argsName = methodInfo.getArgsName();
 			if (argsName != null && argsName.length > 0) {
