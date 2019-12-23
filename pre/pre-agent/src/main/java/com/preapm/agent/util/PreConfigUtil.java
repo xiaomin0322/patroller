@@ -32,6 +32,10 @@ public class PreConfigUtil {
 		return null;
 	}
 
+	public static Set<String> getBasePlginName() {
+		return pluginConfigYaml.getBasePlugins().keySet();
+	}
+
 	private static void init() {
 		try {
 			pluginConfigYaml = (PluginConfigYaml) YMLMappingUtil.reader(PluginConfigYaml.class);

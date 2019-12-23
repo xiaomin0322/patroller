@@ -3,10 +3,10 @@ package com.preapm.agent.weave.impl;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.preapm.agent.bean.PluginJarBean;
+import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.LogManager;
-import com.preapm.agent.util.PreApmConfigUtil;
+import com.preapm.agent.util.PreConfigUtil;
 import com.preapm.agent.weave.ClassReplacer;
 import com.preapm.agent.weave.ClassWrapper;
 import com.preapm.agent.weave.Collector;
@@ -32,17 +32,17 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		try {
 			// 加载插件后，初始化插件
-			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader,className);
+			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
-				if (/*(Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
+				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					if(longName.contains("okhttp3.OkHttpClient$Builder")) {
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+longName);
+					if (longName.contains("okhttp3.OkHttpClient$Builder")) {
+						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + longName);
 					}
-					Set<PluginJarBean> plugins = PreApmConfigUtil.getPlugins(className);
+					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
@@ -52,12 +52,12 @@ public class AroundInterceptorCollector extends Collector {
 				}
 			}
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
-			if(constructors!=null && constructors.length > 0) {
-				for(CtConstructor c:constructors) {
+			if (constructors != null && constructors.length > 0) {
+				for (CtConstructor c : constructors) {
 					String longName = c.getLongName();
-					System.out.println("构造方法："+longName);
-					if(isTarget(className, longName)) {
-						Set<PluginJarBean> plugins = PreApmConfigUtil.getPlugins(className);
+					System.out.println("构造方法：" + longName);
+					if (isTarget(className, longName)) {
+						Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 						ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 						classWrapper.beginSrc(beginSrc);
 						classWrapper.endSrc(endSrc);

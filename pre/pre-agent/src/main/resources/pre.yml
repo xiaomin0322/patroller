@@ -1,3 +1,9 @@
+basePlugins:
+  pre-agent-common:
+    jarName: pre-agent-common
+  pre-zipkin-sdk:
+    jarName: pre-zipkin-sdk
+
 plugins:
   pre-zipkin-plugin:
     jarName: pre-zipkin-plugin
@@ -5,12 +11,14 @@ plugins:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     loadPatterns:
       - org.apache.catalina.core.StandardWrapperValve
+      
   pre-httpclient4-plugin:
     jarName: pre-httpclient4-plugin
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
     loadPatterns:
       - org.apache.http.impl.client.CloseableHttpClient
+      
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
     interceptorNames:
@@ -24,6 +32,7 @@ plugins:
       - com.preapm.agent.plugin.interceptor.LogbackInterceptor
     loadPatterns:
       - ch.qos.logback.core.joran.action.AppenderAction
+      
   pre-okhttp-plugin:
     jarName: pre-okhttp-plugin
     interceptorNames:

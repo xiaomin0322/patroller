@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.preapm.agent.bean.PluginConfigBean;
-import com.preapm.agent.bean.PluginJarBean;
+import com.preapm.agent.bean.PatternsYaml.Patterns;
+import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 
 public class ClassLoaderUtil {
@@ -26,7 +26,7 @@ public class ClassLoaderUtil {
 	public static void init() {
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
 
-		for (String name : com.preapm.agent.util.PreApmConfigUtil.basePlginName) {
+		for (String name : com.preapm.agent.util.PreConfigUtil.getBasePlginName()) {
 			File preZipkinSdkFile = new File(pluginDir, name + ".jar");
 			loadJar(null, preZipkinSdkFile.getAbsolutePath());
 		}
@@ -34,23 +34,23 @@ public class ClassLoaderUtil {
 	}
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
-		PluginConfigBean pluginConfigBean = PreApmConfigUtil.get(className);
-		if (pluginConfigBean == null) {
+		Patterns patterns = PreConfigUtil.get(className);
+		if (patterns == null) {
 			return;
 		}
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
-		Set<PluginJarBean> plugins = pluginConfigBean.getPlugins();
+		Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 		if (plugins != null) {
-			for (PluginJarBean p : plugins) {
-				if (loadPluginsJar.contains(p.getNameJar())) {
+			for (JarBean p : plugins) {
+				if (loadPluginsJar.contains(p.getJarName())) {
 					continue;
 				}
-				File pFile = new File(pluginDir, p.getNameJar() + ".jar");
+				File pFile = new File(pluginDir, p.getJarName() + ".jar");
 				log.info(
 						"className:" + className + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
 					loadJar(classLoader, pFile.getAbsolutePath());
-					loadPluginsJar.add(p.getNameJar());
+					loadPluginsJar.add(p.getJarName());
 				}
 			}
 		}
@@ -58,10 +58,9 @@ public class ClassLoaderUtil {
 	}
 
 	public static String getJARPath() {
-		String decode = AroundInterceptorCollector.class.getProtectionDomain()
-				.getCodeSource().getLocation().getFile();
+		String decode = AroundInterceptorCollector.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
-		return decode.substring(0,decode.lastIndexOf("/"));
+		return decode.substring(0, decode.lastIndexOf("/"));
 	}
 
 	public static void loadJar(ClassLoader classLoader, String path) {

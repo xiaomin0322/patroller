@@ -1,4 +1,4 @@
-package com.preapm.agent.util;
+package com.preapm.agent.test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PluginConfigBean;
 import com.preapm.agent.bean.PluginJarBean;
+import com.preapm.agent.util.LogManager;
 
 public class PreApmConfigUtil {
 	
@@ -223,8 +224,4 @@ public class PreApmConfigUtil {
 		}
 		return true;
 	}
-	
-	
-	
-
 }

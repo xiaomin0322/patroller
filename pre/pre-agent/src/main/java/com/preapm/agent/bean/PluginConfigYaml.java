@@ -6,6 +6,7 @@ import java.util.Map;
 public class PluginConfigYaml {
     private Map<String,JarBean> plugins;
 
+    private Map<String,JarBean> basePlugins;
 
     public static class JarBean {
 
@@ -45,6 +46,16 @@ public class PluginConfigYaml {
     public void setPlugins(Map<String, JarBean> plugins) {
         this.plugins = plugins;
     }
+
+	public Map<String, JarBean> getBasePlugins() {
+		return basePlugins;
+	}
+
+	public void setBasePlugins(Map<String, JarBean> basePlugins) {
+		this.basePlugins = basePlugins;
+	}
+    
+    
 
     //    public static class Plugins {
 //        private Map<String,JarBean> jars;

@@ -6,16 +6,16 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.preapm.agent.bean.PluginJarBean;
+import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	
-	private Set<PluginJarBean> plugins;
+	private Set<JarBean> plugins;
 	
 	public ClassWrapperAroundInterceptor() {}
 	
-	public ClassWrapperAroundInterceptor(Set<PluginJarBean> plugins) {
+	public ClassWrapperAroundInterceptor(Set<JarBean> plugins) {
 		this.plugins = plugins;
 	}
 	
@@ -37,8 +37,8 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		}
 		if (plugins != null && plugins.size() != 0) {
 			Set<String> pluginNameSet = new HashSet<>();
-			for(PluginJarBean p :plugins) {
-				pluginNameSet.add(p.getName());
+			for(JarBean p :plugins) {
+				pluginNameSet.addAll(p.getInterceptorNames());
 			}
 			stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(pluginNameSet,","))).append(";")
 					.append(line());
@@ -62,8 +62,8 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 			stringBuilder.append("preMethondInfo.setTarget(this);").append(line());
 			if (plugins != null && plugins.size() != 0) {
 				Set<String> pluginNameSet = new HashSet<>();
-				for(PluginJarBean p :plugins) {
-					pluginNameSet.add(p.getName());
+				for(JarBean p :plugins) {
+					pluginNameSet.addAll(p.getInterceptorNames());
 				}
 				stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(pluginNameSet,","))).append(";")
 						.append(line());
