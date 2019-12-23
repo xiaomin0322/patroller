@@ -1,6 +1,7 @@
 package com.preapm.agent.plugin.interceptor;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,8 +49,8 @@ public class TomcatInterceptor implements AroundInterceptor {
 			}else {
 				ZipkinClientContext.getClient().startSpan(url);
 			}
-			
-			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
+			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_SEND, endpoint);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,7 +65,7 @@ public class TomcatInterceptor implements AroundInterceptor {
 	@Override
 	public void after(MethodInfo methodInfo) {
 		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
-		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint );
+		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_RECV, endpoint );
 		ZipkinClientContext.getClient().finishSpan();
 
 	}
