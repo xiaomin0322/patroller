@@ -2,6 +2,7 @@ package com.preapm.agent.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.logging.Logger;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
@@ -10,6 +11,10 @@ import com.preapm.agent.bean.PluginConfigYaml;
 
 public class YMLMappingUtil {
 
+	
+	private static Logger log = LogManager.getLogger(YMLMappingUtil.class);
+	
+	
     private static YamlReader yamlReader;
 
 
@@ -22,6 +27,7 @@ public class YMLMappingUtil {
 
     private static void init() {
         String path = ClassLoaderUtil.getJARPath() + "/pre.yml";
+        log.info("load yaml path:"+path);
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(path);

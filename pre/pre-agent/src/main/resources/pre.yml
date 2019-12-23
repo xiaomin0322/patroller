@@ -63,6 +63,7 @@ patterns:
       - org.apache.catalina.core.StandardWrapperValve.invoke\\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\\)
     plugins:
       - pre-tomcat-plugin
+      
   httpClient4:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
@@ -102,7 +103,8 @@ patterns:
       -
     plugins:
       - pre-okhttp-plugin
-    pre-im:
+      
+  pre-im:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.dominos.cloud.im.controller.StoreController
@@ -128,7 +130,8 @@ patterns:
     includedPatterns:
       - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\\(int\\)
     plugins:
-      - pre-zipkin-plugin    
+      - pre-zipkin-plugin
+      
   test:
       #插件织入匹配方法路径，支持正则表达式
       patterns:
@@ -142,4 +145,4 @@ patterns:
         - com.preapm.agent.Bootstrap.print2\\(java.lang.String\\)
         - com.preapm.agent.Bootstrap.print3\\(java.lang.String,java.lang.String\\)
       plugins:
-        - pre-zipkin-plugin    
+        - pre-zipkin-plugin

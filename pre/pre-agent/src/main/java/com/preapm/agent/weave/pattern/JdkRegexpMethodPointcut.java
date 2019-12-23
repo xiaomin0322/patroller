@@ -1,5 +1,6 @@
 package com.preapm.agent.weave.pattern;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -121,5 +122,15 @@ public class JdkRegexpMethodPointcut {
             }
         }
         return false;
+    }
+    
+    public static boolean macth(List<String> patterns,String matchKey) {
+    	JdkRegexpMethodPointcut jdkRegexpMethodPointcut = new JdkRegexpMethodPointcut();
+		String[] patternStr = patterns.toArray(new String[] {});
+		jdkRegexpMethodPointcut.setPatterns(patternStr);
+		Pattern[] patternsP = jdkRegexpMethodPointcut.compilePatterns(patternStr);
+		jdkRegexpMethodPointcut.setCompiledPatterns(patternsP);
+		boolean matchesPattern = jdkRegexpMethodPointcut.matchesPattern(matchKey);
+		return matchesPattern;
     }
 }
