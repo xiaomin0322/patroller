@@ -1,6 +1,7 @@
 package com.preapm.agent.plugin.interceptor.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class OkHttpFilter implements Interceptor {
 				String.format("Sending request %s on %s%n%s", request.url(), chain.connection(), request.headers()));
 		Response response = chain.proceed(request);
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
-		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME, "okhttp", endpoint);
+		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME, Arrays.toString(m), endpoint);
 		ZipkinClientContext.getClient().finishSpan();
 		long t2 = System.nanoTime();
 		logger.info(String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d,
