@@ -1,56 +1,208 @@
-
-#  private List<String> interceptorNames;
-#    private String jarName;
 plugins:
-  key1:
-    jarName: 测试
+  pre-zipkin-plugin:
+    jarName: pre-zipkin-plugin
     interceptorNames:
-      -
-      -
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     loadPatterns:
-      -
-      -
-  key2:
-    jarName: 测试
+      - com.preapm.agent.Bootstrap
+      - com.alibaba.druid.pool.DruidDataSource
+      - com.dominos.cloud.im.controller.StoreController
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - org.apache.catalina.core.StandardWrapperValve
+      - org.apache.http.impl.client.CloseableHttpClient
+      - ch.qos.logback.core.joran.action.AppenderAction
+      - okhttp3.OkHttpClient$Builder
+  pre-httpclient4-plugin:
+    jarName: pre-httpclient4-plugin
     interceptorNames:
-        -
-        -
+      - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
     loadPatterns:
-        -
-        -
-
+      - com.preapm.agent.Bootstrap
+      - com.alibaba.druid.pool.DruidDataSource
+      - com.dominos.cloud.im.controller.StoreController
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - org.apache.catalina.core.StandardWrapperValve
+      - org.apache.http.impl.client.CloseableHttpClient
+      - ch.qos.logback.core.joran.action.AppenderAction
+      - okhttp3.OkHttpClient$Builder
+  pre-tomcat-plugin:
+    jarName: pre-tomcat-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.TomcatInterceptor
+    loadPatterns:
+      - com.preapm.agent.Bootstrap
+      - com.alibaba.druid.pool.DruidDataSource
+      - com.dominos.cloud.im.controller.StoreController
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - org.apache.catalina.core.StandardWrapperValve
+      - org.apache.http.impl.client.CloseableHttpClient
+      - ch.qos.logback.core.joran.action.AppenderAction
+      - okhttp3.OkHttpClient$Builder
+  pre-logback-plugin:
+    jarName: pre-logback-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.LogbackInterceptor
+    loadPatterns:
+      - com.preapm.agent.Bootstrap
+      - com.alibaba.druid.pool.DruidDataSource
+      - com.dominos.cloud.im.controller.StoreController
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - org.apache.catalina.core.StandardWrapperValve
+      - org.apache.http.impl.client.CloseableHttpClient
+      - ch.qos.logback.core.joran.action.AppenderAction
+      - okhttp3.OkHttpClient$Builder
+  pre-okhttp-plugin:
+    jarName: pre-okhttp-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.OkHttpInterceptor
+    loadPatterns:
+      - com.preapm.agent.Bootstrap
+      - com.alibaba.druid.pool.DruidDataSource
+      - com.dominos.cloud.im.controller.StoreController
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - org.apache.catalina.core.StandardWrapperValve
+      - org.apache.http.impl.client.CloseableHttpClient
+      - ch.qos.logback.core.joran.action.AppenderAction
+      - okhttp3.OkHttpClient$Builder
 
 #多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
 patterns:
   #自定义的名称，可以配置多个
-  mysql:
+  test:
       #插件织入匹配方法路径，支持正则表达式
       patterns:
-        - com.preapm.agent.Bootstrap.print
-      #        - com.preapm.agent.Bootstrap.print
+        - com.preapm.agent.Bootstrap
       #排除匹配路径
       excludedPatterns:
         -
         -
       includedPatterns:
-        -
-        -
+        - com.preapm.agent.Bootstrap\\(\\)
+        - com.preapm.agent.Bootstrap.print2\\(java.lang.String\\)
+        - com.preapm.agent.Bootstrap.print3\\(java.lang.String,java.lang.String\\)
       plugins:
-        -
-        -
-  spring:
+        - pre-zipkin-plugin
+        - pre-httpclient4-plugin
+        - pre-tomcat-plugin
+        - pre-logback-plugin
+        - pre-okhttp-plugin
+  durid:
       #插件织入匹配方法路径，支持正则表达式
       patterns:
-        - com.preapm.agent.Bootstrap.print
-      #        - com.preapm.agent.Bootstrap.print
+        - com.alibaba.druid.pool.DruidDataSource
       #排除匹配路径
       excludedPatterns:
         -
         -
       includedPatterns:
-        -
-        -
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\\(\\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\\(long\\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\\(long\\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\\(long\\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\\(java.lang.String,java.lang.String\\)
       plugins:
-        -
-        -
+        - pre-zipkin-plugin
+        - pre-httpclient4-plugin
+        - pre-tomcat-plugin
+        - pre-logback-plugin
+        - pre-okhttp-plugin
+  dominos:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - com.dominos.cloud.im.controller.StoreController
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll\\(\\)
+      - com.dominos.cloud.im.controller.StoreController.test\\(com.dominos.cloud.im.controller.ProductController\\)
+      - com.dominos.cloud.im.controller.StoreController.test2\\(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs\\)
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
+  zuul:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\\(int\\)
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
+  tomcat:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - org.apache.catalina.core.StandardWrapperValve
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - org.apache.catalina.core.StandardWrapperValve.invoke\\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\\)
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
+  httpClient:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - org.apache.http.impl.client.CloseableHttpClient
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - org.apache.http.impl.client.CloseableHttpClient.execute\\(org.apache.http.client.methods.HttpUriRequest\\)
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
+  logback:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - ch.qos.logback.core.joran.action.AppenderAction
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - ch.qos.logback.core.joran.action.AppenderAction.begin\\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\\)
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
+  okhttp:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - okhttp3.OkHttpClient\\$Builder
+    #排除匹配路径
+    excludedPatterns:
+      -
+      -
+    includedPatterns:
+      - okhttp3.OkHttpClient$Builder\\(\\)
+      -
+    plugins:
+      - pre-zipkin-plugin
+      - pre-httpclient4-plugin
+      - pre-tomcat-plugin
+      - pre-logback-plugin
+      - pre-okhttp-plugin
