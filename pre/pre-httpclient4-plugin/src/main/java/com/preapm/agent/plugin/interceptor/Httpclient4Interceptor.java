@@ -10,7 +10,6 @@ import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
-import okhttp3.HttpUrl;
 import zipkin.Endpoint;
 import zipkin.Span;
 
