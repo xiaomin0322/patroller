@@ -87,6 +87,15 @@ public class ZipkinClient {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendAnnotation(String value) {
+		try {
+			Span.Builder span = this.spanStore.getSpan();
+			span.addAnnotation(Annotation.create(nanoTime(), value, null));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void sendBinaryAnnotation(String key, String value, Endpoint endpoint) {
 		try {
