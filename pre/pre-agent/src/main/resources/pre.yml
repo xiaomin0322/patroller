@@ -73,6 +73,8 @@ patterns:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
       - org.apache.http.impl.client.InternalHttpClient
+      - org.apache.http.impl.client.MinimalHttpClient
+      - org.apache.http.impl.client.AbstractHttpClient
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
