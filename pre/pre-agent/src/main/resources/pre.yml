@@ -94,7 +94,7 @@ patterns:
   okhttp:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - okhttp3.OkHttpClient\$Builder
+      - okhttp3.OkHttpClient$Builder
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
