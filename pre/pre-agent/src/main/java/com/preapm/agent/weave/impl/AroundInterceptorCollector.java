@@ -39,23 +39,18 @@ public class AroundInterceptorCollector extends Collector {
 				String longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
-					if (longName.contains("okhttp3.OkHttpClient$Builder")) {
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + longName);
-					}
 					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
-					return replacer.replace();
 				}
 			}
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
 			if (constructors != null && constructors.length > 0) {
 				for (CtConstructor c : constructors) {
 					String longName = c.getLongName();
-					System.out.println("构造方法：" + longName);
 					if (isTarget(className, longName)) {
 						Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 						ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins);
@@ -63,10 +58,12 @@ public class AroundInterceptorCollector extends Collector {
 						classWrapper.endSrc(endSrc);
 						classWrapper.errorSrc(errorSrc);
 						replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
-						return replacer.replace();
+
 					}
 				}
 			}
+
+			return replacer.replace();
 		} catch (Exception e) {
 			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
