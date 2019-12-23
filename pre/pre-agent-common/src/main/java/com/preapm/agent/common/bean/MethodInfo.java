@@ -1,5 +1,7 @@
 package com.preapm.agent.common.bean;
 
+import java.util.Arrays;
+
 public class MethodInfo {
 
 	private String methodName;
@@ -83,6 +85,13 @@ public class MethodInfo {
 
 	public void setLocalVariable(Object[] localVariable) {
 		this.localVariable = localVariable;
+	}
+
+	@Override
+	public String toString() {
+		return "MethodInfo [methodName=" + methodName + ", target=" + target + ", argsName=" + Arrays.toString(argsName)
+				+ ", args=" + Arrays.toString(args) + ", result=" + result + ", throwable=" + throwable
+				+ ", localVariable=" + Arrays.toString(localVariable) + ", plugins=" + Arrays.toString(plugins) + "]";
 	}
 
 }

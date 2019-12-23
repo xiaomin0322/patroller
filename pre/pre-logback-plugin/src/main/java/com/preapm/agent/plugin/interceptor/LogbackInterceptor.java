@@ -34,6 +34,7 @@ public class LogbackInterceptor implements AroundInterceptor {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void after(MethodInfo methodInfo) {
+		logger.info("methodInfo : {}",methodInfo);
 		InterpretationContext context = (InterpretationContext) methodInfo.getArgs()[0];
 		Object object = context.peekObject();
 		if (object instanceof Appender) {
