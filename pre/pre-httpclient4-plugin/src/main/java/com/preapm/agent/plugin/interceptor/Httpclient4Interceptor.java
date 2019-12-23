@@ -7,7 +7,11 @@ import org.slf4j.LoggerFactory;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
+import com.preapm.sdk.zipkin.util.InetAddressUtils;
+import com.preapm.sdk.zipkin.util.TraceKeys;
 
+import okhttp3.HttpUrl;
+import zipkin.Endpoint;
 import zipkin.Span;
 
 /**
@@ -45,6 +49,11 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 		try {
 			org.apache.http.HttpRequest  request = (HttpUriRequest) methodInfo.getArgs()[1];
 			if (request != null) {
+				int ipv4 = InetAddressUtils.localIpv4();
+				Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
+				methodInfo.setLocalVariable(new Object[] {endpoint});
+				ZipkinClientContext.getClient().startSpan(request.getRequestLine().getUri());
+				ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
 				Span span = ZipkinClientContext.getClient().getSpan();
 				if (span != null) {
 					logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));
@@ -67,7 +76,9 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-
+		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint );
+		ZipkinClientContext.getClient().finishSpan();
 	}
 
 	@Override

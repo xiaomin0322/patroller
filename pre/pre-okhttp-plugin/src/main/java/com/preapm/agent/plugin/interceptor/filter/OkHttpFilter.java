@@ -50,6 +50,7 @@ public class OkHttpFilter implements Interceptor {
 		Response response = chain.proceed(request);
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME, "okhttp", endpoint);
+		ZipkinClientContext.getClient().finishSpan();
 		long t2 = System.nanoTime();
 		logger.info(String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d,
 				response.headers()));
