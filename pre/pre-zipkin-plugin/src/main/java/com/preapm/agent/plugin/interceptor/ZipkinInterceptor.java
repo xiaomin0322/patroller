@@ -2,6 +2,9 @@ package com.preapm.agent.plugin.interceptor;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClient;
@@ -12,7 +15,8 @@ import com.preapm.sdk.zipkin.util.TraceKeys;
 import zipkin.Endpoint;
 
 public class ZipkinInterceptor implements AroundInterceptor {
-
+	private static final Logger logger = LoggerFactory.getLogger(ZipkinInterceptor.class);
+	
 	private static final ZipkinClient client = ZipkinClientContext.getClient();
 
 	@Override
@@ -34,7 +38,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -48,10 +52,11 @@ public class ZipkinInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
-		client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
-		client.finishSpan();
-
+		if(methodInfo.getLocalVariable()!=null) {
+			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+			client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
+			client.finishSpan();
+		}
 	}
 
 	@Override
