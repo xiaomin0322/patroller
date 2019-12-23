@@ -53,6 +53,7 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 				methodInfo.setLocalVariable(new Object[] {endpoint});
 				ZipkinClientContext.getClient().startSpan(request.getRequestLine().getUri());
 				ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME, "httpclient4", endpoint);
 				Span span = ZipkinClientContext.getClient().getSpan();
 				if (span != null) {
 					logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));

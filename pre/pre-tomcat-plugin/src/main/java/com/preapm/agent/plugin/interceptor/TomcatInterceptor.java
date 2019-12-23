@@ -48,7 +48,7 @@ public class TomcatInterceptor implements AroundInterceptor {
 			}else {
 				ZipkinClientContext.getClient().startSpan(url);
 			}
-			
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME, "tomcat", endpoint);
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_SEND, endpoint);
 			
 		} catch (Exception e) {
