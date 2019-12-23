@@ -59,6 +59,7 @@ public class PreConfigUtil {
 		if (patternsList != null) {
 			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
+		log.info("calssName:"+className +" method:"+method + " matchesPattern:"+matchesPattern);
 		return matchesPattern;
 	}
 
