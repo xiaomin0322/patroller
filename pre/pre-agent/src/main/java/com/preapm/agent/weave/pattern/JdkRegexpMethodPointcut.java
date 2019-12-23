@@ -125,6 +125,9 @@ public class JdkRegexpMethodPointcut {
     }
     
     public static boolean macth(List<String> patterns,String matchKey) {
+    	if(patterns == null || patterns.size() == 0) {
+    		return false;
+    	}
     	JdkRegexpMethodPointcut jdkRegexpMethodPointcut = new JdkRegexpMethodPointcut();
 		String[] patternStr = patterns.toArray(new String[] {});
 		jdkRegexpMethodPointcut.setPatterns(patternStr);
