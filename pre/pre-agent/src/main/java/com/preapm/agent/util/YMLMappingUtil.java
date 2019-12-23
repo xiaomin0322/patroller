@@ -26,7 +26,7 @@ public class YMLMappingUtil {
     }
 
     private static void init() {
-        String path = ClassLoaderUtil.getJARPath() + "/pre.yml";
+        String path = PathUtil.getProjectPath() + "/pre.yml";
         log.info("load yaml path:"+path);
         FileReader fileReader = null;
         try {
