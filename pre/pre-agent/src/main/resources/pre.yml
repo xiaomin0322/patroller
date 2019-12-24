@@ -50,21 +50,6 @@ plugins:
 #多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
 patterns:
-  #自定义的名称，可以配置多个
-  durid:
-      #插件织入匹配方法路径，支持正则表达式
-      patterns:
-        - com.alibaba.druid.pool.DruidDataSource
-      #排除匹配路径
-      excludedPatterns:
-      includedPatterns:
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
-      plugins:
-        - pre-zipkin-plugin
   tomcat:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
@@ -111,7 +96,7 @@ patterns:
     plugins:
       - pre-okhttp-plugin
       
-  druid:
+  druid-sql:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.alibaba.druid.pool.DruidDataSource
@@ -121,6 +106,22 @@ patterns:
       - com.alibaba.druid.pool.DruidDataSource\(\)
     plugins:
       - pre-druid-plugin
+      
+  #自定义的名称，可以配置多个
+  durid:
+      #插件织入匹配方法路径，支持正则表达式
+      patterns:
+        - com.alibaba.druid.pool.DruidDataSource
+      #排除匹配路径
+      excludedPatterns:
+      includedPatterns:
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
+        - com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
+      plugins:
+        - pre-zipkin-plugin    
       
   pre-im:
     #插件织入匹配方法路径，支持正则表达式
