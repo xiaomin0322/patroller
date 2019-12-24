@@ -6,7 +6,7 @@ public class PreConfigUtilTest {
 	
 	
 	public static void main(String[] args) {
-		System.out.println(PreConfigUtil.isTarget("com.preapm.agent.Bootstrap", "com.preapm.agent.Bootstrap()"));
+		System.out.println(PreConfigUtil.isTargetR("com.preapm.agent.Bootstrap", "com.preapm.agent.Bootstrap()"));
 		
 		System.out.println(PreConfigUtil.isTarget("com.preapm.agent.Bootstrap", "com.preapm.agent.Bootstrap.print2(java.lang.String)"));
 	}
