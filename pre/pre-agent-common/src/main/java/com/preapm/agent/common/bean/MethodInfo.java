@@ -1,8 +1,14 @@
 package com.preapm.agent.common.bean;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class MethodInfo {
+public class MethodInfo implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String methodName;
 
