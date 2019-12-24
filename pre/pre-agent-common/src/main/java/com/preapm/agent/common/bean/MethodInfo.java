@@ -131,7 +131,9 @@ public class MethodInfo implements Serializable{
 	public String toString() {
 		return "MethodInfo [methodName=" + methodName + ", target=" + target + ", argsName=" + Arrays.toString(argsName)
 				+ ", args=" + Arrays.toString(args) + ", result=" + result + ", throwable=" + throwable
-				+ ", localVariable=" + Arrays.toString(localVariable) + ", plugins=" + Arrays.toString(plugins) + "]";
+				+ ", localVariable=" + Arrays.toString(localVariable) + ", plugins=" + Arrays.toString(plugins)
+				+ ", inParam=" + inParam + ", outParam=" + outParam + ", time=" + time + "]";
 	}
+
 
 }
