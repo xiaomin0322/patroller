@@ -99,10 +99,13 @@ public class PreConfigUtil {
 		}
 		Set<JarBean> jarBeansSet = new HashSet<>();
 		List<String> plugins = patterns.getPlugins();
-		for (String s : plugins) {
-			JarBean jarBean = pluginConfigYaml.getPlugins().get(s);
-			jarBeansSet.add(jarBean);
+		if(plugins!=null) {
+			for (String s : plugins) {
+				JarBean jarBean = pluginConfigYaml.getPlugins().get(s);
+				jarBeansSet.add(jarBean);
+			}
 		}
+		
 		return jarBeansSet;
 	}
 
