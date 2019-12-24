@@ -106,6 +106,10 @@ public class ZipkinClient {
 		}
 
 	}
+	
+	public void sendBinaryAnnotation(String key, String value) {
+		sendBinaryAnnotation(key, value,null);
+	}
 
 	public void finishSpan() {
 		try {
