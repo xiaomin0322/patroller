@@ -35,29 +35,33 @@ public class ClassLoaderUtil {
 	}
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
-		if(!initFlag) {
+		if (!initFlag) {
 			init(classLoader);
 		}
-		Patterns patterns = PreConfigUtil.get(className);
-		if (patterns == null) {
+		JarBean p = PreConfigUtil.getJarBean(className);
+		if (p == null) {
+			return;
+		}
+		if (loadPluginsJar.contains(p.getJarName())) {
 			return;
 		}
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
-		Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
-		if (plugins != null) {
-			for (JarBean p : plugins) {
-				if (loadPluginsJar.contains(p.getJarName())) {
-					continue;
-				}
-				File pFile = new File(pluginDir, p.getJarName() + ".jar");
-				log.info(
-						"className:" + className + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
-				if (pFile.exists()) {
-					loadJar(classLoader, pFile.getAbsolutePath());
-					loadPluginsJar.add(p.getJarName());
-				}
-			}
+		File pFile = new File(pluginDir, p.getJarName() + ".jar");
+		log.info("className:" + className + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
+		if (pFile.exists()) {
+			loadJar(classLoader, pFile.getAbsolutePath());
+			loadPluginsJar.add(p.getJarName());
 		}
+
+		/*
+		 * Set<JarBean> plugins = PreConfigUtil.getPlugins(className); if (plugins !=
+		 * null) { for (JarBean p : plugins) { if
+		 * (loadPluginsJar.contains(p.getJarName())) { continue; } File pFile = new
+		 * File(pluginDir, p.getJarName() + ".jar"); log.info( "className:" + className
+		 * + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath()); if
+		 * (pFile.exists()) { loadJar(classLoader, pFile.getAbsolutePath());
+		 * loadPluginsJar.add(p.getJarName()); } } }
+		 */
 
 	}
 

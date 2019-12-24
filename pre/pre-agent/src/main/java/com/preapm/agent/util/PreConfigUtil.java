@@ -32,6 +32,16 @@ public class PreConfigUtil {
 		}
 		return null;
 	}
+	
+	public static JarBean getJarBean(String key) {
+		for (JarBean p : pluginConfigYaml.getBasePlugins().values()) {
+			boolean matchesPattern = JdkRegexpMethodPointcut.macth(p.getLoadPatterns(), key);
+			if (matchesPattern) {
+				return p;
+			}
+		}
+		return null;
+	}
 
 	public static PluginConfigYaml getPluginConfigYaml() {
 		return pluginConfigYaml;
