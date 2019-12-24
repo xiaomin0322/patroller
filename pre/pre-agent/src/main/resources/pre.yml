@@ -39,6 +39,13 @@ plugins:
       - com.preapm.agent.plugin.interceptor.OkHttpInterceptor
     loadPatterns:
       - okhttp3.OkHttpClient$Builder
+    
+  pre-druid-plugin:
+    jarName: pre-druid-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.DruidInterceptor
+    loadPatterns:
+      - com.alibaba.druid.pool.DruidDataSource   
 
 #多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
@@ -103,6 +110,17 @@ patterns:
       - okhttp3.OkHttpClient\$Builder\(\)
     plugins:
       - pre-okhttp-plugin
+      
+  druid:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - com.alibaba.druid.pool.DruidDataSource
+    #排除匹配路径
+    excludedPatterns:
+    includedPatterns:
+      - com.alibaba.druid.pool.DruidDataSource()
+    plugins:
+      - pre-druid-plugin    
       
   pre-im:
     #插件织入匹配方法路径，支持正则表达式
