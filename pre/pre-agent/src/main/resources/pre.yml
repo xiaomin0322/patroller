@@ -10,7 +10,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     loadPatterns:
-      - java.lang.String
+      - com.preapm.agent.constant.BaseConstants
       
   pre-httpclient4-plugin:
     jarName: pre-httpclient4-plugin
