@@ -110,10 +110,10 @@ public class TracerDruidFilter extends FilterEventAdapter {
 			return;
 		}
 
-		tracer.startSpan("druid");
+		//tracer.startSpan("druid");
 		if (tracer != null) {
 			tracer.sendBinaryAnnotation(key, sql);
 		}
-		tracer.finishSpan();
+		//tracer.finishSpan();
 	}
 }
