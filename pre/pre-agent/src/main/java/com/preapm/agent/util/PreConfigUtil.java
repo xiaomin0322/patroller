@@ -78,7 +78,6 @@ public class PreConfigUtil {
 		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
-		log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern);
 		String key = JdkRegexpMethodPointcut.macthR(patternsList, method);
 
 		for (PatternMethod m : patterns.getIncludedPatterns()) {
@@ -86,6 +85,7 @@ public class PreConfigUtil {
 				continue;
 			}
 			if (m.getKey().equals(key)) {
+				log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern);
 				return m;
 			}
 		}
