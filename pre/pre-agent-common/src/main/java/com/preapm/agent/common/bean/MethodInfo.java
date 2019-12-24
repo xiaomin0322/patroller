@@ -24,7 +24,7 @@ public class MethodInfo {
 	// 是否记录返回参数
 	private boolean outParam=false;
 	// 超过这个时间才记录
-	private long time=-1;
+	private int time=-1;
 	
 	
 	
@@ -48,7 +48,7 @@ public class MethodInfo {
 		return time;
 	}
 
-	public void setTime(long time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 

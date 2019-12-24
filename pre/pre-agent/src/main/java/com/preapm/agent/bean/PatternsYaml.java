@@ -13,7 +13,7 @@ public class PatternsYaml {
 		// 是否记录返回参数
 		private boolean outParam;
 		// 超过这个时间才记录
-		private long time=-1;
+		private int time=-1;
 
 		public boolean isInParam() {
 			return inParam;
@@ -35,7 +35,7 @@ public class PatternsYaml {
 			return time;
 		}
 
-		public void setTime(long time) {
+		public void setTime(int time) {
 			this.time = time;
 		}
 	}
