@@ -3,6 +3,7 @@ package com.preapm.agent.weave.impl;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.constant.BaseConstants;
@@ -39,10 +40,14 @@ public class AroundInterceptorCollector extends Collector {
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				String longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
-						&& (!Modifier.isNative(ctMethod.getModifiers()))) && isTarget(className, longName)) {
+						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
+					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
+					if (patternMethod == null) {
+						continue;
+					}
 					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 					Patterns patterns = PreConfigUtil.get(className);
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins,patterns);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins, patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
@@ -53,16 +58,18 @@ public class AroundInterceptorCollector extends Collector {
 			if (constructors != null && constructors.length > 0) {
 				for (CtConstructor c : constructors) {
 					String longName = c.getLongName();
-					if (isTarget(className, longName)) {
-						Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
-						Patterns patterns = PreConfigUtil.get(className);
-						ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins,patterns);
-						classWrapper.beginSrc(beginSrc);
-						classWrapper.endSrc(endSrc);
-						classWrapper.errorSrc(errorSrc);
-						replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
-
+					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
+					if (patternMethod == null) {
+						continue;
 					}
+					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
+					Patterns patterns = PreConfigUtil.get(className);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins, patterns, patternMethod);
+					classWrapper.beginSrc(beginSrc);
+					classWrapper.endSrc(endSrc);
+					classWrapper.errorSrc(errorSrc);
+					replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
+
 				}
 			}
 

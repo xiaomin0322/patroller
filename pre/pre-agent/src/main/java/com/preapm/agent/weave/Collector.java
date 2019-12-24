@@ -9,6 +9,7 @@ public abstract class Collector {
 	public boolean isTarget(String className, String method) {
 		return PreConfigUtil.isTarget(className, method);
 	}
+	
 
 	public boolean isTarget(String className) {
 		return PreConfigUtil.isTarget(className);

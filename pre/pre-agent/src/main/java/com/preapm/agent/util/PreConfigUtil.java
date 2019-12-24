@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PatternsYaml;
+import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PluginConfigYaml;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
@@ -51,16 +52,44 @@ public class PreConfigUtil {
 			return false;
 		}
 		boolean matchesPattern = false;
-		List<String> patternsList = patterns.getIncludedPatterns();
+		List<String> patternsList = patterns.getIncludedPatternsKey();
 		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
-		patternsList = patterns.getExcludedPatterns();
+		patternsList = patterns.getExcludedPatternsKey();
 		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
-		log.info("isTarget  :   calssName:"+className +" method:"+method + " matchesPattern:"+matchesPattern);
+		log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern);
 		return matchesPattern;
+	}
+
+	public static PatternMethod isTargetR(String className, String method) {
+		Patterns patterns = PreConfigUtil.get(className);
+		if (patterns == null) {
+			return null;
+		}
+		boolean matchesPattern = false;
+		List<String> patternsList = patterns.getIncludedPatternsKey();
+		if (patternsList != null && patternsList.size() > 0) {
+			matchesPattern = JdkRegexpMethodPointcut.macth(patternsList, method);
+		}
+		patternsList = patterns.getExcludedPatternsKey();
+		if (patternsList != null && patternsList.size() > 0) {
+			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
+		}
+		log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern);
+		String key = JdkRegexpMethodPointcut.macthR(patternsList, method);
+
+		for (PatternMethod m : patterns.getIncludedPatterns()) {
+			if (m == null) {
+				continue;
+			}
+			if (m.getKey().equals(key)) {
+				return m;
+			}
+		}
+		return null;
 	}
 
 	public static Set<JarBean> getPlugins(String className) {

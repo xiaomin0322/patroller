@@ -57,7 +57,7 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
+       - key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
     plugins:
       - pre-tomcat-plugin
       
@@ -70,7 +70,7 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
+       - key: org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
     plugins:
       - pre-httpclient4-plugin
 
@@ -81,7 +81,7 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - ch.qos.logback.core.joran.action.AppenderAction.begin\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\)
+      - key: ch.qos.logback.core.joran.action.AppenderAction.begin\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\)
     plugins:
       - pre-logback-plugin
 
@@ -92,20 +92,9 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - okhttp3.OkHttpClient\$Builder\(\)
+      - key: okhttp3.OkHttpClient\$Builder\(\)
     plugins:
       - pre-okhttp-plugin
-      
-  druid-sql:
-    #插件织入匹配方法路径，支持正则表达式
-    patterns:
-      - com.alibaba.druid.pool.DruidDataSource
-    #排除匹配路径
-    excludedPatterns:
-    includedPatterns:
-      - com.alibaba.druid.pool.DruidDataSource\(\)
-    plugins:
-      - pre-druid-plugin
       
   #自定义的名称，可以配置多个
   durid:
@@ -115,13 +104,31 @@ patterns:
       #排除匹配路径
       excludedPatterns:
       includedPatterns:
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
-        - com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
-      plugins:
-        - pre-zipkin-plugin    
+        - key:
+           com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
+          plugins:
+           - pre-zipkin-plugin
+        - key:
+           com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
+          plugins:
+           - pre-zipkin-plugin 
+        - key:   
+           com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
+          plugins:
+           - pre-zipkin-plugin  
+        - key:
+           com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
+          plugins:
+            - pre-zipkin-plugin  
+        - key:
+           com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
+          plugins:
+            - pre-zipkin-plugin   
+        - key:
+           com.alibaba.druid.pool.DruidDataSource\(\)
+          plugins:
+            - pre-druid-plugin   
+        
       
   pre-im:
     #插件织入匹配方法路径，支持正则表达式
@@ -130,9 +137,12 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll\(\)
-      - com.dominos.cloud.im.controller.StoreController.test\(com.dominos.cloud.im.controller.ProductController\)
-      - com.dominos.cloud.im.controller.StoreController.test2\(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs\)
+      - key:
+         com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll\(\)
+      - key:  
+         com.dominos.cloud.im.controller.StoreController.test\(com.dominos.cloud.im.controller.ProductController\)
+      - key:  
+         com.dominos.cloud.im.controller.StoreController.test2\(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs\)
     plugins:
       - pre-zipkin-plugin
       
@@ -143,7 +153,8 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\(int\)
+    - key:
+         org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\(int\)
     plugins:
       - pre-zipkin-plugin
       
@@ -154,9 +165,12 @@ patterns:
       #排除匹配路径
       excludedPatterns:
       includedPatterns:
-        - com.preapm.agent.Bootstrap\(\)
-        - com.preapm.agent.Bootstrap.print2\(java.lang.String\)
-        - com.preapm.agent.Bootstrap.print3\(java.lang.String,java.lang.String\)
+      - key:
+          com.preapm.agent.Bootstrap\(\)
+      - key:  
+          com.preapm.agent.Bootstrap.print2\(java.lang.String\)
+      - key:  
+          com.preapm.agent.Bootstrap.print3\(java.lang.String,java.lang.String\)
       plugins:
         - pre-zipkin-plugin
       track:
