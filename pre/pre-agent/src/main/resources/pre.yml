@@ -118,7 +118,7 @@ patterns:
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - com.alibaba.druid.pool.DruidDataSource()
+      - com.alibaba.druid.pool.DruidDataSource\(\)
     plugins:
       - pre-druid-plugin
       
