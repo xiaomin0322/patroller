@@ -1,5 +1,6 @@
 package com.preapm.agent.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -113,7 +114,7 @@ public class PreConfigUtil {
 			return null;
 		}
 		Set<JarBean> jarBeansSet = new HashSet<>();
-		List<String> plugins = patterns.getPlugins();
+		List<String> plugins = patterns.getPlugins() == null ? new ArrayList<>() :  patterns.getPlugins();
 		List<PatternMethod> includedPatterns = patterns.getIncludedPatterns();
 		if (includedPatterns != null) {
 			for (PatternMethod m : includedPatterns) {
