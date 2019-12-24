@@ -51,9 +51,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		}
 		if(patterns!=null) {
 			Track track = patterns.getTrack();
-			stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
-			stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
-			stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+			if(track !=null) {
+				stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
+				stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
+				stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+			}
 		}
 		
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(preMethondInfo);")
@@ -81,9 +83,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 			}
 			if(patterns!=null) {
 				Track track = patterns.getTrack();
-				stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
-				stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
-				stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+				if(track !=null) {
+					stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
+					stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
+					stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+				}
 			}
 		}else {
 			if(resultName!=null) {
