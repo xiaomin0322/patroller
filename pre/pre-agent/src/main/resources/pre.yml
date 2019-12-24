@@ -10,7 +10,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     loadPatterns:
-      - org.apache.catalina.core.StandardWrapperValve
+      - java.lang.String
       
   pre-httpclient4-plugin:
     jarName: pre-httpclient4-plugin
