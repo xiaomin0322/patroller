@@ -141,6 +141,6 @@ patterns:
       plugins:
         - pre-zipkin-plugin
       track:
-           inParam: true
+           inParam: false
            outParam: true
-           time: 2 
+           time: -1 
