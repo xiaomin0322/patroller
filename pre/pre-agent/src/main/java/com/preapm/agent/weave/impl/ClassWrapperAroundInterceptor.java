@@ -10,6 +10,7 @@ import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PatternsYaml.Track;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
+import com.preapm.agent.util.PreConfigUtil;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperAroundInterceptor extends ClassWrapper {
@@ -89,7 +90,10 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		Set<String> pluginNameSet = new HashSet<>();
 		if (patternMethod.getPlugins() != null) {
 			for (String s : patternMethod.getPlugins()) {
-				pluginNameSet.add(s);
+				JarBean jarBean = PreConfigUtil.getPluginConfigYaml().getPlugins().get(s);
+				if (jarBean != null) {
+					pluginNameSet.addAll(jarBean.getInterceptorNames());
+				}
 			}
 		} else {
 			if (plugins != null && plugins.size() != 0) {

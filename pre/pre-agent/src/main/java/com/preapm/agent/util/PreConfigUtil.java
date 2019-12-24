@@ -33,6 +33,10 @@ public class PreConfigUtil {
 		return null;
 	}
 
+	public static PluginConfigYaml getPluginConfigYaml() {
+		return pluginConfigYaml;
+	}
+
 	public static Set<String> getBasePlginName() {
 		return pluginConfigYaml.getBasePlugins().keySet();
 	}
@@ -85,7 +89,8 @@ public class PreConfigUtil {
 				continue;
 			}
 			if (m.getKey().equals(key)) {
-				log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern + " 匹配key");
+				log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:"
+						+ matchesPattern + " 匹配key");
 				return m;
 			}
 		}
@@ -99,13 +104,13 @@ public class PreConfigUtil {
 		}
 		Set<JarBean> jarBeansSet = new HashSet<>();
 		List<String> plugins = patterns.getPlugins();
-		if(plugins!=null) {
+		if (plugins != null) {
 			for (String s : plugins) {
 				JarBean jarBean = pluginConfigYaml.getPlugins().get(s);
 				jarBeansSet.add(jarBean);
 			}
 		}
-		
+
 		return jarBeansSet;
 	}
 
