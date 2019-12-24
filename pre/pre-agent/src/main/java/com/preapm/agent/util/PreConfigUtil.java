@@ -32,7 +32,7 @@ public class PreConfigUtil {
 		}
 		return null;
 	}
-	
+
 	public static JarBean getJarBean(String key) {
 		for (JarBean p : pluginConfigYaml.getPlugins().values()) {
 			boolean matchesPattern = JdkRegexpMethodPointcut.macth(p.getLoadPatterns(), key);
@@ -114,6 +114,13 @@ public class PreConfigUtil {
 		}
 		Set<JarBean> jarBeansSet = new HashSet<>();
 		List<String> plugins = patterns.getPlugins();
+		List<PatternMethod> includedPatterns = patterns.getIncludedPatterns();
+		if (includedPatterns != null) {
+			for (PatternMethod m : includedPatterns) {
+				plugins.addAll(m.getPlugins());
+			}
+		}
+
 		if (plugins != null) {
 			for (String s : plugins) {
 				JarBean jarBean = pluginConfigYaml.getPlugins().get(s);
