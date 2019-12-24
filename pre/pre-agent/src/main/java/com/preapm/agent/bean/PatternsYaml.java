@@ -31,7 +31,7 @@ public class PatternsYaml {
 			this.outParam = outParam;
 		}
 
-		public long getTime() {
+		public int getTime() {
 			return time;
 		}
 

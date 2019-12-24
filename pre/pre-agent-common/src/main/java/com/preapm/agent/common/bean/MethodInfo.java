@@ -44,7 +44,7 @@ public class MethodInfo {
 		this.outParam = outParam;
 	}
 
-	public long getTime() {
+	public int getTime() {
 		return time;
 	}
 
