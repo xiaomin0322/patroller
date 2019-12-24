@@ -45,7 +45,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.DruidInterceptor
     loadPatterns:
-      - com.alibaba.druid.pool.DruidDataSource   
+      - com.alibaba.druid.pool.DruidDataSource
 
 #多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
@@ -120,7 +120,7 @@ patterns:
     includedPatterns:
       - com.alibaba.druid.pool.DruidDataSource()
     plugins:
-      - pre-druid-plugin    
+      - pre-druid-plugin
       
   pre-im:
     #插件织入匹配方法路径，支持正则表达式
