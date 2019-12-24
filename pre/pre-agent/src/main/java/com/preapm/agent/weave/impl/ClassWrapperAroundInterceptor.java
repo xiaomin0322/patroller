@@ -6,17 +6,21 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.preapm.agent.bean.PatternsYaml.Patterns;
+import com.preapm.agent.bean.PatternsYaml.Track;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	
 	private Set<JarBean> plugins;
+	private Patterns patterns;
 	
 	public ClassWrapperAroundInterceptor() {}
 	
-	public ClassWrapperAroundInterceptor(Set<JarBean> plugins) {
+	public ClassWrapperAroundInterceptor(Set<JarBean> plugins,Patterns patterns) {
 		this.plugins = plugins;
+		this.patterns = patterns;
 	}
 	
 
@@ -45,7 +49,12 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 			stringBuilder.append("preMethondInfo.setPlugins(prePluginsStr.split(" + toStr(",") + "));")
 					.append(line());
 		}
-		
+		if(patterns!=null) {
+			Track track = patterns.getTrack();
+			stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
+			stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
+			stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+		}
 		
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(preMethondInfo);")
 				.append(line());
@@ -70,7 +79,12 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 				stringBuilder.append("preMethondInfo.setPlugins(prePluginsStr.split(" + toStr(",") + "));")
 						.append(line());
 			}
-			
+			if(patterns!=null) {
+				Track track = patterns.getTrack();
+				stringBuilder.append("preMethondInfo.setInParam("+track.isInParam()+");").append(line());
+				stringBuilder.append("preMethondInfo.setOutParam("+track.isOutParam()+");").append(line());
+				stringBuilder.append("preMethondInfo.setTime("+track.getTime()+");").append(line());
+			}
 		}else {
 			if(resultName!=null) {
 				stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());

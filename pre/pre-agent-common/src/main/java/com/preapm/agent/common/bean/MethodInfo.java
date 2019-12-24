@@ -19,6 +19,39 @@ public class MethodInfo {
 	
 	private String[] plugins;
 	
+	// 是否记录入参
+	private boolean inParam=false;
+	// 是否记录返回参数
+	private boolean outParam=false;
+	// 超过这个时间才记录
+	private long time=-1;
+	
+	
+	
+	public boolean isInParam() {
+		return inParam;
+	}
+
+	public void setInParam(boolean inParam) {
+		this.inParam = inParam;
+	}
+
+	public boolean isOutParam() {
+		return outParam;
+	}
+
+	public void setOutParam(boolean outParam) {
+		this.outParam = outParam;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+
 	public String[] getPlugins() {
 		return plugins;
 	}

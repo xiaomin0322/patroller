@@ -140,3 +140,7 @@ patterns:
         - com.preapm.agent.Bootstrap.print3\(java.lang.String,java.lang.String\)
       plugins:
         - pre-zipkin-plugin
+      track:
+           inParam: true
+           outParam: true
+           time: 2 

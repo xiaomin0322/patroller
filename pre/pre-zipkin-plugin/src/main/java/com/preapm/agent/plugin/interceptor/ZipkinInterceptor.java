@@ -16,7 +16,7 @@ import zipkin.Endpoint;
 
 public class ZipkinInterceptor implements AroundInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(ZipkinInterceptor.class);
-	
+
 	private static final ZipkinClient client = ZipkinClientContext.getClient();
 
 	@Override
@@ -24,19 +24,13 @@ public class ZipkinInterceptor implements AroundInterceptor {
 		try {
 			int ipv4 = InetAddressUtils.localIpv4();
 			Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
-			methodInfo.setLocalVariable(new Object[] { endpoint });
+			Long startTime = System.currentTimeMillis();
+			methodInfo.setLocalVariable(new Object[] { endpoint, startTime });
 			client.startSpan(methodInfo.getMethodName());
 			client.sendBinaryAnnotation("className", methodInfo.getClassName(), endpoint);
-			client.sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
+			client.sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,
+					Arrays.toString(methodInfo.getPlugins()), endpoint);
 			client.sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
-			String[] argsName = methodInfo.getArgsName();
-			if (argsName != null && argsName.length > 0) {
-				for (int i = 0; i < argsName.length; i++) {
-					String name = argsName[i];
-					Object val = methodInfo.getArgs()[i];
-					client.sendBinaryAnnotation("in." + name, String.valueOf(val), endpoint);
-				}
-			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -52,9 +46,29 @@ public class ZipkinInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		if(methodInfo.getLocalVariable()!=null) {
+		if (methodInfo.getLocalVariable() != null) {
 			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+			Long startTime = (Long) methodInfo.getLocalVariable()[1];
+			Long endTime = System.currentTimeMillis();
 			client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
+			long time = methodInfo.getTime();
+
+			if ((endTime - startTime) > time) {
+				if (methodInfo.isInParam()) {
+					String[] argsName = methodInfo.getArgsName();
+					if (argsName != null && argsName.length > 0) {
+						for (int i = 0; i < argsName.length; i++) {
+							String name = argsName[i];
+							Object val = methodInfo.getArgs()[i];
+							client.sendBinaryAnnotation("in." + name, String.valueOf(val), endpoint);
+						}
+					}
+				}
+				if (methodInfo.isOutParam()) {
+					client.sendBinaryAnnotation("out", String.valueOf(methodInfo.getResult()), endpoint);
+				}
+
+			}
 			client.finishSpan();
 		}
 	}
