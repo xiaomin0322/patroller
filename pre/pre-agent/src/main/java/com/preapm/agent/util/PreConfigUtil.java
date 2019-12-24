@@ -117,7 +117,9 @@ public class PreConfigUtil {
 		List<PatternMethod> includedPatterns = patterns.getIncludedPatterns();
 		if (includedPatterns != null) {
 			for (PatternMethod m : includedPatterns) {
-				plugins.addAll(m.getPlugins());
+				if(m.getPlugins()!=null) {
+					plugins.addAll(m.getPlugins());
+				}
 			}
 		}
 
