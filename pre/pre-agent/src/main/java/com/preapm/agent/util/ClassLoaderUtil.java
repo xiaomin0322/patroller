@@ -19,21 +19,25 @@ public class ClassLoaderUtil {
 
 	private static Set<String> loadPluginsJar = new HashSet<String>();
 
-	static {
-		init();
-	}
+	private static volatile boolean initFlag = false;
 
-	public static void init() {
+	public static synchronized void init(ClassLoader classLoader) {
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
-
 		for (String name : com.preapm.agent.util.PreConfigUtil.getBasePlginName()) {
+			if (loadPluginsJar.contains(name)) {
+				continue;
+			}
 			File preZipkinSdkFile = new File(pluginDir, name + ".jar");
-			loadJar(null, preZipkinSdkFile.getAbsolutePath());
+			loadJar(classLoader, preZipkinSdkFile.getAbsolutePath());
+			loadPluginsJar.add(name);
 		}
-
+		initFlag = true;
 	}
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
+		if(!initFlag) {
+			init(classLoader);
+		}
 		Patterns patterns = PreConfigUtil.get(className);
 		if (patterns == null) {
 			return;
