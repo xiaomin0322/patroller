@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysql.jdbc.ConnectionImpl;
+import com.mysql.jdbc.NoSubInterceptorWrapper;
 import com.mysql.jdbc.StatementInterceptorV2;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
@@ -33,7 +34,7 @@ public class MySQLInterceptor implements AroundInterceptor {
 	public void after(MethodInfo methodInfo) {
 		ConnectionImpl connectionImpl = (ConnectionImpl)methodInfo.getTarget();
 		List<StatementInterceptorV2> statementInterceptorsInstances = connectionImpl.getStatementInterceptorsInstances();
-		statementInterceptorsInstances.add(new MySQLStatementInterceptor());
+		statementInterceptorsInstances.add(new NoSubInterceptorWrapper(new MySQLStatementInterceptor()));
 		logger.info("com.preapm.agent.plugin.interceptor.MySQLInterceptor after ok >>>>>>>>>>>>>>>>");
 	}
 
