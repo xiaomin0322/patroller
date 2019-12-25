@@ -10,7 +10,7 @@ public class PatternsYaml {
 
 	public static class PatternMethod {
 		private String key;
-		private List<String> plugins;
+		private List<String> interceptors;
 		private Track track;
 
 		public String getKey() {
@@ -21,12 +21,12 @@ public class PatternsYaml {
 			this.key = key;
 		}
 
-		public List<String> getPlugins() {
-			return plugins;
+		public List<String> getInterceptors() {
+			return interceptors;
 		}
 
-		public void setPlugins(List<String> plugins) {
-			this.plugins = plugins;
+		public void setInterceptors(List<String> interceptors) {
+			this.interceptors = interceptors;
 		}
 
 		public Track getTrack() {
@@ -78,7 +78,7 @@ public class PatternsYaml {
 		private List<String> patterns;
 		private List<PatternMethod> excludedPatterns;
 		private List<PatternMethod> includedPatterns;
-		private List<String> plugins;
+		private List<String> interceptors;
 
 		public Track getTrack() {
 			return track;
@@ -88,12 +88,12 @@ public class PatternsYaml {
 			this.track = track;
 		}
 
-		public List<String> getPlugins() {
-			return plugins;
+		public List<String> getInterceptors() {
+			return interceptors;
 		}
 
-		public void setPlugins(List<String> plugins) {
-			this.plugins = plugins;
+		public void setInterceptors(List<String> interceptors) {
+			this.interceptors = interceptors;
 		}
 
 		public List<String> getPatterns() {
@@ -119,21 +119,21 @@ public class PatternsYaml {
 		public void setIncludedPatterns(List<PatternMethod> includedPatterns) {
 			this.includedPatterns = includedPatterns;
 		}
-		
+
 		public List<String> getIncludedPatternsKey() {
 			List<String> list = new ArrayList<>();
-			if(includedPatterns!=null) {
-				for(PatternMethod p :includedPatterns) {
+			if (includedPatterns != null) {
+				for (PatternMethod p : includedPatterns) {
 					list.add(p.getKey());
 				}
 			}
 			return list;
 		}
-		
+
 		public List<String> getExcludedPatternsKey() {
 			List<String> list = new ArrayList<>();
-			if(excludedPatterns!=null) {
-				for(PatternMethod p :excludedPatterns) {
+			if (excludedPatterns != null) {
+				for (PatternMethod p : excludedPatterns) {
 					list.add(p.getKey());
 				}
 			}

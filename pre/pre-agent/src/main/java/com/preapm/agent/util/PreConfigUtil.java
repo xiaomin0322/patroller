@@ -114,19 +114,18 @@ public class PreConfigUtil {
 			return null;
 		}
 		Set<JarBean> jarBeansSet = new HashSet<>();
-		List<String> plugins = patterns.getPlugins() == null ? new ArrayList<>() :  patterns.getPlugins();
+		List<String> interceptors = patterns.getInterceptors() == null ? new ArrayList<>() : patterns.getInterceptors();
 		List<PatternMethod> includedPatterns = patterns.getIncludedPatterns();
 		if (includedPatterns != null) {
 			for (PatternMethod m : includedPatterns) {
-				if(m.getPlugins()!=null) {
-					plugins.addAll(m.getPlugins());
+				if (m.getInterceptors() != null) {
+					interceptors.addAll(m.getInterceptors());
 				}
 			}
 		}
-
-		if (plugins != null) {
-			for (String s : plugins) {
-				JarBean jarBean = pluginConfigYaml.getPlugins().get(s);
+		if (interceptors != null) {
+			for (String s : interceptors) {
+				JarBean jarBean = pluginConfigYaml.getInterceptorKeyPlugins().get(s);
 				jarBeansSet.add(jarBean);
 			}
 		}

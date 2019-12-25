@@ -1,51 +1,71 @@
 package com.preapm.agent.bean;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PluginConfigYaml {
-    private Map<String,JarBean> plugins;
+	private Map<String, JarBean> plugins;
 
-    private Map<String,JarBean> basePlugins;
+	private Map<String, JarBean> basePlugins;
 
-    public static class JarBean {
+	private Map<String, JarBean> interceptorKeyPlugins;
 
-        private String jarName;
-        private List<String> interceptorNames;
-        private List<String> loadPatterns;
+	public static class JarBean {
 
-        public List<String> getLoadPatterns() {
-            return loadPatterns;
-        }
+		private String jarName;
+		private List<String> interceptorNames;
+		private List<String> loadPatterns;
 
-        public void setLoadPatterns(List<String> loadPatterns) {
-            this.loadPatterns = loadPatterns;
-        }
+		public List<String> getLoadPatterns() {
+			return loadPatterns;
+		}
 
-        public List<String> getInterceptorNames() {
-            return interceptorNames;
-        }
+		public void setLoadPatterns(List<String> loadPatterns) {
+			this.loadPatterns = loadPatterns;
+		}
 
-        public void setInterceptorNames(List<String> interceptorNames) {
-            this.interceptorNames = interceptorNames;
-        }
+		public List<String> getInterceptorNames() {
+			return interceptorNames;
+		}
 
-        public String getJarName() {
-            return jarName;
-        }
+		public void setInterceptorNames(List<String> interceptorNames) {
+			this.interceptorNames = interceptorNames;
+		}
 
-        public void setJarName(String jarName) {
-            this.jarName = jarName;
-        }
-    }
+		public String getJarName() {
+			return jarName;
+		}
 
-    public Map<String, JarBean> getPlugins() {
-        return plugins;
-    }
+		public void setJarName(String jarName) {
+			this.jarName = jarName;
+		}
+	}
 
-    public void setPlugins(Map<String, JarBean> plugins) {
-        this.plugins = plugins;
-    }
+	public Map<String, JarBean> getPlugins() {
+		return plugins;
+	}
+
+	public Map<String, JarBean> getInterceptorKeyPlugins() {
+		if (interceptorKeyPlugins != null) {
+			return interceptorKeyPlugins;
+		}
+		interceptorKeyPlugins = new HashMap<>();
+		for (JarBean jar : plugins.values()) {
+			List<String> interceptorNames = jar.getInterceptorNames();
+			if (interceptorNames != null) {
+				for (String name : interceptorNames) {
+					interceptorKeyPlugins.put(name, jar);
+				}
+			}
+		}
+
+		return interceptorKeyPlugins;
+	}
+
+	public void setPlugins(Map<String, JarBean> plugins) {
+		this.plugins = plugins;
+	}
 
 	public Map<String, JarBean> getBasePlugins() {
 		return basePlugins;
@@ -54,10 +74,8 @@ public class PluginConfigYaml {
 	public void setBasePlugins(Map<String, JarBean> basePlugins) {
 		this.basePlugins = basePlugins;
 	}
-    
-    
 
-    //    public static class Plugins {
+	// public static class Plugins {
 //        private Map<String,JarBean> jars;
 //
 //        private List<String> loadPatterns;

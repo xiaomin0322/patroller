@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 
@@ -38,22 +37,7 @@ public class ClassLoaderUtil {
 		if (!initFlag) {
 			init(classLoader);
 		}
-		/*JarBean p = PreConfigUtil.getJarBean(className);
-		if (p == null) {
-			return;
-		}
-		if (loadPluginsJar.contains(p.getJarName())) {
-			return;
-		}
-		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
-		File pFile = new File(pluginDir, p.getJarName() + ".jar");
-		log.info("className:" + className + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
-		if (pFile.exists()) {
-			loadJar(classLoader, pFile.getAbsolutePath());
-			loadPluginsJar.add(p.getJarName());
-		}*/
 
-		
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
 		Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 		if (plugins != null) {
@@ -70,8 +54,6 @@ public class ClassLoaderUtil {
 				}
 			}
 		}
-		  
-		 
 
 	}
 

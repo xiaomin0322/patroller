@@ -58,7 +58,7 @@ patterns:
     excludedPatterns:
     includedPatterns:
        - key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
-    plugins:
+    interceptors:
       - pre-tomcat-plugin
       
   httpClient4:
@@ -71,8 +71,8 @@ patterns:
     excludedPatterns:
     includedPatterns:
        - key: org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
-    plugins:
-      - pre-httpclient4-plugin
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
 
   logback:
     #插件织入匹配方法路径，支持正则表达式
@@ -82,8 +82,8 @@ patterns:
     excludedPatterns:
     includedPatterns:
       - key: ch.qos.logback.core.joran.action.AppenderAction.begin\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\)
-    plugins:
-      - pre-logback-plugin
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.LogbackInterceptor
 
   okhttp:
     #插件织入匹配方法路径，支持正则表达式
@@ -93,8 +93,8 @@ patterns:
     excludedPatterns:
     includedPatterns:
       - key: okhttp3.OkHttpClient\$Builder\(\)
-    plugins:
-      - pre-okhttp-plugin
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.OkHttpInterceptor
       
   #自定义的名称，可以配置多个
   durid:
@@ -106,28 +106,28 @@ patterns:
       includedPatterns:
         - key:
            com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
-          plugins:
-           - pre-zipkin-plugin
+          interceptors:
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
         - key:
            com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-          plugins:
-           - pre-zipkin-plugin 
+          interceptors:
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor 
         - key:   
            com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-          plugins:
-           - pre-zipkin-plugin  
+          interceptors:
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor  
         - key:
            com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
-          plugins:
-            - pre-zipkin-plugin  
+          interceptors:
+            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor  
         - key:
            com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
-          plugins:
-            - pre-zipkin-plugin   
+          interceptors:
+            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
         - key:
            com.alibaba.druid.pool.DruidDataSource\(\)
-          plugins:
-            - pre-druid-plugin   
+          interceptors:
+            - com.preapm.agent.plugin.interceptor.DruidInterceptor  
         
       
   pre-im:
@@ -143,8 +143,8 @@ patterns:
          com.dominos.cloud.im.controller.StoreController.test\(com.dominos.cloud.im.controller.ProductController\)
       - key:  
          com.dominos.cloud.im.controller.StoreController.test2\(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs\)
-    plugins:
-      - pre-zipkin-plugin
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
   pre-test:
     #插件织入匹配方法路径，支持正则表达式
@@ -155,8 +155,8 @@ patterns:
     includedPatterns:
     - key:
          org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\(int\)
-    plugins:
-      - pre-zipkin-plugin
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
   test:
       #插件织入匹配方法路径，支持正则表达式
@@ -171,8 +171,8 @@ patterns:
           com.preapm.agent.Bootstrap.print2\(java.lang.String\)
       - key:  
           com.preapm.agent.Bootstrap.print3\(java.lang.String,java.lang.String\)
-      plugins:
-        - pre-zipkin-plugin
+      interceptors:
+        - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       track:
            inParam: false
            outParam: true

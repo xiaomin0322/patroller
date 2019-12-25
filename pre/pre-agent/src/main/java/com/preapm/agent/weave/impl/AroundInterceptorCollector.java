@@ -45,9 +45,8 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 					Patterns patterns = PreConfigUtil.get(className);
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins, patterns, patternMethod);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
@@ -62,9 +61,8 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-					Set<JarBean> plugins = PreConfigUtil.getPlugins(className);
 					Patterns patterns = PreConfigUtil.get(className);
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(plugins, patterns, patternMethod);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);

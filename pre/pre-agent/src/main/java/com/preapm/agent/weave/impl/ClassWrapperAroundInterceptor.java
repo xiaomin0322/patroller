@@ -28,6 +28,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		this.patternMethod = patternMethod;
 	}
 
+	public ClassWrapperAroundInterceptor(Patterns patterns, PatternMethod patternMethod) {
+		this.patterns = patterns;
+		this.patternMethod = patternMethod;
+	}
+
 	public String beforAgent(String methodName, List<String> argNameList) {
 
 		StringBuilder stringBuilder = new StringBuilder();
@@ -88,18 +93,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 
 	public void setPlugin(StringBuilder stringBuilder) {
 		Set<String> pluginNameSet = new HashSet<>();
-		if (patternMethod.getPlugins() != null) {
-			for (String s : patternMethod.getPlugins()) {
-				JarBean jarBean = PreConfigUtil.getPluginConfigYaml().getPlugins().get(s);
-				if (jarBean != null) {
-					pluginNameSet.addAll(jarBean.getInterceptorNames());
-				}
-			}
+		if (patternMethod.getInterceptors() != null) {
+			pluginNameSet.addAll(patternMethod.getInterceptors());
 		} else {
-			if (plugins != null && plugins.size() != 0) {
-				for (JarBean p : plugins) {
-					pluginNameSet.addAll(p.getInterceptorNames());
-				}
+			if (patterns.getInterceptors() != null && patterns.getInterceptors().size() != 0) {
+				pluginNameSet.addAll(patterns.getInterceptors());
 			}
 		}
 		if (!pluginNameSet.isEmpty()) {
