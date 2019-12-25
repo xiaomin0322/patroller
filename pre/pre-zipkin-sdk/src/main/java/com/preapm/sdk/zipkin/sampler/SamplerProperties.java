@@ -6,7 +6,7 @@ public class SamplerProperties {
 	 * sampled. The precision is whole-numbers only (i.e. there's no support for 0.1% of
 	 * the traces).
 	 */
-	private float percentage = 100f;
+	private float percentage = 1f;
 
 	public float getPercentage() {
 		return this.percentage;

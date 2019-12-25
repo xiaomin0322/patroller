@@ -4,8 +4,6 @@ import java.util.BitSet;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import zipkin.Span;
-
 
 /**
  * This sampler is appropriate for low-traffic instrumentation (ex servers that each receive <100K
@@ -36,7 +34,7 @@ public class PercentageBasedSampler implements Sampler {
 	}
 
 	@Override
-	public boolean isSampled(Span currentSpan) {
+	public boolean isSampled(Object currentSpan) {
 		if (this.configuration.getPercentage() == 0 || currentSpan == null) {
 			return false;
 		} else if (this.configuration.getPercentage() == 100) {
