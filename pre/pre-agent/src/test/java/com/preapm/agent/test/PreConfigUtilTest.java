@@ -25,6 +25,12 @@ public class PreConfigUtilTest {
 		patternsList.add("redis.clients.jedis.BinaryJedis.ping.*");
 
 		System.out.println(JdkRegexpMethodPointcut.macth(patternsList, "redis.clients.jedis.BinaryJedis.ping()"));
+		
+		System.out.println(byte.class);
+
+		System.out.println(byte[].class);
+		
+		System.out.println(byte[][].class);
 	}
 
 }
