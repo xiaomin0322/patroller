@@ -130,31 +130,37 @@ patterns:
             - com.preapm.agent.plugin.interceptor.DruidInterceptor  
         
       
-  pre-im:
+  pre-controller:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - com.dominos.cloud.im.controller.StoreController
+      - com.\*Controller
+      - org.\*Controller
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - key:
-         com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll\(\)
-      - key:  
-         com.dominos.cloud.im.controller.StoreController.test\(com.dominos.cloud.im.controller.ProductController\)
-      - key:  
-         com.dominos.cloud.im.controller.StoreController.test2\(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs\)
+      - key: \(.\*\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
-  pre-test:
+  pre-service:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController
+      - com.\*.service.impl.\*
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-    - key:
-         org.exampledriven.zuul.eureka.customer.shared.server.server.rest.CustomerController.getCustomer\(int\)
+      - key: \(.\*\)
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
+      
+  pre-dao:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - com.\*.dao
+    #排除匹配路径
+    excludedPatterns:
+    includedPatterns:
+      - key: \(.\*\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
@@ -163,14 +169,10 @@ patterns:
       patterns:
         - com.preapm.agent.Bootstrap
       #排除匹配路径
-      excludedPatterns:
+      excludedPatterns:  
+       - key: com.preapm.agent.Bootstrap\(\)
       includedPatterns:
-      - key:
-          com.preapm.agent.Bootstrap\(\)
-      - key:  
-          com.preapm.agent.Bootstrap.print2\(java.lang.String\)
-      - key:  
-          com.preapm.agent.Bootstrap.print3\(java.lang.String,java.lang.String\)
+      - key:  \(.\*\)
       interceptors:
         - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       track:

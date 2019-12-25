@@ -17,7 +17,7 @@ public class YMLMappingUtilTest {
 		
 		for(PatternMethod m:aa.getPatterns().get("durid").getIncludedPatterns()) {
 			System.out.println(m.getKey());
-			System.out.println(m.getPlugins());
+			System.out.println(m.getInterceptors());
 		}
 		
 	}
