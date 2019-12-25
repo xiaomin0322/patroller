@@ -53,10 +53,10 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 			ResultSetInternalMethods originalResultSet, Connection connection, int warningCount, boolean noIndexUsed,
 			boolean noGoodIndexUsed, SQLException statementException) throws SQLException {
 		if (client != null) {
-			String psql = getSql(interceptedStatement);
+			/*String psql = getSql(interceptedStatement);
 			if (psql != null) {
 				client.sendBinaryAnnotation(POST_SQL_STR, psql);
-			}
+			}*/
 			if (statementException != null) {
 				client.sendBinaryAnnotation("error", statementException.getMessage());
 			}
