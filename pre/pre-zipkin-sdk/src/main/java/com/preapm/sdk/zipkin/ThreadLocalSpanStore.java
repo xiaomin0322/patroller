@@ -16,7 +16,7 @@ import zipkin.Span;
  */
 public class ThreadLocalSpanStore implements SpanStore {
 
-    public static ThreadLocal<Stack<Span.Builder>> LOCAL_SPAN = new ThreadLocal<Stack<Span.Builder>>() {
+    public static ThreadLocal<Stack<Span.Builder>> LOCAL_SPAN = new InheritableThreadLocal<Stack<Span.Builder>>() {
         @Override
         protected Stack<Span.Builder> initialValue() {
             return new Stack<>();
