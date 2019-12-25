@@ -59,7 +59,7 @@ patterns:
     includedPatterns:
        - key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
     interceptors:
-      - pre-tomcat-plugin
+      - com.preapm.agent.plugin.interceptor.TomcatInterceptor
       
   httpClient4:
     #插件织入匹配方法路径，支持正则表达式
