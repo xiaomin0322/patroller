@@ -130,6 +130,34 @@ patterns:
       - key: com.mysql.jdbc.ConnectionImpl.initializeSafeStatementInterceptors\(\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.MySQLInterceptor     
+      
+  jedis:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - redis.clients.jedis.BinaryJedis
+    #排除匹配路径
+    excludedPatterns:
+      - redis.clients.jedis.BinaryJedis.ping*
+      - redis.clients.jedis.BinaryJedis.close*
+      - redis.clients.jedis.BinaryJedis.disconnect*
+      - redis.clients.jedis.BinaryJedis.resetState*
+      - redis.clients.jedis.BinaryJedis.getClient*
+      - redis.clients.jedis.BinaryJedis.setClient*
+      - redis.clients.jedis.BinaryJedis.getDB*
+      - redis.clients.jedis.BinaryJedis.isInMulti*
+      - redis.clients.jedis.BinaryJedis.isInWatch*
+      - redis.clients.jedis.BinaryJedis.clear*
+      - redis.clients.jedis.BinaryJedis.pipelined*
+      - redis.clients.jedis.BinaryJedis.setDb*
+      - redis.clients.jedis.BinaryJedis.setDataSource*
+      - redis.clients.jedis.BinaryJedis.getClusterNodes*
+      - redis.clients.jedis.BinaryJedis.getConnectionFromSlot*
+    includedPatterns:
+      - key: .*
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
+      
+      
         
       
   pre-controller:
