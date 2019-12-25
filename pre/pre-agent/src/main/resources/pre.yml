@@ -137,21 +137,21 @@ patterns:
       - redis.clients.jedis.BinaryJedis
     #排除匹配路径
     excludedPatterns:
-       - key: redis.clients.jedis.BinaryJedis.ping*
-       - key: redis.clients.jedis.BinaryJedis.close*
-       - key: redis.clients.jedis.BinaryJedis.disconnect*
-       - key: redis.clients.jedis.BinaryJedis.resetState*
-       - key: redis.clients.jedis.BinaryJedis.getClient*
-       - key: redis.clients.jedis.BinaryJedis.setClient*
-       - key: redis.clients.jedis.BinaryJedis.getDB*
-       - key: redis.clients.jedis.BinaryJedis.isInMulti*
-       - key: redis.clients.jedis.BinaryJedis.isInWatch*
-       - key: redis.clients.jedis.BinaryJedis.clear*
-       - key: redis.clients.jedis.BinaryJedis.pipelined*
-       - key: redis.clients.jedis.BinaryJedis.setDb*
-       - key: redis.clients.jedis.BinaryJedis.setDataSource*
-       - key: redis.clients.jedis.BinaryJedis.getClusterNodes*
-       - key: redis.clients.jedis.BinaryJedis.getConnectionFromSlot*
+       - key: redis.clients.jedis.BinaryJedis.ping.*
+       - key: redis.clients.jedis.BinaryJedis.close.*
+       - key: redis.clients.jedis.BinaryJedis.disconnect.*
+       - key: redis.clients.jedis.BinaryJedis.resetState.*
+       - key: redis.clients.jedis.BinaryJedis.getClient.*
+       - key: redis.clients.jedis.BinaryJedis.setClient.*
+       - key: redis.clients.jedis.BinaryJedis.getDB.*
+       - key: redis.clients.jedis.BinaryJedis.isInMulti.*
+       - key: redis.clients.jedis.BinaryJedis.isInWatch.*
+       - key: redis.clients.jedis.BinaryJedis.clear.*
+       - key: redis.clients.jedis.BinaryJedis.pipelined.*
+       - key: redis.clients.jedis.BinaryJedis.setDb.*
+       - key: redis.clients.jedis.BinaryJedis.setDataSource.*
+       - key: redis.clients.jedis.BinaryJedis.getClusterNodes.*
+       - key: redis.clients.jedis.BinaryJedis.getConnectionFromSlot.*
     includedPatterns:
       - key: .*
     interceptors:
