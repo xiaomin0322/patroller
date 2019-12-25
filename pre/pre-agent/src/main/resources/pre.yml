@@ -134,7 +134,7 @@ patterns:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.*Controller
-      - org.*Controller
+      - org.exampledriven.*Controller
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
