@@ -5,8 +5,11 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.PathUtil;
 import com.preapm.sdk.zipkin.util.PropertiesUtil;
+
+import zipkin.Endpoint;
 
 public class ZipkinClientContext {
 	private static final Logger logger = LoggerFactory.getLogger(ZipkinClientContext.class);
@@ -44,6 +47,12 @@ public class ZipkinClientContext {
 
 	public static ZipkinClient getClient() {
 		return client;
+	}
+	
+	public static Endpoint createEndpoint() {
+		int ipv4 = InetAddressUtils.localIpv4();
+		Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
+		return endpoint;
 	}
 
 }

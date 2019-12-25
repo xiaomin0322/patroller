@@ -10,6 +10,7 @@ import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.StatementInterceptorV2;
 import com.preapm.sdk.zipkin.ZipkinClient;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
+import com.preapm.sdk.zipkin.util.TraceKeys;
 
 public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 	public static final String SQL_STR = "SQL";
@@ -30,6 +31,7 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 			throws SQLException {
 		if (client != null) {
 			client.startSpan(SQL_STR);
+			client.sendAnnotation(TraceKeys.CLIENT_SEND);
 			String psql = getSql(interceptedStatement);
 			if (psql != null) {
 				client.sendBinaryAnnotation(PRE_SQL_STR, psql);
@@ -60,6 +62,7 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 			if (statementException != null) {
 				client.sendBinaryAnnotation("error", statementException.getMessage());
 			}
+			client.sendAnnotation(TraceKeys.CLIENT_RECV);
 			client.finishSpan();
 		}
 		return null;
