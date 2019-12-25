@@ -8,7 +8,7 @@ import zipkin.Endpoint;
 public class ZipkinClientTest {
 
 	public static void main(String[] args) throws Exception {
-		ZipkinClient client = new ZipkinClient("http://10.23.191.242:5005");
+		ZipkinClient client = new ZipkinClient("http://10.23.191.11:5005");
 		int ipv4 = InetAddressUtils.localIpv4();
 		Endpoint endpoint = Endpoint.builder().serviceName("test").ipv4(ipv4).build();
 		client.startSpan("testSpan");

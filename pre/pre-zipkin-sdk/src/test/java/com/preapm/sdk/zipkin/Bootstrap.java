@@ -9,7 +9,7 @@ import com.preapm.sdk.zipkin.util.TraceKeys;
 import zipkin.Endpoint;
 
 public class Bootstrap {
-	static ZipkinClient client = new ZipkinClient("http://10.23.191.242:5005");
+	static ZipkinClient client = new ZipkinClient("http://10.23.191.11:5005");
 
 	public static void main(String[] args) {
 		new Bootstrap().print3("123123", "123");
