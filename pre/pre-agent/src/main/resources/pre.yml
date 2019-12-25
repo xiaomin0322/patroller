@@ -46,6 +46,13 @@ plugins:
       - com.preapm.agent.plugin.interceptor.DruidInterceptor
     loadPatterns:
       - com.alibaba.druid.pool.DruidDataSource
+   
+  pre-mysql-jdbc-driver-plugin:
+    jarName: pre-mysql-jdbc-driver-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.MySQLInterceptor
+    loadPatterns:
+      - com.mysql.jdbc.Connection 
 
 #多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
@@ -124,10 +131,21 @@ patterns:
            com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
           interceptors:
             - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
-        - key:
-           com.alibaba.druid.pool.DruidDataSource\(\)
-          interceptors:
-            - com.preapm.agent.plugin.interceptor.DruidInterceptor  
+       # - key:
+       #    com.alibaba.druid.pool.DruidDataSource\(\)
+       #   interceptors:
+       #     - com.preapm.agent.plugin.interceptor.DruidInterceptor
+     
+  mysql-jdbc-driver:
+    #插件织入匹配方法路径，支持正则表达式
+    patterns:
+      - com.mysql.jdbc.ConnectionImpl
+    #排除匹配路径
+    excludedPatterns:
+    includedPatterns:
+      - key: com.mysql.jdbc.ConnectionImpl.initializeSafeStatementInterceptors\(\)
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.MySQLInterceptor     
         
       
   pre-controller:
