@@ -112,25 +112,9 @@ patterns:
       excludedPatterns:
       includedPatterns:
         - key:
-           com.alibaba.druid.pool.DruidDataSource.getConnection\(\)
-          interceptors:
-           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
-        - key:
            com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
           interceptors:
            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor 
-        - key:   
-           com.alibaba.druid.pool.DruidDataSource.getConnection\(long\)
-          interceptors:
-           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor  
-        - key:
-           com.alibaba.druid.pool.DruidDataSource.getConnectionDirect\(long\)
-          interceptors:
-            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor  
-        - key:
-           com.alibaba.druid.pool.DruidDataSource.getConnection\(java.lang.String,java.lang.String\)
-          interceptors:
-            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
        # - key:
        #    com.alibaba.druid.pool.DruidDataSource\(\)
        #   interceptors:

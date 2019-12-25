@@ -29,12 +29,11 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 	public ResultSetInternalMethods preProcess(String sql, Statement interceptedStatement, Connection connection)
 			throws SQLException {
 		if (client != null) {
+			client.startSpan(SQL_STR);
 			String psql = getSql(interceptedStatement);
 			if (psql != null) {
 				client.sendBinaryAnnotation(PRE_SQL_STR, psql);
 			}
-			System.out.println("preProcess SQL :" + psql);
-			client.startSpan(SQL_STR);
 		}
 		return null;
 	}
@@ -55,7 +54,6 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 			boolean noGoodIndexUsed, SQLException statementException) throws SQLException {
 		if (client != null) {
 			String psql = getSql(interceptedStatement);
-			System.out.println("postProcess SQL :" + sql);
 			if (psql != null) {
 				client.sendBinaryAnnotation(POST_SQL_STR, psql);
 			}
