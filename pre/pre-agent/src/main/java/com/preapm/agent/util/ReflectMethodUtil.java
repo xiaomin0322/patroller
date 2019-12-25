@@ -111,12 +111,18 @@ public class ReflectMethodUtil {
 		m.put("char", char.class);
 
 	}
+	
+	public static String classFilter(String className) {
+		return className.replace("[]","");
+	}
 
 	public static Class<?> getClass(ClassLoader classLoader, String className) throws Exception {
 		Class<?> c = m.get(className);
 		if (c != null) {
 			return c;
 		}
+		
+		className = classFilter(className);
 
 		if (classLoader != null) {
 			// return Class.forName(className, false, classLoader);
