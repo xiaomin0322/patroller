@@ -133,34 +133,34 @@ patterns:
   pre-controller:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - com.\*Controller
-      - org.\*Controller
+      - com.*Controller
+      - org.*Controller
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - key: \(.\*\)
+      - key: .*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
   pre-service:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - com.\*.service.impl.\*
+      - com.*.service.impl.*
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - key: \(.\*\)
+      - key: .*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
       
   pre-dao:
     #插件织入匹配方法路径，支持正则表达式
     patterns:
-      - com.\*.dao
+      - com.*.dao
     #排除匹配路径
     excludedPatterns:
     includedPatterns:
-      - key: \(.\*\)
+      - key: .*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
@@ -172,7 +172,7 @@ patterns:
       excludedPatterns:  
        - key: com.preapm.agent.Bootstrap\(\)
       includedPatterns:
-      - key:  \(.\*\)
+      - key:  .*
       interceptors:
         - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       track:
