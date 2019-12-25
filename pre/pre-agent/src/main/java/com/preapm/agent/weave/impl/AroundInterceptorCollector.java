@@ -32,13 +32,14 @@ public class AroundInterceptorCollector extends Collector {
 
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
+		String longName = null;
 		try {
 			// 加载插件后，初始化插件
 			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
-				String longName = ctMethod.getLongName();
+				 longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
 					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
@@ -56,7 +57,7 @@ public class AroundInterceptorCollector extends Collector {
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
 			if (constructors != null && constructors.length > 0) {
 				for (CtConstructor c : constructors) {
-					String longName = c.getLongName();
+					 longName = c.getLongName();
 					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
 					if (patternMethod == null) {
 						continue;
@@ -73,7 +74,8 @@ public class AroundInterceptorCollector extends Collector {
 
 			return replacer.replace();
 		} catch (Exception e) {
-			log.severe(org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
+			
+			log.severe("methodName: "+longName + "\n "+org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 
 		return new byte[0];
