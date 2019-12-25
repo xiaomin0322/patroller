@@ -22,6 +22,9 @@ public class ZipkinInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
+			if(client.getSpan() == null) {
+				return ;
+			}
 			int ipv4 = InetAddressUtils.localIpv4();
 			Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 			Long startTime = System.currentTimeMillis();
@@ -39,6 +42,9 @@ public class ZipkinInterceptor implements AroundInterceptor {
 
 	@Override
 	public void exception(MethodInfo methodInfo) {
+		if(client.getSpan() == null) {
+			return ;
+		}
 		String stackTrace = org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(methodInfo.getThrowable());
 		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 		client.sendBinaryAnnotation("error", stackTrace, endpoint);
@@ -46,6 +52,10 @@ public class ZipkinInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
+		if(client.getSpan() == null) {
+			return ;
+		}
+		
 		if (methodInfo.getLocalVariable() != null) {
 			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 			Long startTime = (Long) methodInfo.getLocalVariable()[1];
