@@ -155,17 +155,6 @@ patterns:
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
       
-  pre-dao:
-    #插件织入匹配方法路径，支持正则表达式
-    patterns:
-      - com.*.dao
-    #排除匹配路径
-    excludedPatterns:
-    includedPatterns:
-      - key: .*
-    interceptors:
-      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
-      
   test:
       #插件织入匹配方法路径，支持正则表达式
       patterns:
