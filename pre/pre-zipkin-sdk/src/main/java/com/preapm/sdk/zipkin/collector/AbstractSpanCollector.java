@@ -15,6 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.preapm.sdk.zipkin.DefaultSpanMetrics;
 import com.preapm.sdk.zipkin.SpanMetrics;
+import com.preapm.sdk.zipkin.ZipkinClientContext;
+import com.preapm.sdk.zipkin.sampler.PercentageBasedSampler;
+import com.preapm.sdk.zipkin.sampler.Sampler;
 
 import zipkin.Codec;
 import zipkin.Span;
@@ -25,6 +28,7 @@ import zipkin.internal.JsonCodec;
  * <pre>
  * AbstractSpanCollector
  * </pre>
+ * org.springframework.cloud.sleuth.trace.DefaultTracer
  * 
  * @author 
  *
@@ -34,6 +38,8 @@ public abstract class AbstractSpanCollector implements SpanCollector, Flushable,
     private Codec codec = new JsonCodec();
     private final BlockingQueue<Span> PENDING = new LinkedBlockingQueue<>(1000);
     private final Flusher flusher;
+    
+    private final Sampler defaultSampler = new PercentageBasedSampler(ZipkinClientContext.samplerProperties);
 
     private final SpanMetrics metrics;
 
@@ -61,6 +67,12 @@ public abstract class AbstractSpanCollector implements SpanCollector, Flushable,
     public abstract void sendSpans(byte[] json) throws IOException;
 
     protected void reportSpans(List<Span> spans) throws IOException {
+    	List<Span> newList = new ArrayList<>();
+    	for(Span s:spans) {
+    		if(defaultSampler.isSampled(s)) {
+    			newList.add(s);
+    		}
+    	}
         byte[] encoded = codec.writeSpans(spans);
         sendSpans(encoded);
     }

@@ -5,6 +5,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.preapm.sdk.zipkin.sampler.SamplerProperties;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.PathUtil;
 import com.preapm.sdk.zipkin.util.PropertiesUtil;
@@ -21,6 +22,10 @@ public class ZipkinClientContext {
 	public static String serverName = System.getProperty("server.name");
 	
 	public static String zipkinUrl = System.getProperty("zipkin.url");
+	
+	public static String percentage = System.getProperty("zipkin.percentage");
+	
+	public static SamplerProperties samplerProperties = new SamplerProperties();
 
 	private ZipkinClientContext() {
 	}
@@ -43,6 +48,15 @@ public class ZipkinClientContext {
 		logger.info("serverName  {}", serverName); 
 		client = new ZipkinClient(zipkinUrl);
 		logger.info("ZipkinClientContext init end ");
+		
+		if(percentage == null) {
+			percentage =  propertiesUtil.getProperty("zipkin.percentage");
+		}
+		logger.info("percentage  {}", percentage); 
+		if(percentage !=null) {
+			samplerProperties.setPercentage(Float.valueOf(percentage));
+		}
+		
 	}
 
 	public static ZipkinClient getClient() {
