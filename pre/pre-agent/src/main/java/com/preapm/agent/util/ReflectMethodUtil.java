@@ -109,6 +109,16 @@ public class ReflectMethodUtil {
 		m.put("byte", byte.class);
 		m.put("double", double.class);
 		m.put("char", char.class);
+		
+		
+		m.put("int[]", int[].class);
+		m.put("boolean[]", boolean[].class);
+		m.put("float[]", float[].class);
+		m.put("long[]", long[].class);
+		m.put("short[]", short[].class);
+		m.put("byte[]", byte[].class);
+		m.put("double[]", double[].class);
+		m.put("char[]", char[].class);
 
 	}
 	
