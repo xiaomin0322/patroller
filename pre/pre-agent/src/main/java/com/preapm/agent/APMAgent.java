@@ -32,7 +32,7 @@ public class APMAgent implements ClassFileTransformer {
 				|| (classLoader.getClass().getName().equals("org.apache.catalina.loader.StandardClassLoader"))
 				|| (classLoader.getClass().getName().equals("javax.management.remote.rmi.NoCallStackClassLoader"))
 				|| (classLoader.getClass().getName().equals("com.alibaba.fastjson.util.ASMClassLoader"))
-				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))) {
+				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java")) || (className.indexOf("CGLIB") != -1)){
 			return null;
 		}
 
