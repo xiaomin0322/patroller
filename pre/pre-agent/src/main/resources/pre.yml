@@ -171,6 +171,10 @@ patterns:
       - key: .*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
+    track:
+           inParam: true
+           outParam: true
+           time: -1    
       
   pre-service:
     #插件织入匹配方法路径，支持正则表达式
@@ -181,7 +185,11 @@ patterns:
     includedPatterns:
       - key: .*
     interceptors:
-      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor   
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
+    track:
+           inParam: true
+           outParam: true
+           time: -1      
       
   test:
       #插件织入匹配方法路径，支持正则表达式
