@@ -1,11 +1,9 @@
 package com.preapm.agent.weave.impl;
 
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
-import com.preapm.agent.bean.PluginConfigYaml.JarBean;
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PreConfigUtil;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -21,6 +22,9 @@ import javassist.CtMethod;
 
 /** * 使用ASM获得JAVA类方法参数名 */
 public class ReflectMethodUtil {
+
+	private static Logger log = LogManager.getLogger(ReflectMethodUtil.class);
+
 	class Test {
 		void method(String name, Object value) {
 		}
@@ -44,8 +48,8 @@ public class ReflectMethodUtil {
 			Method method1 = Class.forName(cc.getName()).getDeclaredMethod(name, classes.toArray(new Class<?>[] {}));
 			return getMethodParamNames(method1);
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			log.severe("methodName: " + method.getLongName() + "\n "
+					+ org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 		return new String[] {};
 
@@ -65,8 +69,8 @@ public class ReflectMethodUtil {
 					classes.toArray(new Class<?>[] {}));
 			return getMethodParamNames(method1);
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			log.severe("methodName: " + method.getLongName() + "\n "
+					+ org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 		return new String[] {};
 
@@ -87,8 +91,8 @@ public class ReflectMethodUtil {
 			}
 			return getMethodParamNames(classLoader, method, bytes);
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			log.severe("methodName: " + method.getLongName() + "\n "
+					+ org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 		return new String[] {};
 
