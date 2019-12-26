@@ -47,7 +47,7 @@ zipkin.percentage=1.0
 参考 https://github.com/openzipkin/zipkin
 
 
-### 执行demo,打开zipkin服务端看效果
+### 执行demo
 java -javaagent:具体目录\pre-agent\pre-agent.jar   -Dserver.name=pre-test   -jar pre-agent.jar  
 
 
