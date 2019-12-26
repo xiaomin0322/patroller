@@ -58,4 +58,6 @@ java -javaagent:具体目录\pre-agent\pre-agent.jar   -Dserver.name=pre-test   
 log.info("tracer.orderId {}",orderId);
 
 
+### 目前还有很多插件没有完善，有志同道合得朋友可以一起开发  
+QQ群：858951677
  
