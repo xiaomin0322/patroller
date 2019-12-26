@@ -1,9 +1,10 @@
+#基础的插件包配置，会优先加载
 basePlugins:
   pre-agent-common:
     jarName: pre-agent-common
   pre-zipkin-sdk:
     jarName: pre-zipkin-sdk
-
+#第三方插件包配置
 plugins:
   pre-zipkin-plugin:
     jarName: pre-zipkin-plugin
@@ -54,27 +55,26 @@ plugins:
     loadPatterns:
       - com.mysql.jdbc.Connection 
 
-#多个YAML对象之间用---隔开（开头第一个可以省略）
 ---
+#AOP切面配置，类似sparing aop配置
 patterns:
   tomcat:
-    #插件织入匹配方法路径，支持正则表达式
+    #插件织入匹配方法路径，支持正则表达式（这里一般配置包名称或者类名称）
     patterns:
       - org.apache.catalina.core.StandardWrapperValve
-    #排除匹配路径
+    #排除匹配
     excludedPatterns:
+    #包含匹配
     includedPatterns:
        - key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.TomcatInterceptor
       
   httpClient4:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - org.apache.http.impl.client.InternalHttpClient
       - org.apache.http.impl.client.MinimalHttpClient
       - org.apache.http.impl.client.AbstractHttpClient
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
        - key: org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
@@ -82,10 +82,8 @@ patterns:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
 
   logback:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - ch.qos.logback.core.joran.action.AppenderAction
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
       - key: ch.qos.logback.core.joran.action.AppenderAction.begin\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\)
@@ -93,19 +91,15 @@ patterns:
       - com.preapm.agent.plugin.interceptor.LogbackInterceptor
 
   okhttp:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - okhttp3.OkHttpClient\$Builder
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
       - key: okhttp3.OkHttpClient\$Builder\(\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.OkHttpInterceptor
       
-  #自定义的名称，可以配置多个
   durid:
-      #插件织入匹配方法路径，支持正则表达式
       patterns:
         - com.alibaba.druid.pool.DruidDataSource
       #排除匹配路径
@@ -121,10 +115,8 @@ patterns:
        #     - com.preapm.agent.plugin.interceptor.DruidInterceptor
      
   mysql-jdbc-driver:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.mysql.jdbc.ConnectionImpl
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
       - key: com.mysql.jdbc.ConnectionImpl.initializeSafeStatementInterceptors\(\)
@@ -132,10 +124,8 @@ patterns:
       - com.preapm.agent.plugin.interceptor.MySQLInterceptor     
       
   jedis:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - redis.clients.jedis.BinaryJedis
-    #排除匹配路径
     excludedPatterns:
        - key: ping.*
        - key: close.*
@@ -157,15 +147,13 @@ patterns:
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
       
-      
+  #==========================================================一下是具体业务配置根据具体项目路径修改================================     
         
-      
+  #业务controller配置
   pre-controller:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.*Controller
       - org.exampledriven.*Controller
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
       - key: .*
@@ -175,22 +163,20 @@ patterns:
            inParam: true
            outParam: true
            time: -1    
-      
+  #业务service配置    
   pre-service:
-    #插件织入匹配方法路径，支持正则表达式
     patterns:
       - com.*.service.impl.*
-    #排除匹配路径
     excludedPatterns:
     includedPatterns:
       - key: .*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     track:
-           inParam: true
-           outParam: true
-           time: -1      
-      
+           inParam: true #记录入参
+           outParam: true #记录出参
+           time: -1    #不设置时间限制   
+  #agent测试配置    
   test:
       #插件织入匹配方法路径，支持正则表达式
       patterns:
