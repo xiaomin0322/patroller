@@ -2,7 +2,7 @@ package com.preapm.agent.plugin.interceptor;
 
 import java.util.Arrays;
 
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 		}*/
 		
 		try {
-			org.apache.http.HttpRequest  request = (HttpUriRequest) methodInfo.getArgs()[1];
+			org.apache.http.HttpRequest  request = (HttpRequest) methodInfo.getArgs()[1];
 			if (request != null) {
 				int ipv4 = InetAddressUtils.localIpv4();
 				Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
@@ -78,9 +78,11 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
-		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint );
-		ZipkinClientContext.getClient().finishSpan();
+		if(methodInfo.getLocalVariable()!=null) {
+			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint );
+			ZipkinClientContext.getClient().finishSpan();
+		}
 	}
 
 	@Override
