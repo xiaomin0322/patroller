@@ -7,13 +7,24 @@ pre-agent
 Quick-start
 =====
 
-mvn package -Dmaven.test.skip=true  
+### mvn package -Dmaven.test.skip=true  
 
-打包目录接口说明  
+### 目录结构说明
+ 
 lib --agent依赖包目录    
 plugin --插件包目录  
 pre-agent.jar --agent程序包  
 pre.yml --核心配置文件  
+
+
+plugin/zipkin.properties--配置文件说明  
+#zipkin服务端地址  
+zipkin.url=http://ip:端口  
+#应用服务名称  
+server.name=test    
+#采样率设置0-1  
+zipkin.percentage=1.0  
+
 
 
 
