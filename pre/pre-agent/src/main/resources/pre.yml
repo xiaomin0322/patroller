@@ -143,7 +143,11 @@ patterns:
        - key: getClusterNodes.*
        - key: getConnectionFromSlot.*
     includedPatterns:
-      - key: .*
+      - key: get.*
+      - key: set.*
+      - key: e.*
+      - key: h.*
+      - key: z.*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
       
