@@ -77,8 +77,8 @@ patterns:
       - org.apache.http.impl.client.AbstractHttpClient
     excludedPatterns:
     includedPatterns:
-       #- key: org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
-        - key: doExecute.*
+        #- key: org.apache.http.impl.client.InternalHttpClient.doExecute\(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext\)
+        - key: .*doExecute.*
     interceptors:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
 

@@ -18,7 +18,7 @@ public class PreConfigUtilTest {
 		 * "com.*.cloud.im.controller.StoreController", "test()"));
 		 */
 
-		System.out.println(
+		/*System.out.println(
 				PreConfigUtil.isTargetR("redis.clients.jedis.BinaryJedis", "redis.clients.jedis.BinaryJedis.ping()"));
 
 		List<String> patternsList = new ArrayList<>();
@@ -30,7 +30,11 @@ public class PreConfigUtilTest {
 
 		System.out.println(byte[].class);
 		
-		System.out.println(byte[][].class);
+		System.out.println(byte[][].class);*/
+		
+		System.out.println(
+				PreConfigUtil.isTargetR("org.apache.http.impl.client.InternalHttpClient", "org.apache.http.impl.client.InternalHttpClient.doExecute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)"));
+		
 	}
 
 }
