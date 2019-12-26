@@ -15,7 +15,7 @@ public class PreConfigUtilTest {
 		 * System.out.println(PreConfigUtil.isTarget("com.preapm.agent.Bootstrap",
 		 * "com.preapm.agent.Bootstrap.print2(java.lang.String)"));
 		 * System.out.println(PreConfigUtil.isTargetR(
-		 * "com.dominos.cloud.im.controller.StoreController", "test()"));
+		 * "com.*.cloud.im.controller.StoreController", "test()"));
 		 */
 
 		System.out.println(

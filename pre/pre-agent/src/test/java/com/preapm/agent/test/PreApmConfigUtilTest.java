@@ -10,9 +10,9 @@ import com.preapm.agent.bean.PluginConfigBean;
 import com.preapm.agent.bean.PluginJarBean;
 import com.preapm.agent.util.LogManager;
 
-public class PreApmConfigUtil {
+public class PreApmConfigUtilTest {
 	
-	private static Logger log = LogManager.getLogger(PreApmConfigUtil.class);
+	private static Logger log = LogManager.getLogger(PreApmConfigUtilTest.class);
 	
 	private static Map<String, PluginConfigBean> targetMap = new HashMap<>();
 	
@@ -91,15 +91,15 @@ public class PreApmConfigUtil {
 
 		methodSet = new HashSet<>();
 		methodSet.add(
-				"com.dominos.cloud.im.controller.StoreController.queryStoreGroupAll()");
+				"com.*.cloud.im.controller.StoreController.queryStoreGroupAll()");
 		methodSet.add(
-				"com.dominos.cloud.im.controller.StoreController.test(com.dominos.cloud.im.controller.ProductController)");
+				"com.*.cloud.im.controller.StoreController.test(com.*.cloud.im.controller.ProductController)");
 		methodSet.add(
-				"com.dominos.cloud.im.controller.StoreController.test2(com.dominos.cloud.im.controller.ProductController,com.dominos.cloud.im.model.StoreGroupsWithBLOBs)");
+				"com.*.cloud.im.controller.StoreController.test2(com.*.cloud.im.controller.ProductController,com.*.cloud.im.model.StoreGroupsWithBLOBs)");
 		bean  = new PluginConfigBean();
 		bean.setName("StoreController");
-		bean.setLoadPatterns("com.dominos.cloud.im.controller.StoreController");
-		bean.setPatterns("com.dominos.cloud.im.controller.StoreController");
+		bean.setLoadPatterns("com.*.cloud.im.controller.StoreController");
+		bean.setPatterns("com.*.cloud.im.controller.StoreController");
 		bean.setContainPatterns(methodSet);
 		methodSet = new HashSet<>();
 		methodSet.add(jarBeanZipkin);
@@ -202,7 +202,7 @@ public class PreApmConfigUtil {
 		if(!flag) {
 			return flag;
 		}
-		flag = PreApmConfigUtil.get(className).getContainPatterns().contains(method);
+		flag = PreApmConfigUtilTest.get(className).getContainPatterns().contains(method);
 		if(flag) {
 			log.info("className="+className+ " method"+method + "匹配到了！！！！！");
 		}
@@ -214,11 +214,11 @@ public class PreApmConfigUtil {
 		if(!flag) {
 			return null;
 		}
-		return PreApmConfigUtil.get(className).getPlugins();
+		return PreApmConfigUtilTest.get(className).getPlugins();
 	}
 
 	public static boolean isTarget(String className) {
-		Set<String> methodSet = PreApmConfigUtil.get(className).getContainPatterns();
+		Set<String> methodSet = PreApmConfigUtilTest.get(className).getContainPatterns();
 		if (methodSet == null || methodSet.isEmpty()) {
 			return false;
 		}

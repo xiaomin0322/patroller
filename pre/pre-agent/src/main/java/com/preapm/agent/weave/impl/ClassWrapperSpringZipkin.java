@@ -17,7 +17,7 @@ public class ClassWrapperSpringZipkin extends ClassWrapper {
 		StringBuilder builder = new StringBuilder();
 		builder.append(beforAgent());
 		builder.append(
-				" tracer = com.dominos.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
+				" tracer = com.*.cloud.common.util.SpringBeanUtils.getBean(org.springframework.cloud.sleuth.Tracer.class);\r\n"
 						+ "		if (tracer != null) {\r\n"
 						+ "				org.springframework.cloud.sleuth.Span currentSpan = tracer.getCurrentSpan();\r\n"
 						+ "				newSpan = tracer.createSpan(" + toStr(methodName) + ", currentSpan);\r\n"
