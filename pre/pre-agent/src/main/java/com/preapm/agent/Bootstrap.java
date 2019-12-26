@@ -18,7 +18,7 @@ public class Bootstrap {
 		
 		new Bootstrap().print2("123123");
 		//new Bootstrap().print();
-		//new Bootstrap().print3("123123","123");
+		new Bootstrap().print3("123123","123");
 	}
 
 	public void print() {
