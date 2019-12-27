@@ -55,14 +55,10 @@ public class TomcatInterceptor implements AroundInterceptor {
 				 * http-nio-9005-exec-1 当前span ===-5227500798708065629 parentId  null traceId -5227500798708065629
                   http-nio-9005-exec-2 parent Span   -5227500798708065629 traceId -5227500798708065629
 				 */
-				ZipkinClientContext.getClient().startRootSpan(TOMCAT_STR);
+				ZipkinClientContext.getClient().startSpan(TOMCAT_STR);
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url, endpoint);
-			ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
-			ZipkinClientContext.getClient().sendBinaryAnnotation("ThreadGroupName",Thread.currentThread().getThreadGroup().getName(), endpoint);
-			ZipkinClientContext.getClient().sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName(), endpoint);
-			
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_SEND, endpoint);
 			
