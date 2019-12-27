@@ -44,11 +44,19 @@ public class ZipkinClient {
 
 	}
 	
-
 	public Span startSpan(Long traceId, Long parentId, String name) {
 		Long id = GenerateKey.longKey();
 		return startSpan(id, traceId, parentId, name);
 
+	}
+	
+
+	public Span startRootSpan(String name) {
+		Long id = GenerateKey.longKey();
+		Span.Builder builder = Span.builder().id(id).traceId(id).name(name)
+				.timestamp(nanoTime());
+		this.spanStore.setSpan(builder);
+		return builder.build();
 	}
 
 	public Span startSpan(String name) {
@@ -57,13 +65,17 @@ public class ZipkinClient {
 		long id = spanId;
 		try {
 			Span.Builder parentSpan = this.spanStore.getSpan();
+		
 			Span.Builder builder = Span.builder().id(spanId).traceId(id).name(name).timestamp(nanoTime());
 			if (parentSpan != null) {
 				Span span = parentSpan.build();
 				builder.traceId(span.traceId).parentId(span.id);
+				//System.out.println(Thread.currentThread().getName()+ " parent Span   "+span.id + " traceId "+span.traceId);
 			}
 			this.spanStore.setSpan(builder);
-			return builder.build();
+			Span span = builder.build();
+			//System.out.println(Thread.currentThread().getName()+ " 当前span ==="+span.id + " parentId  "+span.parentId + " traceId "+span.traceId);
+			return span;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Span.builder().id(id).traceId(id).timestamp(nanoTime()).build();
