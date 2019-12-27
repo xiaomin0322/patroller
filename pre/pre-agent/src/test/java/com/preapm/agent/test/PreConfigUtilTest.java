@@ -32,8 +32,13 @@ public class PreConfigUtilTest {
 		
 		System.out.println(byte[][].class);*/
 		
-		System.out.println(
+		/*System.out.println(
 				PreConfigUtil.isTargetR("org.apache.http.impl.client.InternalHttpClient", "org.apache.http.impl.client.InternalHttpClient.doExecute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)"));
+	*/
+		
+		System.out.println(
+				PreConfigUtil.isTargetR("org.apache.catalina.servlets.DefaultServlet", "javax.servlet.http.HttpServlet.service(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)"));
+
 		
 	}
 
