@@ -16,11 +16,11 @@ public class TheadTest {
 
 		 //test2();
 
-		//test5();
+		test5();
 		
 		//test6();
 		
-		test4();
+		//test4();
 
 	}
 	
@@ -56,7 +56,7 @@ public class TheadTest {
 			public void run() {
 				longLocal.set(2l);
 				// TODO Auto-generated method stub
-				System.out.println("span==" + longLocal.get());
+				System.out.println(Thread.currentThread().getThreadGroup().getName()+"  span=="+Thread.currentThread().getName()+"  " + longLocal.get());
 			}
 		}).start();
 		Thread.sleep(100);
@@ -65,7 +65,8 @@ public class TheadTest {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				System.out.println("span2==" + longLocal.get());
+				System.out.println(Thread.currentThread().getThreadGroup().getName()+"  span22=="+Thread.currentThread().getName()+"  " + longLocal.get());
+				
 			}
 		}).start();
 		Thread.sleep(100);

@@ -59,6 +59,9 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
 				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
 				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,request.getRequestLine().getUri(), endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("ThreadGroupName",Thread.currentThread().getThreadGroup().getName(), endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName(), endpoint);
 				
 				Span span = ZipkinClientContext.getClient().getSpan();
 				if (span != null) {
