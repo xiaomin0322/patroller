@@ -126,6 +126,22 @@ public class ZipkinClient {
 		sendBinaryAnnotation(key, value,null);
 	}
 
+	/*public void finishSpan() {
+		try {
+			Span.Builder span = this.spanStore.getSpan();
+			if (span != null) {
+				long duration = nanoTime() - span.build().timestamp;
+				this.spanCollector.collect(span.duration(duration).build());
+			} else {
+				logger.error("you must use startSpan before finishSpan");
+			}
+			this.spanStore.removeSpan();
+			// ThreadLocalTraceStore.remove();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
+	
 	public void finishSpan() {
 		try {
 			Span.Builder span = this.spanStore.getSpan();
