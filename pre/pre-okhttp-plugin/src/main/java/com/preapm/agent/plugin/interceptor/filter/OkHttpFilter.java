@@ -23,7 +23,7 @@ import zipkin.Span;
 public class OkHttpFilter implements Interceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(OkHttpFilter.class);
-	
+	private static final String SPAN_NAME_STR = "OkHttP";
 
 	@Override
 	public Response intercept(Interceptor.Chain chain) throws IOException {
@@ -32,7 +32,8 @@ public class OkHttpFilter implements Interceptor {
 		int ipv4 = InetAddressUtils.localIpv4();
 		Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 		HttpUrl url = originalRequest.url();
-		ZipkinClientContext.getClient().startSpan(url.url().toString());
+		ZipkinClientContext.getClient().startSpan(SPAN_NAME_STR);
+		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url.url().toString(), endpoint);
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
 		Response response = null;
 		try {

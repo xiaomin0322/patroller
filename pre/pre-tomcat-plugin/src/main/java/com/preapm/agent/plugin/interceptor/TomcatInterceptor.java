@@ -51,7 +51,7 @@ public class TomcatInterceptor implements AroundInterceptor {
 			}else {
 				ZipkinClientContext.getClient().startSpan(TOMCAT_STR);
 			}
-			ZipkinClientContext.getClient().sendBinaryAnnotation("url",url, endpoint);
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_SEND, endpoint);
