@@ -3,20 +3,22 @@ package com.preapm.sdk.zipkin;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
+
 public class TheadTest {
 
 	// static ThreadLocal<Long> longLocal = new ThreadLocal<Long>();
 
-	static ThreadLocal<Long> longLocal = new InheritableThreadLocal<Long>();
+	static ThreadLocal<Long> longLocal = new TransmittableThreadLocal<Long>();
 
 	public static void main(String[] args) throws Exception {
 		// test1();
 
 		// test3();
 
-		 //test2();
+		 test2();
 
-		test5();
+		//test5();
 		
 		//test6();
 		
@@ -106,10 +108,11 @@ public class TheadTest {
 	}
 
 	public static void test2() throws Exception {
-		// ExecutorService executorService = Executors.newFixedThreadPool(4);
-		ExecutorService executorService = Executors.newCachedThreadPool();
+		 ExecutorService executorService = Executors.newFixedThreadPool(4);
+		//ExecutorService executorService = Executors.newCachedThreadPool();
+		
 
-		executorService.execute(new Runnable() {
+	/*	executorService.submit(new Runnable() {
 			@Override
 			public void run() {
 				longLocal.set(6666L);
@@ -119,13 +122,32 @@ public class TheadTest {
 		});
 		// Thread.sleep(10);
 
-		executorService.execute(new Runnable() {
+		executorService.submit(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println(Thread.currentThread().getName() + " span2==" + longLocal.get());
+			}
+		});*/
+		
+		executorService.submit(new Thread() {
+			@Override
+			public void run() {
+				longLocal.set(6666L);
+				// TODO Auto-generated method stub
+				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
+			}
+		});
+		// Thread.sleep(10);
+
+		executorService.submit(new Thread() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				System.out.println(Thread.currentThread().getName() + " span2==" + longLocal.get());
 			}
 		});
+		
 
 		Thread.sleep(100);
 
