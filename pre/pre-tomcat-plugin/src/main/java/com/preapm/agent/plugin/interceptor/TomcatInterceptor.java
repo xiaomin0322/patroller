@@ -28,6 +28,8 @@ import zipkin.Endpoint;
  */
 public class TomcatInterceptor implements AroundInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(TomcatInterceptor.class);
+	
+	private static final String TOMCAT_STR = "TOMCAT";
 
 	@Override
 	public void before(MethodInfo methodInfo) {
@@ -45,7 +47,9 @@ public class TomcatInterceptor implements AroundInterceptor {
 			if (trace_id != null && span_id != null) {
 				BigInteger trace_id_bi = new BigInteger(trace_id, 16);
 				BigInteger span_id_bi = new BigInteger(span_id, 16);
-				ZipkinClientContext.getClient().startSpan(trace_id_bi.longValue(), span_id_bi.longValue(), url);
+				ZipkinClientContext.getClient().startSpan(trace_id_bi.longValue(), span_id_bi.longValue(), TOMCAT_STR);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("url",url, endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
 			}else {
 				ZipkinClientContext.getClient().startSpan(url);
 			}
