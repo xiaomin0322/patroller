@@ -23,12 +23,13 @@ public class TheadTest {
 	}
 	
 	public static void test6() throws Exception {
-		longLocal.set(2l);
+	
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+				longLocal.set(2l);
 				System.out.println("span==" + longLocal.get());
 				
 				new Thread(new Runnable() {
