@@ -14,9 +14,34 @@ public class TheadTest {
 
 		// test3();
 
-		// test2();
+		 //test2();
 
-		test5();
+		//test5();
+		
+		test6();
+
+	}
+	
+	public static void test6() throws Exception {
+		longLocal.set(2l);
+		ExecutorService executorService = Executors.newCachedThreadPool();
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("span==" + longLocal.get());
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						longLocal.set(2l);
+						// TODO Auto-generated method stub
+						System.out.println("span22==" + longLocal.get());
+					}
+				}).start();
+			}
+		});
+		Thread.sleep(100);
 
 	}
 	
