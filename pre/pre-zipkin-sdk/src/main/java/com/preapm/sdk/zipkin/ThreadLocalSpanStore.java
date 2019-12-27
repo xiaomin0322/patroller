@@ -2,8 +2,6 @@ package com.preapm.sdk.zipkin;
 
 import java.util.Stack;
 
-import com.alibaba.ttl.TransmittableThreadLocal;
-
 import zipkin.Span;
 
 /**
@@ -25,7 +23,7 @@ public class ThreadLocalSpanStore implements SpanStore {//InheritableThreadLocal
         }
     };*/
 	
-	  public static ThreadLocal<Stack<Span.Builder>> LOCAL_SPAN = new TransmittableThreadLocal<Stack<Span.Builder>>() {
+	  public static ThreadLocal<Stack<Span.Builder>> LOCAL_SPAN = new ThreadLocal<Stack<Span.Builder>>() {
 	        @Override
 	        protected Stack<Span.Builder> initialValue() {
 	            return new Stack<>();
