@@ -18,7 +18,9 @@ public class TheadTest {
 
 		//test5();
 		
-		test6();
+		//test6();
+		
+		test4();
 
 	}
 	
