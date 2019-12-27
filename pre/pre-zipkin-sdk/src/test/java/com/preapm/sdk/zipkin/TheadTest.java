@@ -21,6 +21,7 @@ public class TheadTest {
 		//test6();
 		
 		//test4();
+		
 
 	}
 	
@@ -49,6 +50,8 @@ public class TheadTest {
 	}
 	
 	
+	
+	
 	public static void test5() throws Exception {
 		
 		new Thread(new Runnable() {
@@ -58,6 +61,7 @@ public class TheadTest {
 				// TODO Auto-generated method stub
 				System.out.println(Thread.currentThread().getThreadGroup().getName()+"  span=="+Thread.currentThread().getName()+"  " + longLocal.get());
 			}
+			
 		}).start();
 		Thread.sleep(100);
 		
