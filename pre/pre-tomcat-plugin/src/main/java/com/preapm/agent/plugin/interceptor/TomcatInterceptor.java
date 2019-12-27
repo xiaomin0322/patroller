@@ -50,6 +50,11 @@ public class TomcatInterceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().startSpan(trace_id_bi.longValue(), span_id_bi.longValue(), TOMCAT_STR);
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","false");
 			}else {
+				/**
+				 *   tomcat两个线程会传递
+				 * http-nio-9005-exec-1 当前span ===-5227500798708065629 parentId  null traceId -5227500798708065629
+                  http-nio-9005-exec-2 parent Span   -5227500798708065629 traceId -5227500798708065629
+				 */
 				ZipkinClientContext.getClient().startRootSpan(TOMCAT_STR);
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
