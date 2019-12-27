@@ -16,7 +16,31 @@ public class TheadTest {
 
 		// test2();
 
-		test4();
+		test5();
+
+	}
+	
+	
+	public static void test5() throws Exception {
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				longLocal.set(2l);
+				// TODO Auto-generated method stub
+				System.out.println("span==" + longLocal.get());
+			}
+		}).start();
+		Thread.sleep(100);
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("span2==" + longLocal.get());
+			}
+		}).start();
+		Thread.sleep(100);
 
 	}
 
