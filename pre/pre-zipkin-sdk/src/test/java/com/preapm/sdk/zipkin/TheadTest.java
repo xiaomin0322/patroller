@@ -10,9 +10,67 @@ public class TheadTest {
 	static ThreadLocal<Long> longLocal = new InheritableThreadLocal<Long>();
 
 	public static void main(String[] args) throws Exception {
-		test1();
-		
-		test3();
+		// test1();
+
+		// test3();
+
+		// test2();
+
+		test4();
+
+	}
+
+	public static void test4() throws Exception {
+		// ExecutorService executorService = Executors.newFixedThreadPool(4);
+		ExecutorService executorService = Executors.newCachedThreadPool();
+
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				longLocal.set(6666L);
+				// TODO Auto-generated method stub
+				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
+
+				ExecutorService executorService2 = Executors.newFixedThreadPool(4);
+
+				executorService2.execute(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						System.out.println(Thread.currentThread().getName() + " span2==" + longLocal.get());
+					}
+				});
+			}
+		});
+		// Thread.sleep(10);
+
+		Thread.sleep(100);
+
+	}
+
+	public static void test2() throws Exception {
+		// ExecutorService executorService = Executors.newFixedThreadPool(4);
+		ExecutorService executorService = Executors.newCachedThreadPool();
+
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				longLocal.set(6666L);
+				// TODO Auto-generated method stub
+				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
+			}
+		});
+		// Thread.sleep(10);
+
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println(Thread.currentThread().getName() + " span2==" + longLocal.get());
+			}
+		});
+
+		Thread.sleep(100);
 
 	}
 
