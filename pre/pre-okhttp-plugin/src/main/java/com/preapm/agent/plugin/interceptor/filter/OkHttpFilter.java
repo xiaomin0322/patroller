@@ -1,12 +1,10 @@
 package com.preapm.agent.plugin.interceptor.filter;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.plugin.interceptor.OkHttpInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
