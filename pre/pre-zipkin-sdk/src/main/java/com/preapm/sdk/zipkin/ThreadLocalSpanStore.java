@@ -7,7 +7,7 @@ import zipkin.Span;
 /**
  * 
  * <pre>
- * ThreadLocalSpanStore
+ * ThreadLocalSpanStore,LazyTraceExecutor
  * </pre>
  * 
  * @author 
