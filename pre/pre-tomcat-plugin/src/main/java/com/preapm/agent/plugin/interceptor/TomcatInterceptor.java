@@ -48,8 +48,10 @@ public class TomcatInterceptor implements AroundInterceptor {
 				BigInteger trace_id_bi = new BigInteger(trace_id, 16);
 				BigInteger span_id_bi = new BigInteger(span_id, 16);
 				ZipkinClientContext.getClient().startSpan(trace_id_bi.longValue(), span_id_bi.longValue(), TOMCAT_STR);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","false");
 			}else {
 				ZipkinClientContext.getClient().startSpan(TOMCAT_STR);
+				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
