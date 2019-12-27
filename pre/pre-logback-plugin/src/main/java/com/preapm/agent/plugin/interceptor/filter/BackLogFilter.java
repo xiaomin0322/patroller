@@ -29,8 +29,11 @@ public class BackLogFilter extends Filter<ILoggingEvent> {
 		String message = event.getMessage();
 		if (message.startsWith("tracer")) {
 			try {
-				ZipkinClientContext.getClient().sendBinaryAnnotation(message, Arrays.toString(argumentArray), null);
-				;
+				Span span = ZipkinClientContext.getClient().getSpan();
+				if(span!=null) {
+					ZipkinClientContext.getClient().sendBinaryAnnotation(message, Arrays.toString(argumentArray), null);
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

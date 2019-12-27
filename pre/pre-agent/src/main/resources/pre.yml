@@ -61,12 +61,14 @@ patterns:
   tomcat:
     #插件织入匹配方法路径，支持正则表达式（这里一般配置包名称或者类名称）
     patterns:
-      - org.apache.catalina.core.StandardWrapperValve
+      #- org.apache.catalina.core.StandardWrapperValve
+       - javax.servlet.http.HttpServlet
     #排除匹配
     excludedPatterns:
     #包含匹配
     includedPatterns:
-       - key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
+       #- key: org.apache.catalina.core.StandardWrapperValve.invoke\(org.apache.catalina.connector.Request,org.apache.catalina.connector.Response\)
+        - key: javax.servlet.http.HttpServlet.service\(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.TomcatInterceptor
       
