@@ -29,7 +29,8 @@ public class ZipkinClient {
 
 	public ZipkinClient(String zipkinHost) {
 		this.spanCollector = new HttpSpanCollector(zipkinHost);
-		this.spanStore = new ThreadLocalSpanStore();
+		//this.spanStore = new ThreadLocalSpanStore();
+		this.spanStore = new DoubleThreadLocalSpanStore();
 	}
 
 	public Span startSpan(Long id, Long traceId, Long parentId, String name) {
