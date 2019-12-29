@@ -4,7 +4,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.alibaba.ttl.threadpool.TtlExecutors;
 
+
+/**
+ * java -javaagent:path/to/transmittable-thread-local-2.x.x.jar \
+    -cp classes \
+    com.alibaba.demo.ttl.agent.AgentDemo
+    https://github.com/alibaba/transmittable-thread-local
+ * @author Zengmin.Zhang
+ *
+ */
 public class TheadTest {
 
 	// static ThreadLocal<Long> longLocal = new ThreadLocal<Long>();
@@ -16,8 +26,8 @@ public class TheadTest {
 
 		// test3();
 
+		// test22();
 		 test2();
-
 		//test5();
 		
 		//test6();
@@ -108,38 +118,50 @@ public class TheadTest {
 	}
 
 	public static void test2() throws Exception {
-		 ExecutorService executorService = Executors.newFixedThreadPool(4);
-		//ExecutorService executorService = Executors.newCachedThreadPool();
-		
-
-	/*	executorService.submit(new Runnable() {
+		 ExecutorService executorService = Executors.newFixedThreadPool(1);
+		 longLocal.set(111L);
+		 
+		executorService.submit(new Thread() {
 			@Override
 			public void run() {
+				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
 				longLocal.set(6666L);
 				// TODO Auto-generated method stub
 				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
 			}
 		});
-		// Thread.sleep(10);
-
-		executorService.submit(new Runnable() {
+		  Thread.sleep(180);
+		 longLocal.set(222L);
+		executorService.submit(new Thread() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				System.out.println(Thread.currentThread().getName() + " span2==" + longLocal.get());
 			}
-		});*/
+		});
 		
+
+		Thread.sleep(100);
+
+	}
+	
+	public static void test22() throws Exception {
+		 ExecutorService executorService = Executors.newFixedThreadPool(1);
+		// longLocal.set(111L);
+		 
+		 executorService = TtlExecutors.getTtlExecutorService(executorService);
+		 
 		executorService.submit(new Thread() {
 			@Override
 			public void run() {
+				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
 				longLocal.set(6666L);
 				// TODO Auto-generated method stub
 				System.out.println(Thread.currentThread().getName() + " span==" + longLocal.get());
 			}
 		});
-		// Thread.sleep(10);
-
+		  Thread.sleep(180);
+		// longLocal.set(222L);
 		executorService.submit(new Thread() {
 			@Override
 			public void run() {

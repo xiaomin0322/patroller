@@ -42,6 +42,25 @@ public class DoubleThreadLocalSpanStore implements SpanStore {// InheritableThre
 
 	@Override
 	public void setSpan(Span.Builder span) {
+		if (isTransmittableThread()) {
+			if (span == null) {
+				if (!LOCAL_SPAN_TRANSMITTABLE.get().empty()) {
+					LOCAL_SPAN_TRANSMITTABLE.get().pop();
+				}
+			} else {
+				LOCAL_SPAN_TRANSMITTABLE.get().push(span);
+			}
+			return;
+		}
+		
+		if (span == null) {
+			if (!LOCAL_SPAN_TRANSMITTABLE.get().empty()) {
+				LOCAL_SPAN_TRANSMITTABLE.get().pop();
+			}
+		} else {
+			LOCAL_SPAN_TRANSMITTABLE.get().push(span);
+		}
+
 		if (span == null) {
 			if (!LOCAL_SPAN.get().empty()) {
 				LOCAL_SPAN.get().pop();
@@ -50,23 +69,24 @@ public class DoubleThreadLocalSpanStore implements SpanStore {// InheritableThre
 			LOCAL_SPAN.get().push(span);
 		}
 
-		if (span == null) {
-			if (!LOCAL_SPAN_TRANSMITTABLE.get().empty()) {
-				LOCAL_SPAN_TRANSMITTABLE.get().pop();
-			}
-		} else {
-			LOCAL_SPAN_TRANSMITTABLE.get().push(span);
-		}
 	}
 
 	@Override
 	public void removeSpan() {
-		if (!LOCAL_SPAN.get().empty()) {
-			LOCAL_SPAN.get().pop();
+
+		if (isTransmittableThread()) {
+			if (!LOCAL_SPAN_TRANSMITTABLE.get().empty()) {
+				LOCAL_SPAN_TRANSMITTABLE.get().pop();
+			}
+			return;
 		}
 		if (!LOCAL_SPAN_TRANSMITTABLE.get().empty()) {
 			LOCAL_SPAN_TRANSMITTABLE.get().pop();
 		}
+		if (!LOCAL_SPAN.get().empty()) {
+			LOCAL_SPAN.get().pop();
+		}
+
 	}
 
 	public boolean isTransmittableThread() {
