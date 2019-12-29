@@ -65,11 +65,22 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-			</plugin> -->
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib </outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 				<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -113,6 +124,14 @@
                                     <fileset dir="${project.build.directory}/classes">
                                         <!-- 拷贝内容 -->
                                         <include name="zipkin.properties" />
+                                    </fileset>
+                                </copy>
+                                
+                                  <copy todir="../../target/pre-agent/plugin">
+                                    <!-- 从哪里拷贝 -->
+                                    <fileset dir="${project.build.directory}/lib">
+                                        <!-- 拷贝内容 -->
+                                        <include name="transmittable-thread-local-*.jar" />
                                     </fileset>
                                 </copy>
                                 
