@@ -24,6 +24,21 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.3</version>
         <executions>
@@ -51,6 +66,11 @@
             </goals>
             <configuration>
               <tasks>
+                <copy>
+                  <fileset>
+                    <include />
+                  </fileset>
+                </copy>
                 <copy>
                   <fileset>
                     <include />
