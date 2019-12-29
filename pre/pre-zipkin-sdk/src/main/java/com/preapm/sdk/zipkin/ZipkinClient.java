@@ -30,7 +30,11 @@ public class ZipkinClient {
 	public ZipkinClient(String zipkinHost) {
 		this.spanCollector = new HttpSpanCollector(zipkinHost);
 		this.spanStore = new ThreadLocalSpanStore();
-		//this.spanStore = new DoubleThreadLocalSpanStore();
+		// this.spanStore = new DoubleThreadLocalSpanStore();
+	}
+
+	public SpanStore getSpanStore() {
+		return this.spanStore;
 	}
 
 	public Span startSpan(Long id, Long traceId, Long parentId, String name) {
@@ -44,18 +48,16 @@ public class ZipkinClient {
 		}
 
 	}
-	
+
 	public Span startSpan(Long traceId, Long parentId, String name) {
 		Long id = GenerateKey.longKey();
 		return startSpan(id, traceId, parentId, name);
 
 	}
-	
 
 	public Span startRootSpan(String name) {
 		Long id = GenerateKey.longKey();
-		Span.Builder builder = Span.builder().id(id).traceId(id).name(name)
-				.timestamp(nanoTime());
+		Span.Builder builder = Span.builder().id(id).traceId(id).name(name).timestamp(nanoTime());
 		this.spanStore.setSpan(builder);
 		return builder.build();
 	}
@@ -66,19 +68,22 @@ public class ZipkinClient {
 		long id = spanId;
 		try {
 			Span.Builder parentSpan = this.spanStore.getSpan();
-		
+
 			Span.Builder builder = Span.builder().id(spanId).traceId(id).name(name).timestamp(nanoTime());
 			if (parentSpan != null) {
 				Span span = parentSpan.build();
 				builder.traceId(span.traceId).parentId(span.id);
-				//System.out.println(Thread.currentThread().getName()+ " parent Span   "+span.id + " traceId "+span.traceId);
+				// System.out.println(Thread.currentThread().getName()+ " parent Span "+span.id
+				// + " traceId "+span.traceId);
 			}
 			this.spanStore.setSpan(builder);
 			Span span = builder.build();
-			//System.out.println(Thread.currentThread().getName()+ " 当前span ==="+span.id + " parentId  "+span.parentId + " traceId "+span.traceId);
-			sendBinaryAnnotation("threadName",Thread.currentThread().getName());
-			sendBinaryAnnotation("ThreadGroupName",Thread.currentThread().getThreadGroup().getName());
-			sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName());
+			// System.out.println(Thread.currentThread().getName()+ " 当前span ==="+span.id +
+			// " parentId "+span.parentId + " traceId "+span.traceId);
+			sendBinaryAnnotation("threadName", Thread.currentThread().getName());
+			sendBinaryAnnotation("ThreadGroupName", Thread.currentThread().getThreadGroup().getName());
+			sendBinaryAnnotation("ParentThreadGroupName",
+					Thread.currentThread().getThreadGroup().getParent().getName());
 			return span;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,7 +108,7 @@ public class ZipkinClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendAnnotation(String value) {
 		try {
 			Span.Builder span = this.spanStore.getSpan();
@@ -122,27 +127,21 @@ public class ZipkinClient {
 		}
 
 	}
-	
+
 	public void sendBinaryAnnotation(String key, String value) {
-		sendBinaryAnnotation(key, value,null);
+		sendBinaryAnnotation(key, value, null);
 	}
 
-	/*public void finishSpan() {
-		try {
-			Span.Builder span = this.spanStore.getSpan();
-			if (span != null) {
-				long duration = nanoTime() - span.build().timestamp;
-				this.spanCollector.collect(span.duration(duration).build());
-			} else {
-				logger.error("you must use startSpan before finishSpan");
-			}
-			this.spanStore.removeSpan();
-			// ThreadLocalTraceStore.remove();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-	
+	/*
+	 * public void finishSpan() { try { Span.Builder span =
+	 * this.spanStore.getSpan(); if (span != null) { long duration = nanoTime() -
+	 * span.build().timestamp;
+	 * this.spanCollector.collect(span.duration(duration).build()); } else {
+	 * logger.error("you must use startSpan before finishSpan"); }
+	 * this.spanStore.removeSpan(); // ThreadLocalTraceStore.remove(); } catch
+	 * (Exception e) { e.printStackTrace(); } }
+	 */
+
 	public void finishSpan() {
 		try {
 			Span.Builder span = this.spanStore.getSpan();

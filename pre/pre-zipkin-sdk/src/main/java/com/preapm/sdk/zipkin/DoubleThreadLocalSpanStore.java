@@ -96,4 +96,10 @@ public class DoubleThreadLocalSpanStore implements SpanStore {// InheritableThre
 		}
 		return false;
 	}
+
+	@Override
+	public void removeAllSpan() {
+			LOCAL_SPAN.remove();
+			LOCAL_SPAN_TRANSMITTABLE.remove();
+	}
 }

@@ -54,4 +54,9 @@ public class ThreadLocalSpanStore implements SpanStore {//InheritableThreadLocal
             LOCAL_SPAN.get().pop();
         }
     }
+
+	@Override
+	public void removeAllSpan() {
+		LOCAL_SPAN.remove();
+	}
 }

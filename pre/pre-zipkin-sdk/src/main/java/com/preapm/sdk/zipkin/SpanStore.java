@@ -18,4 +18,6 @@ public interface SpanStore {
     public void setSpan(Span.Builder span);
 
     public void removeSpan();
+    
+    public void removeAllSpan();
 }
