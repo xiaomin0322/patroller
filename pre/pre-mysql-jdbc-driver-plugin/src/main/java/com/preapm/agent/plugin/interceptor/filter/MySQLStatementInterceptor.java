@@ -23,7 +23,6 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 
 	@Override
 	public void init(Connection conn, Properties props) throws SQLException {
-
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 		if (client != null) {
 			client.startSpan(SQL_STR);
 			client.sendAnnotation(TraceKeys.CLIENT_SEND);
-			String psql = getSql(interceptedStatement);
+			String psql = getSql(sql,interceptedStatement);
 			if (psql != null) {
 				client.sendBinaryAnnotation(PRE_SQL_STR, psql);
 			}
@@ -55,10 +54,6 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 			ResultSetInternalMethods originalResultSet, Connection connection, int warningCount, boolean noIndexUsed,
 			boolean noGoodIndexUsed, SQLException statementException) throws SQLException {
 		if (client != null) {
-			/*String psql = getSql(interceptedStatement);
-			if (psql != null) {
-				client.sendBinaryAnnotation(POST_SQL_STR, psql);
-			}*/
 			if (statementException != null) {
 				client.sendBinaryAnnotation("error", statementException.getMessage());
 			}
@@ -68,8 +63,10 @@ public class MySQLStatementInterceptor implements StatementInterceptorV2 {
 		return null;
 	}
 
-	private String getSql(Statement arg1) {
-		String sql = null;
+	private String getSql(String sql,Statement arg1) {
+		if(sql !=null ) {
+			return sql;
+		}
 		if (arg1 instanceof PreparedStatement) {
 			try {
 				sql = ((PreparedStatement) arg1).asSql();
