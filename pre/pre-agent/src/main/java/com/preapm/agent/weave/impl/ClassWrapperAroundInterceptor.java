@@ -69,7 +69,7 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		} 
 		
 		if (serialize != null) {
-			stringBuilder.append("preMethondInfo.setMethodName(" + toStr(serialize) + ");").append(line());
+			stringBuilder.append("preMethondInfo.setSerialize(" + toStr(serialize) + ");").append(line());
 		}
 	}
 
