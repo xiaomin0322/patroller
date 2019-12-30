@@ -48,7 +48,7 @@ zipkin.percentage=1.0
 
 
 ### 执行demo
-java -javaagent:具体目录\pre-agent\pre-agent.jar   -Dserver.name=pre-test   -jar pre-agent.jar  
+java -javaagent:具体目录\pre-agent\pre-agent.jar -javaagent:具体目录\pre-agent\plugin\transmittable-thread-local-2.11.2.jar    -Dserver.name=pre-test   -jar pre-agent.jar  
 
 
 ### log配置打印TraceId,SpanId
