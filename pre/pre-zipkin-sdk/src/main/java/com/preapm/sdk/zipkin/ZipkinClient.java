@@ -73,17 +73,13 @@ public class ZipkinClient {
 			if (parentSpan != null) {
 				Span span = parentSpan.build();
 				builder.traceId(span.traceId).parentId(span.id);
-				// System.out.println(Thread.currentThread().getName()+ " parent Span "+span.id
-				// + " traceId "+span.traceId);
 			}
 			this.spanStore.setSpan(builder);
 			Span span = builder.build();
-			// System.out.println(Thread.currentThread().getName()+ " 当前span ==="+span.id +
-			// " parentId "+span.parentId + " traceId "+span.traceId);
 			sendBinaryAnnotation("threadName", Thread.currentThread().getName());
-			sendBinaryAnnotation("ThreadGroupName", Thread.currentThread().getThreadGroup().getName());
-			sendBinaryAnnotation("ParentThreadGroupName",
-					Thread.currentThread().getThreadGroup().getParent().getName());
+			// sendBinaryAnnotation("ThreadGroupName",
+			// Thread.currentThread().getThreadGroup().getName());
+			// sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName());
 			return span;
 		} catch (Exception e) {
 			e.printStackTrace();
