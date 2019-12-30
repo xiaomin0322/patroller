@@ -9,6 +9,8 @@ import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClient;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
+import com.preapm.sdk.zipkin.serialize.SerializeFactory;
+import com.preapm.sdk.zipkin.serialize.SerializeInterface;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
@@ -56,12 +58,15 @@ public class ZipkinInterceptor implements AroundInterceptor {
 			return ;
 		}
 		
+		
 		if (methodInfo.getLocalVariable() != null) {
 			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 			Long startTime = (Long) methodInfo.getLocalVariable()[1];
 			Long endTime = System.currentTimeMillis();
 			client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
 			long time = methodInfo.getTime();
+			
+			SerializeInterface serialize  = SerializeFactory.get(methodInfo.getSerialize());
 
 			if ((endTime - startTime) > time) {
 				if (methodInfo.isInParam()) {
@@ -70,12 +75,12 @@ public class ZipkinInterceptor implements AroundInterceptor {
 						for (int i = 0; i < argsName.length; i++) {
 							String name = argsName[i];
 							Object val = methodInfo.getArgs()[i];
-							client.sendBinaryAnnotation("in." + name, String.valueOf(val), endpoint);
+							client.sendBinaryAnnotation("in." + name, serialize.serializa(val), endpoint);
 						}
 					}
 				}
 				if (methodInfo.isOutParam()) {
-					client.sendBinaryAnnotation("out", String.valueOf(methodInfo.getResult()), endpoint);
+					client.sendBinaryAnnotation("out", serialize.serializa(methodInfo.getResult()), endpoint);
 				}
 
 			}
