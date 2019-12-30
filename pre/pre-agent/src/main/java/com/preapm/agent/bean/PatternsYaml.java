@@ -46,6 +46,16 @@ public class PatternsYaml {
 		private boolean outParam;
 		// 超过这个时间才记录
 		private int time = -1;
+		//序列化方式
+		private String serialize="def";
+		
+		public String getSerialize() {
+			return serialize;
+		}
+
+		public void setSerialize(String serialize) {
+			this.serialize = serialize;
+		}
 
 		public boolean isInParam() {
 			return inParam;

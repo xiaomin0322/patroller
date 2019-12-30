@@ -171,7 +171,8 @@ patterns:
     track:
            inParam: true
            outParam: true
-           time: -1    
+           time: -1 
+           serialize: fastjson   
   #业务service配置    
   pre-service:
     patterns:
