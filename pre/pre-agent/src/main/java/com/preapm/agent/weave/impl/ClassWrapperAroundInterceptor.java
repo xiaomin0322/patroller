@@ -48,13 +48,29 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 			stringBuilder.append("preMethondInfo.setArgsName(preMethodArgsStr.split(" + toStr(",") + "));")
 					.append(line());
 		}
-
+		setSerialize(stringBuilder);
 		setPlugin(stringBuilder);
 		setTrack(stringBuilder);
 
 		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(preMethondInfo);")
 				.append(line());
 		return stringBuilder.toString();
+	}
+	
+	public void setSerialize(StringBuilder stringBuilder) {
+		String serialize = null;
+		
+		if (patterns.getTrack() != null) {
+			serialize = patterns.getTrack().getSerialize();
+		} 
+		
+		if (patternMethod.getTrack() != null) {
+			serialize = patternMethod.getTrack().getSerialize();
+		} 
+		
+		if (serialize != null) {
+			stringBuilder.append("preMethondInfo.setMethodName(" + toStr(serialize) + ");").append(line());
+		}
 	}
 
 	public String afterAgent(String resultName) {
