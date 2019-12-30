@@ -186,6 +186,7 @@ patterns:
            inParam: true #记录入参
            outParam: true #记录出参
            time: -1    #不设置时间限制   
+           serialize: fastjson 
   #agent测试配置    
   test:
       #插件织入匹配方法路径，支持正则表达式
