@@ -43,7 +43,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 			methodInfo.setLocalVariable(new Object[] { endpoint, startTime, serialize, binaryAnnotationStart });
 			client.sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("beforeException",e);
 		}
 
 	}
@@ -85,7 +85,7 @@ public class ZipkinInterceptor implements AroundInterceptor {
 				client.finishSpan();
 			}
 		} catch (Exception e) {
-			logger.error("afterException",e.getMessage());
+			logger.error("afterException",e);
 		}
 
 	}
