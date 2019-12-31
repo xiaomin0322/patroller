@@ -64,26 +64,30 @@ public class ZipkinInterceptor implements AroundInterceptor {
 		if (client.getSpan() == null) {
 			return;
 		}
+		try {
+			if (methodInfo.getLocalVariable() != null) {
+				Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
+				Long startTime = (Long) methodInfo.getLocalVariable()[1];
+				Long endTime = System.currentTimeMillis();
+				client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
+				long time = methodInfo.getTime();
 
-		if (methodInfo.getLocalVariable() != null) {
-			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
-			Long startTime = (Long) methodInfo.getLocalVariable()[1];
-			Long endTime = System.currentTimeMillis();
-			client.sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
-			long time = methodInfo.getTime();
+				SerializeInterface serialize = (SerializeInterface) methodInfo.getLocalVariable()[2];
+				if ((endTime - startTime) > time) {
+					List<BinaryAnnotation> binaryAnnotationStart = (List<BinaryAnnotation>) methodInfo
+							.getLocalVariable()[3];
+					client.sendBinaryAnnotation(binaryAnnotationStart);
+					if (methodInfo.isOutParam()) {
+						client.sendBinaryAnnotation("out", serialize.serializa(methodInfo.getResult()), endpoint);
+					}
 
-			SerializeInterface serialize = (SerializeInterface) methodInfo.getLocalVariable()[2];
-			if ((endTime - startTime) > time) {
-				List<BinaryAnnotation> binaryAnnotationStart = (List<BinaryAnnotation>) methodInfo
-						.getLocalVariable()[3];
-				client.sendBinaryAnnotation(binaryAnnotationStart);
-				if (methodInfo.isOutParam()) {
-					client.sendBinaryAnnotation("out", serialize.serializa(methodInfo.getResult()), endpoint);
 				}
-
+				client.finishSpan();
 			}
-			client.finishSpan();
+		} catch (Exception e) {
+			logger.error("afterException",e.getMessage());
 		}
+
 	}
 
 	public static List<BinaryAnnotation> create(MethodInfo methodInfo, SerializeInterface serialize,
