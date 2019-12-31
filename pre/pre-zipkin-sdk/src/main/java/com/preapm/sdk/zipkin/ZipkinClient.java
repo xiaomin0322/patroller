@@ -102,6 +102,9 @@ public class ZipkinClient {
 	public void sendBinaryAnnotation(String key, String value, Endpoint endpoint) {
 		try {
 			Span.Builder span = this.spanStore.getSpan();
+			if(span == null) {
+				return;
+			}
 			span.addBinaryAnnotation(BinaryAnnotation.create(key, value, endpoint));
 		} catch (Exception e) {
 			logger.error("sendBinaryAnnotationException", e);

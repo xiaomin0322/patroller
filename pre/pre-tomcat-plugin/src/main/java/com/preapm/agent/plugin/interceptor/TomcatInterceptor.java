@@ -41,7 +41,7 @@ public class TomcatInterceptor implements AroundInterceptor {
 			//System.out.println("request================="+request);
 			String url = request.getRequestURL().toString();
 			String method = request.getMethod();
-			String queryString = request.getQueryString();
+			String queryString = request.getQueryString() == null ? "" :  request.getQueryString() ;
 			String trace_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
 			String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
 			String clientIP = com.preapm.sdk.zipkin.util.ClientUtil.getSpbillIp(request);
