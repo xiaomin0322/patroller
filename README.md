@@ -39,7 +39,7 @@ zipkin.percentage=1.0
     track:  
            inParam: true #记录入参  
            outParam: true #记录出参  
-           time: -1    #不设置时间限制 
+           time: -1    #不设置时间限制   
            serialize: fastjson   #参数序列化方式，默认toString
 
 
