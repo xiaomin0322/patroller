@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dominos.cloud.common.util.ClientUtil;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
@@ -40,8 +41,12 @@ public class TomcatInterceptor implements AroundInterceptor {
 			HttpServletRequest request = (HttpServletRequest) methodInfo.getArgs()[0];
 			//System.out.println("request================="+request);
 			String url = request.getRequestURL().toString();
+			String method = request.getMethod();
+			String queryString = request.getQueryString();
 			String trace_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
 			String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
+			String clientIP = com.preapm.sdk.zipkin.util.ClientUtil.getSpbillIp(request);
+			
 			logger.info("获取trace_id：" + trace_id);
 			logger.info("获取trace_id：" + span_id);
 			ZipkinClientContext.getClient().getSpanStore().removeAllSpan();
@@ -59,6 +64,10 @@ public class TomcatInterceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().startRootSpan(TOMCAT_STR);
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
+			
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_CLIENT_IP,clientIP, endpoint);
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_QUERY_STRING,queryString, endpoint);
+			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,method, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_SEND, endpoint);

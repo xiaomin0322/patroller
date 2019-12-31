@@ -24,6 +24,10 @@ public class TraceKeys {
     public static final String HTTP_HOST = "http.host";
 
     public static final String HTTP_METHOD = "http.method";
+    
+    public static final String HTTP_QUERY_STRING = "http.querystring";
+    
+    public static final String HTTP_CLIENT_IP = "http.client.ip";
 
     public static final String HTTP_PATH = "http.path";
 
