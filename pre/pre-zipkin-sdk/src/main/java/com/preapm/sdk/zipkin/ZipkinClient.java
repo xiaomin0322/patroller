@@ -1,5 +1,7 @@
 package com.preapm.sdk.zipkin;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +103,24 @@ public class ZipkinClient {
 		try {
 			Span.Builder span = this.spanStore.getSpan();
 			span.addBinaryAnnotation(BinaryAnnotation.create(key, value, endpoint));
+		} catch (Exception e) {
+			logger.error("sendBinaryAnnotationException", e);
+		}
+
+	}
+
+	public void sendBinaryAnnotation(List<BinaryAnnotation> binaryAnnotations) {
+		if (binaryAnnotations == null) {
+			return;
+		}
+		try {
+			Span.Builder span = this.spanStore.getSpan();
+			for (BinaryAnnotation a : binaryAnnotations) {
+				if (a == null) {
+					continue;
+				}
+				span.addBinaryAnnotation(a);
+			}
 		} catch (Exception e) {
 			logger.error("sendBinaryAnnotationException", e);
 		}
