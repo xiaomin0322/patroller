@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dominos.cloud.common.util.ClientUtil;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
