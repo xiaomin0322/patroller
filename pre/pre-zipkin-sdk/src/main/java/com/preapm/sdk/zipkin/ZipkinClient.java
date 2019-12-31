@@ -30,7 +30,6 @@ public class ZipkinClient {
 	public ZipkinClient(String zipkinHost) {
 		this.spanCollector = new HttpSpanCollector(zipkinHost);
 		this.spanStore = new ThreadLocalSpanStore();
-		// this.spanStore = new DoubleThreadLocalSpanStore();
 	}
 
 	public SpanStore getSpanStore() {
@@ -38,13 +37,15 @@ public class ZipkinClient {
 	}
 
 	public Span startSpan(Long id, Long traceId, Long parentId, String name) {
-		if (id != null && traceId != null && parentId != null) {
+		try {
 			Span.Builder builder = Span.builder().id(id).traceId(traceId).parentId(parentId).name(name)
 					.timestamp(nanoTime());
 			this.spanStore.setSpan(builder);
+			sendBinaryAnnotation("threadName", Thread.currentThread().getName());
 			return builder.build();
-		} else {
-			return this.startSpan(name);
+		} catch (Exception e) {
+			logger.error("startSpanException", e);
+			return Span.builder().id(id).traceId(traceId).timestamp(nanoTime()).build();
 		}
 
 	}
@@ -57,34 +58,21 @@ public class ZipkinClient {
 
 	public Span startRootSpan(String name) {
 		Long id = GenerateKey.longKey();
-		Span.Builder builder = Span.builder().id(id).traceId(id).name(name).timestamp(nanoTime());
-		this.spanStore.setSpan(builder);
-		return builder.build();
+		return startSpan(id, id, name);
 	}
 
 	public Span startSpan(String name) {
-		// long id = ThreadLocalTraceStore.get();
 		long spanId = GenerateKey.longKey();
-		long id = spanId;
-		try {
-			Span.Builder parentSpan = this.spanStore.getSpan();
-
-			Span.Builder builder = Span.builder().id(spanId).traceId(id).name(name).timestamp(nanoTime());
-			if (parentSpan != null) {
-				Span span = parentSpan.build();
-				builder.traceId(span.traceId).parentId(span.id);
-			}
-			this.spanStore.setSpan(builder);
-			Span span = builder.build();
-			sendBinaryAnnotation("threadName", Thread.currentThread().getName());
-			// sendBinaryAnnotation("ThreadGroupName",
-			// Thread.currentThread().getThreadGroup().getName());
-			// sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName());
-			return span;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Span.builder().id(id).traceId(id).timestamp(nanoTime()).build();
+		long traceId = spanId;
+		Long parentId = null;
+		Span.Builder parentSpan = this.spanStore.getSpan();
+		if (parentSpan != null) {
+			Span parent = parentSpan.build();
+			traceId = parent.traceId;
+			parentId = parent.id;
 		}
+		return startSpan(spanId, traceId, parentId, name);
+
 	}
 
 	public Span getSpan() {
@@ -101,17 +89,12 @@ public class ZipkinClient {
 			Span.Builder span = this.spanStore.getSpan();
 			span.addAnnotation(Annotation.create(nanoTime(), value, endpoint));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("sendAnnotationException", e);
 		}
 	}
 
 	public void sendAnnotation(String value) {
-		try {
-			Span.Builder span = this.spanStore.getSpan();
-			span.addAnnotation(Annotation.create(nanoTime(), value, null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		sendAnnotation(value, null);
 	}
 
 	public void sendBinaryAnnotation(String key, String value, Endpoint endpoint) {
@@ -119,7 +102,7 @@ public class ZipkinClient {
 			Span.Builder span = this.spanStore.getSpan();
 			span.addBinaryAnnotation(BinaryAnnotation.create(key, value, endpoint));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("sendBinaryAnnotationException", e);
 		}
 
 	}
@@ -127,16 +110,6 @@ public class ZipkinClient {
 	public void sendBinaryAnnotation(String key, String value) {
 		sendBinaryAnnotation(key, value, null);
 	}
-
-	/*
-	 * public void finishSpan() { try { Span.Builder span =
-	 * this.spanStore.getSpan(); if (span != null) { long duration = nanoTime() -
-	 * span.build().timestamp;
-	 * this.spanCollector.collect(span.duration(duration).build()); } else {
-	 * logger.error("you must use startSpan before finishSpan"); }
-	 * this.spanStore.removeSpan(); // ThreadLocalTraceStore.remove(); } catch
-	 * (Exception e) { e.printStackTrace(); } }
-	 */
 
 	public void finishSpan() {
 		try {
@@ -148,9 +121,8 @@ public class ZipkinClient {
 				logger.error("you must use startSpan before finishSpan");
 			}
 			this.spanStore.removeSpan();
-			// ThreadLocalTraceStore.remove();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("finishSpanException", e);
 		}
 	}
 
