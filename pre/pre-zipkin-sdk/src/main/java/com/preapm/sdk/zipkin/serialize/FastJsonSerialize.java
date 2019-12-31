@@ -13,7 +13,7 @@ public class FastJsonSerialize implements SerializeInterface{
 	@Override
 	public String serializa(Object object) {
 		if(object == null) {
-			return null;
+			return String.valueOf(object);
 		}
 		String className = object.getClass().getName();
 		if("javax.servlet.ServletRequest".equals(className) || "javax.servlet.ServletResponse".equals(className) ||
