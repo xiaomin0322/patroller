@@ -30,7 +30,11 @@ public class OkHttpFilter implements Interceptor {
 		int ipv4 = InetAddressUtils.localIpv4();
 		Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 		HttpUrl url = originalRequest.url();
+		String method = originalRequest.method();
+		String host = url.host();
 		ZipkinClientContext.getClient().startSpan(SPAN_NAME_STR);
+		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_HOST,host, endpoint);
+		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,method, endpoint);
 		ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,url.url().toString(), endpoint);
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
 		Response response = null;

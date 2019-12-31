@@ -44,8 +44,4 @@ public class OkHttpInterceptor implements AroundInterceptor {
 		return this.getClass().getName();
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(okhttp3.OkHttpClient.Builder.class.getName());
-	}
-
 }

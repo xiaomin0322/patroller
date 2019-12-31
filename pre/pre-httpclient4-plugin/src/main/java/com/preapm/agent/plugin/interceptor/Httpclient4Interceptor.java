@@ -2,6 +2,7 @@ package com.preapm.agent.plugin.interceptor;
 
 import java.util.Arrays;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
+import okhttp3.HttpUrl;
 import zipkin.Endpoint;
 import zipkin.Span;
 
@@ -31,27 +33,10 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 
 	@Override
 	public void before(MethodInfo methodInfo) {
-		/*try {
-			HttpUriRequest request = (HttpUriRequest) methodInfo.getArgs()[0];
-			if (request != null) {
-				Span span = ZipkinClientContext.getClient().getSpan();
-				if (span != null) {
-					logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));
-					logger.debug("放入SPAN_ID到http请求头：" + Long.toHexString(span.id));
-					request.addHeader(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID, Long.toHexString(span.traceId));
-					request.addHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID, Long.toHexString(span.id));
-				} else {
-					logger.debug("ZipkinClientContext.getClient().getSpan() is null");
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		
 		try {
 			org.apache.http.HttpRequest  request = (HttpRequest) methodInfo.getArgs()[1];
-			if (request != null) {
+			HttpHost target = (HttpHost) methodInfo.getArgs()[0];
+			if (request != null && target!=null) {
 				int ipv4 = InetAddressUtils.localIpv4();
 				Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 				methodInfo.setLocalVariable(new Object[] {endpoint});
@@ -59,10 +44,10 @@ public class Httpclient4Interceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND,endpoint);
 				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,Arrays.toString(methodInfo.getPlugins()), endpoint);
 				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,request.getRequestLine().getUri(), endpoint);
-				//ZipkinClientContext.getClient().sendBinaryAnnotation("threadName",Thread.currentThread().getName(), endpoint);
-				//ZipkinClientContext.getClient().sendBinaryAnnotation("ThreadGroupName",Thread.currentThread().getThreadGroup().getName(), endpoint);
-				//ZipkinClientContext.getClient().sendBinaryAnnotation("ParentThreadGroupName",Thread.currentThread().getThreadGroup().getParent().getName(), endpoint);
-				
+				String method = request.getRequestLine().getMethod();
+				String host = target.getHostName();
+				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_HOST,host, endpoint);
+				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,method, endpoint);
 				Span span = ZipkinClientContext.getClient().getSpan();
 				if (span != null) {
 					logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));
