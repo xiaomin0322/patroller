@@ -24,6 +24,8 @@ public class JDKhttpTest {
 		connection.setRequestMethod("POST");
 		connection.addRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
+		
+		System.out.println(connection.getClass().getName());
 
 		long start = System.currentTimeMillis();
 		try (InputStream in = connection.getInputStream()) {
