@@ -20,6 +20,13 @@ plugins:
     loadPatterns:
       - org.apache.http.impl.client.CloseableHttpClient
       
+  pre-jdk-http-plugin:
+    jarName: pre-jdk-http-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.JdkHttpInterceptor
+    loadPatterns:
+      - sun.net.www.protocol.http.HttpURLConnection
+          
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
     interceptorNames:
@@ -85,6 +92,16 @@ patterns:
         - key: .*doExecute.*
     interceptors:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
+      
+  jdk-http:
+    patterns:
+      - sun.net.www.protocol.http.HttpURLConnection
+    excludedPatterns:
+    includedPatterns:
+        - key: getInputStream\(\)
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.JdkHttpInterceptor    
+      
 
   logback:
     patterns:
