@@ -35,7 +35,7 @@ public class ClassLoaderUtil {
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
 		if (!initFlag) {
-			init(classLoader);
+			init(null);
 		}
 
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");

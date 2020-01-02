@@ -19,12 +19,12 @@ public class AroundInterceptorContext {
 
 	public static Map<String, AroundInterceptor> interceptorsMap = new ConcurrentHashMap<String, AroundInterceptor>();
 
-	public static void start(MethodInfo methodInfo) {
-		start(methodInfo, methodInfo.getPlugins());
+	public static void start(ClassLoader classLoader,MethodInfo methodInfo) {
+		start(classLoader,methodInfo, methodInfo.getPlugins());
 	}
 
-	public static void start(MethodInfo methodInfo, String... names) {
-		for (AroundInterceptor i : get(names)) {
+	public static void start(ClassLoader classLoader,MethodInfo methodInfo, String... names) {
+		for (AroundInterceptor i : get(classLoader,names)) {
 			i.before(methodInfo);
 		}
 	}
@@ -33,28 +33,28 @@ public class AroundInterceptorContext {
 		init();
 	}
 
-	public static void after(MethodInfo methodInfo) {
-		after(methodInfo, methodInfo.getPlugins());
+	public static void after(ClassLoader classLoader,MethodInfo methodInfo) {
+		after(classLoader,methodInfo, methodInfo.getPlugins());
 	}
 
-	public static void exception(MethodInfo methodInfo) {
-		exception(methodInfo, methodInfo.getPlugins());
+	public static void exception(ClassLoader classLoader,MethodInfo methodInfo) {
+		exception(classLoader,methodInfo, methodInfo.getPlugins());
 	}
 
-	public static void after(MethodInfo methodInfo, String... names) {
-		for (AroundInterceptor i : get(names)) {
+	public static void after(ClassLoader classLoader,MethodInfo methodInfo, String... names) {
+		for (AroundInterceptor i : get(classLoader,names)) {
 			i.after(methodInfo);
 		}
 	}
 
-	public static void exception(MethodInfo methodInfo, String... names) {
-		for (AroundInterceptor i : get(names)) {
+	public static void exception(ClassLoader classLoader,MethodInfo methodInfo, String... names) {
+		for (AroundInterceptor i : get(classLoader,names)) {
 			i.exception(methodInfo);
 		}
 	}
 
-	public static List<AroundInterceptor> get(Set<String> names) {
-		checkName(names);
+	public static List<AroundInterceptor> get(Set<String> names,ClassLoader classLoader) {
+		checkName(names,classLoader);
 		// System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)参数："+names.size());
 		// System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)interceptorsMap参数："+interceptorsMap.size());
 		List<AroundInterceptor> list = new ArrayList<AroundInterceptor>();
@@ -69,17 +69,17 @@ public class AroundInterceptorContext {
 		return list;
 	}
 
-	public static void checkName(Set<String> names) {
+	public static void checkName(Set<String> names,ClassLoader classLoader) {
 		for (String n : names) {
 			if (!interceptorsMap.containsKey(n)) {
-				init(n);
+				init(n,classLoader);
 			}
 		}
 	}
 
-	public static boolean init(String namePlugin) {
+	public static boolean init(String namePlugin,ClassLoader classLoader) {
 		try {
-			Class<?> classPlugin = Class.forName(namePlugin);
+			Class<?> classPlugin = Class.forName(namePlugin,false,classLoader);
 			AroundInterceptor newInstance = (AroundInterceptor) classPlugin.newInstance();
 			interceptorsMap.put(namePlugin, newInstance);
 		} catch (Exception e) {
@@ -89,12 +89,12 @@ public class AroundInterceptorContext {
 		return true;
 	}
 
-	public static List<AroundInterceptor> get(String... names) {
+	public static List<AroundInterceptor> get(ClassLoader classLoader,String... names) {
 		Set<String> set = new HashSet<>();
 		for (String n : names) {
 			set.add(n);
 		}
-		return get(set);
+		return get(set,classLoader);
 	}
 
 	public static void init() {
@@ -115,5 +115,15 @@ public class AroundInterceptorContext {
 
 	public static void addInterceptor(AroundInterceptor aroundInterceptor) {
 		interceptors.add(aroundInterceptor);
+	}
+	public static boolean containsInterceptor(String namePlugin) {
+		return interceptorsMap.containsKey(namePlugin);
+	}
+	
+	public static void addInterceptor(String namePlugin,AroundInterceptor aroundInterceptor) {
+		if(interceptorsMap.containsKey(namePlugin)) {
+			return ;
+		}
+		interceptorsMap.put(namePlugin,aroundInterceptor);
 	}
 }

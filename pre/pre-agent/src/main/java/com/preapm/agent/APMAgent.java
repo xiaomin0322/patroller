@@ -16,10 +16,9 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 
 public class APMAgent implements ClassFileTransformer {
-	
-	
+
 	private static Logger log = LogManager.getLogger(APMAgent.class);
-	
+
 	private static Collector collector = new AroundInterceptorCollector();
 
 	private Map<ClassLoader, ClassPool> classPoolMap = new ConcurrentHashMap<>();
@@ -27,30 +26,39 @@ public class APMAgent implements ClassFileTransformer {
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined,
 			ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-		if ((className == null) || (classLoader == null)
-				|| (classLoader.getClass().getName().equals("sun.reflect.DelegatingClassLoader"))
-				|| (classLoader.getClass().getName().equals("org.apache.catalina.loader.StandardClassLoader"))
-				|| (classLoader.getClass().getName().equals("javax.management.remote.rmi.NoCallStackClassLoader"))
-				|| (classLoader.getClass().getName().equals("com.alibaba.fastjson.util.ASMClassLoader"))
-				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java")) || (className.indexOf("CGLIB") != -1)){
+
+		if ((className == null)
+				// || (classLoader == null)
+				// ||
+				// (classLoader.getClass().getName().equals("sun.reflect.DelegatingClassLoader"))
+				|| (classLoader != null
+						&& classLoader.getClass().getName().equals("org.apache.catalina.loader.StandardClassLoader"))
+				|| (classLoader != null && classLoader.getClass().getName()
+						.equals("javax.management.remote.rmi.NoCallStackClassLoader"))
+				|| (classLoader != null
+						&& classLoader.getClass().getName().equals("com.alibaba.fastjson.util.ASMClassLoader"))
+				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))
+				|| (className.indexOf("CGLIB") != -1)) {
 			return null;
 		}
-
 		className = className.replaceAll("/", ".");
 		if (!collector.isTarget(className)) {
 			return null;
 		}
-
 		// 不同的ClassLoader使用不同的ClassPool
-		ClassPool localClassPool;
-		if (!this.classPoolMap.containsKey(classLoader)) {
-			localClassPool = new ClassPool();
-			localClassPool.insertClassPath(new LoaderClassPath(classLoader));
-			this.classPoolMap.put(classLoader, localClassPool);
-		} else {
-			localClassPool = this.classPoolMap.get(classLoader);
+		ClassPool localClassPool = ClassPool.getDefault();
+		if (classLoader != null) {
+			if (!this.classPoolMap.containsKey(classLoader)) {
+				localClassPool = new ClassPool();
+				localClassPool.insertClassPath(new LoaderClassPath(classLoader));
+				this.classPoolMap.put(classLoader, localClassPool);
+			} else {
+				localClassPool = this.classPoolMap.get(classLoader);
+			}
 		}
-
+		if (className.contains("DelegateHttpsURLConnection")) {
+			System.out.println("className=====================" + className + "  ");
+		}
 		try {
 			CtClass localCtClass = localClassPool.get(className);
 			byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);

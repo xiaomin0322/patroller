@@ -32,7 +32,7 @@ public class JdkHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void before(MethodInfo methodInfo) {
-
+         System.out.println("com.preapm.agent.plugin.interceptor.JdkHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		try {
 			HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
 			if (connection != null) {

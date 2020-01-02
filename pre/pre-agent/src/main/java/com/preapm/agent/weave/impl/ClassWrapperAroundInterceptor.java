@@ -10,7 +10,6 @@ import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PatternsYaml.Track;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
-import com.preapm.agent.util.PreConfigUtil;
 import com.preapm.agent.weave.ClassWrapper;
 
 public class ClassWrapperAroundInterceptor extends ClassWrapper {
@@ -52,22 +51,46 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 		setPlugin(stringBuilder);
 		setTrack(stringBuilder);
 
-		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(preMethondInfo);")
+		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.start(Thread.currentThread().getContextClassLoader(),preMethondInfo);")
 				.append(line());
 		return stringBuilder.toString();
 	}
-	
+
+	public static void addInterceptor(StringBuilder stringBuilder, String namePlugin) {
+		if (namePlugin != null) {
+			stringBuilder.append("if(!com.preapm.agent.common.context.AroundInterceptorContext.containsInterceptor("
+					+ toStr(namePlugin) + ")){");
+			stringBuilder.append("try {\r\n" + "				Class<?> classPlugin = Class.forName("
+					+ toStr(namePlugin) + ");\r\n"
+					+ "				com.preapm.agent.common.interceptor.AroundInterceptor newInstance = (com.preapm.agent.common.interceptor.AroundInterceptor) classPlugin.newInstance();\r\n"
+					+ "				com.preapm.agent.common.context.AroundInterceptorContext.addInterceptor("
+					+ toStr(namePlugin) + ", newInstance);\r\n" + "			} catch (Exception e) {\r\n"
+					+ "				e.printStackTrace();\r\n" + "			}\r\n"
+					+ "			System.out.println(\"初始化成功 name:\" + "+toStr(namePlugin)+");\r\n");
+			stringBuilder.append("}");
+		}
+
+	}
+
+	public static void main(String[] args) {
+		StringBuilder stringBuilder = new StringBuilder();
+		addInterceptor(stringBuilder, "aaa");
+		System.out.println(stringBuilder.toString());
+}
+
+		
+
 	public void setSerialize(StringBuilder stringBuilder) {
 		String serialize = null;
-		
+
 		if (patterns.getTrack() != null) {
 			serialize = patterns.getTrack().getSerialize();
-		} 
-		
+		}
+
 		if (patternMethod.getTrack() != null) {
 			serialize = patternMethod.getTrack().getSerialize();
-		} 
-		
+		}
+
 		if (serialize != null) {
 			stringBuilder.append("preMethondInfo.setSerialize(" + toStr(serialize) + ");").append(line());
 		}
@@ -88,7 +111,7 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 				stringBuilder.append("preMethondInfo.setResult(" + resultName + ");").append(line());
 			}
 		}
-		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.after(preMethondInfo);")
+		stringBuilder.append("com.preapm.agent.common.context.AroundInterceptorContext.after(Thread.currentThread().getContextClassLoader(),preMethondInfo);")
 				.append(line());
 		return stringBuilder.toString();
 	}
@@ -120,6 +143,11 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 			stringBuilder.append("String prePluginsStr = ").append(toStr(StringUtils.join(pluginNameSet, ",")))
 					.append(";").append(line());
 			stringBuilder.append("preMethondInfo.setPlugins(prePluginsStr.split(" + toStr(",") + "));").append(line());
+
+			/*for (String p : pluginNameSet) {
+				addInterceptor(stringBuilder, p);
+			}*/
+
 		}
 	}
 
@@ -127,7 +155,7 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	public String doError(String error) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("preMethondInfo.setThrowable(" + error + ");").append(line());
-		String errorSrc = "com.preapm.agent.common.context.AroundInterceptorContext.exception(preMethondInfo);";
+		String errorSrc = "com.preapm.agent.common.context.AroundInterceptorContext.exception(Thread.currentThread().getContextClassLoader(),preMethondInfo);";
 		stringBuilder.append(errorSrc).append(line());
 		return stringBuilder.toString();
 	}
