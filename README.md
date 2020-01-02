@@ -59,6 +59,15 @@ java -javaagent:具体目录\pre-agent\pre-agent.jar -javaagent:具体目录\pre
 log.info("tracer.orderId {}",orderId);
 
 
-### 目前还有很多插件没有完善，有志同道合得朋友可以一起开发  
+### 目前支持的插件  (某些插件只需要配置就好)
+tomcat  
+httpclient  
+okhttp  
+mysql-jdbc-driver  
+logback  
+druid  
+jedis  
+
+
 QQ群：858951677
  
