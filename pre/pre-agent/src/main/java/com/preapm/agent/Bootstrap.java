@@ -22,7 +22,7 @@ public class Bootstrap {
 	}
 
 	public static void main(String[] args)throws Exception {
-		//test4();
+		test4();
 		new Bootstrap().print2("12");
 	}
 	
