@@ -5,10 +5,19 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
+
+/**
+ * sun.net.www.protocol.https.DelegateHttpsURLConnection:https://www.github.com/
+ * sun.net.www.protocol.http.HttpURLConnection:http://www.github.com/
+ * 
+ * @author Zengmin.Zhang
+ *
+ */
 public class JDKhttpTest {
 
 	public static void main(String[] args) throws Exception {
-		String url = "https://www.github.com/";
+		String url = "http://www.github.com/";
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 		connection.setConnectTimeout(1000);
 		connection.setReadTimeout(1000);
