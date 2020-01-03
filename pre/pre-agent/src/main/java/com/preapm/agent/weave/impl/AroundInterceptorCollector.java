@@ -52,6 +52,24 @@ public class AroundInterceptorCollector extends Collector {
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
 				}
 			}
+			
+			for (CtMethod ctMethod : ctClass.getMethods()) {
+				 longName = ctMethod.getLongName();
+				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
+						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
+					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
+					if (patternMethod == null) {
+						continue;
+					}
+					Patterns patterns = PreConfigUtil.get(className);
+					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
+					classWrapper.beginSrc(beginSrc);
+					classWrapper.endSrc(endSrc);
+					classWrapper.errorSrc(errorSrc);
+					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
+				}
+			}
+			
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
 			if (constructors != null && constructors.length > 0) {
 				for (CtConstructor c : constructors) {
