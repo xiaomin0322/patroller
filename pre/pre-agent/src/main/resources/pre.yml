@@ -97,9 +97,9 @@ patterns:
   jdk-http-connect:
     patterns:
       - sun.net.www.protocol.http.HttpURLConnection
-      - sun.net.www.protocol.https.DelegateHttpsURLConnection
-      - sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection
-      - java.net.HttpURLConnection
+      #- sun.net.www.protocol.https.DelegateHttpsURLConnection
+      #- sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection
+      #- java.net.HttpURLConnection
     excludedPatterns:
     includedPatterns:
         #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL\)
