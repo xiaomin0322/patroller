@@ -35,11 +35,11 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
 		Integer rs = (Integer) methodInfo.getResult();
 		if (methodInfo == null || rs == null || rs == -1) {
 			return;
 		}
+		System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 		ZipkinClientContext.getClient().finishSpan();
 	}
