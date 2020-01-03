@@ -34,7 +34,7 @@ public class ClassLoaderUtil {
 	}
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
-		classLoader = ClassLoader.getSystemClassLoader();
+		//classLoader = ClassLoader.getSystemClassLoader();
 		if (!initFlag) {
 			init(classLoader);
 		}

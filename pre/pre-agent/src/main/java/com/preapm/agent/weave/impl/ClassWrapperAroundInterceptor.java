@@ -35,8 +35,8 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	public String beforAgent(String methodName, List<String> argNameList) {
 
 		StringBuilder stringBuilder = new StringBuilder();
-		//stringBuilder.append("com.preapm.agent.common.bean.MethodInfo preMethondInfo = new com.preapm.agent.common.bean.MethodInfo();").append(line());
-		stringBuilder.append("com.preapm.agent.common.bean.MethodInfo preMethondInfo = com.preapm.agent.common.context.AroundInterceptorContext.loader(Thread.currentThread().getContextClassLoader());").append(line());
+		stringBuilder.append("com.preapm.agent.common.bean.MethodInfo preMethondInfo = new com.preapm.agent.common.bean.MethodInfo();").append(line());
+		//stringBuilder.append("com.preapm.agent.common.bean.MethodInfo preMethondInfo = com.preapm.agent.common.context.AroundInterceptorContext.loader(Thread.currentThread().getContextClassLoader());").append(line());
 		stringBuilder.append("preMethondInfo.setTarget(this);").append(line());
 		stringBuilder.append("preMethondInfo.setMethodName(" + toStr(methodName) + ");").append(line());
 		if (argNameList != null && argNameList.size() != 0) {
