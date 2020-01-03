@@ -102,7 +102,11 @@ patterns:
       - java.net.HttpURLConnection
     excludedPatterns:
     includedPatterns:
-        - key: sun.net.www.protocol.http.HttpURLConnection.writeRequests\(\)
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL\)
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,sun.net.www.protocol.http.Handler\) 
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy\)
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.lang.String,int\)
+        - key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy,sun.net.www.protocol.http.Handler\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
         

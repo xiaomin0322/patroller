@@ -37,7 +37,7 @@ public class APMAgent implements ClassFileTransformer {
 						.equals("javax.management.remote.rmi.NoCallStackClassLoader"))
 				|| (classLoader != null
 						&& classLoader.getClass().getName().equals("com.alibaba.fastjson.util.ASMClassLoader"))
-				|| (className.indexOf("$Proxy") != -1) || (className.startsWith("java"))
+				|| (className.indexOf("$Proxy") != -1) 
 				|| (className.indexOf("CGLIB") != -1)) {
 			return null;
 		}
