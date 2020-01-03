@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.preapm.sdk.zipkin.DefaultSpanMetrics;
 import com.preapm.sdk.zipkin.SpanMetrics;
-import com.preapm.sdk.zipkin.ZipkinClient;
 
 import lombok.Getter;
 
@@ -39,8 +42,45 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 		this.url = zipkinHost + (zipkinHost.endsWith("/") ? "" : "/") + "api/v1/spans";
 	}
 
+
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
+		sendSpansByOkHttp(json);
+	}
+
+
+	private void sendSpansByOkHttp(byte[] json) throws IOException {
+		OkHttpClient client = new OkHttpClient().newBuilder()
+				.connectTimeout(10 * 1000, TimeUnit.MILLISECONDS)
+				.readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+				.callTimeout(10 * 1000, TimeUnit.MILLISECONDS)
+				.build();
+
+
+		//request headers
+		Map<String,String> headerMap = new HashMap<>(2);
+		headerMap.put("Content-Type", "application/json");
+		headerMap.put("Content-Length", String.valueOf(json.length));
+		Headers headers = Headers.of(headerMap);
+
+		//request body
+		RequestBody body = RequestBody.create(json);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.headers(headers)
+				.post(body)
+				.build();
+
+		try (Response response = client.newCall(request).execute()) {
+			response.body().string();
+		}catch (Exception e){
+			logger.error(e.getMessage());
+			throw e;
+		}
+	}
+
+	private void sendSpansByJdk(byte[] json) throws IOException {
 		// intentionally not closing the connection, so as to use keep-alives
 		HttpURLConnection connection = (HttpURLConnection) new URL(this.url).openConnection();
 		connection.setConnectTimeout(10 * 1000);
