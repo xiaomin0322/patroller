@@ -45,11 +45,12 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		sendSpansByOkHttp(json);
+		//sendSpanByOkHttp(json);
+		sendSpansByJdk(json);
 	}
 
 
-	private void sendSpansByOkHttp(byte[] json) throws IOException {
+	private void sendSpanByOkHttp(byte[] json) throws IOException {
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				.connectTimeout(10 * 1000, TimeUnit.MILLISECONDS)
 				.readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
