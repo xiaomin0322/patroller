@@ -1,5 +1,7 @@
 package com.preapm.agent.plugin.interceptor;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
@@ -35,18 +37,37 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		Integer rs = (Integer) methodInfo.getResult();
-		if (methodInfo == null || rs == null || rs == -1) {
-			return;
+		try {
+			HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
+			Class clazz = getSupperClass(connection.getClass());
+			Field responseCodeField = clazz.getDeclaredField("responseCode");
+			responseCodeField.setAccessible(true);
+			Integer responseCode = (Integer)responseCodeField.get(connection);
+			if(responseCode == null || responseCode.intValue() == -1 || responseCode.intValue() == 301
+					|| responseCode.intValue() == 302 || responseCode.intValue() == 303
+					|| responseCode.intValue() == 307 || responseCode.intValue() == 308){
+                return;
+            }
+
+			System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
+			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
+			ZipkinClientContext.getClient().finishSpan();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
-		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
-		ZipkinClientContext.getClient().finishSpan();
 	}
 
 	@Override
 	public String name() {
 		return this.getClass().getName();
+	}
+
+
+	private Class getSupperClass(Class clazz){
+		if(clazz == HttpURLConnection.class){
+			return clazz;
+		}
+		return getSupperClass(clazz.getSuperclass());
 	}
 
 }
