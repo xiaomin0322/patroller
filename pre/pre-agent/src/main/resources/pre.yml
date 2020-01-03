@@ -25,6 +25,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
       - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
+      - com.preapm.agent.plugin.interceptor.JdkGetInputStreamHttpInterceptor
     loadPatterns:
       - sun.net.www.protocol.http.HttpURLConnection
           
@@ -111,7 +112,7 @@ patterns:
            - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
         - key: .*getInputStream\(\)   
           interceptors:
-          - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor    
+          - com.preapm.agent.plugin.interceptor.JdkGetInputStreamHttpInterceptor   
 
   logback:
     patterns:
