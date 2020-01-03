@@ -1,5 +1,7 @@
 package com.preapm.agent.weave.impl;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PatternsYaml.PatternMethod;
@@ -36,6 +38,7 @@ public class AroundInterceptorCollector extends Collector {
 			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
+			Set<String> methodNameSet = new HashSet();
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				 longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
@@ -50,13 +53,15 @@ public class AroundInterceptorCollector extends Collector {
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
+					
+					methodNameSet.add(longName);
 				}
 			}
 			
-			for (CtMethod ctMethod : ctClass.getMethods()) {
+		/*	for (CtMethod ctMethod : ctClass.getMethods()) {
 				 longName = ctMethod.getLongName();
-				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
-						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
+				if ( (Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
+						&& (!Modifier.isNative(ctMethod.getModifiers())))  && !methodNameSet.contains(longName)) {
 					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
 					if (patternMethod == null) {
 						continue;
@@ -67,8 +72,10 @@ public class AroundInterceptorCollector extends Collector {
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
+					
+					methodNameSet.add(longName);
 				}
-			}
+			}*/
 			
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
 			if (constructors != null && constructors.length > 0) {

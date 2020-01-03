@@ -98,6 +98,8 @@ patterns:
     patterns:
       - sun.net.www.protocol.http.HttpURLConnection
       - sun.net.www.protocol.https.DelegateHttpsURLConnection
+      - sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection
+      - java.net.HttpURLConnection
     excludedPatterns:
     includedPatterns:
         - key: .*connect\(\)
@@ -108,6 +110,8 @@ patterns:
     patterns:
       - sun.net.www.protocol.http.HttpURLConnection
       - sun.net.www.protocol.https.DelegateHttpsURLConnection
+      - sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection
+      - java.net.HttpURLConnection
     excludedPatterns:
     includedPatterns:
         - key: .*getResponseCode\(\)
