@@ -94,23 +94,7 @@ patterns:
     interceptors:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
       
-  jdk-http-connect:
-    patterns:
-      - sun.net.www.protocol.http.HttpURLConnection
-      #- sun.net.www.protocol.https.DelegateHttpsURLConnection
-      #- sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection
-      #- java.net.HttpURLConnection
-    excludedPatterns:
-    includedPatterns:
-        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL\)
-        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,sun.net.www.protocol.http.Handler\) 
-        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy\)
-        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.lang.String,int\)
-        - key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy,sun.net.www.protocol.http.Handler\)
-    interceptors:
-      - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
-        
-  jdk-http-response:
+  jdk-http:
     patterns:
       - sun.net.www.protocol.http.HttpURLConnection
       - sun.net.www.protocol.https.DelegateHttpsURLConnection
@@ -118,10 +102,16 @@ patterns:
       - java.net.HttpURLConnection
     excludedPatterns:
     includedPatterns:
-        - key: java.net.HttpURLConnection.getResponseCode\(\)
-    interceptors:
-      - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor    
-      
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL\)
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,sun.net.www.protocol.http.Handler\) 
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy\)
+        #- key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.lang.String,int\)
+        - key: sun.net.www.protocol.http.HttpURLConnection\(java.net.URL,java.net.Proxy,sun.net.www.protocol.http.Handler\)
+          interceptors:
+           - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
+        - key: .*getInputStream\(\)   
+          interceptors:
+          - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor    
 
   logback:
     patterns:
