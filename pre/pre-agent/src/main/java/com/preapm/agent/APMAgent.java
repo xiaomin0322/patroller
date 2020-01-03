@@ -56,9 +56,7 @@ public class APMAgent implements ClassFileTransformer {
 				localClassPool = this.classPoolMap.get(classLoader);
 			}
 		}
-		if (className.contains("DelegateHttpsURLConnection")) {
-			System.out.println("className=====================" + className + "  ");
-		}
+		//System.out.println("className=====================" + className + " classLoader: "+classLoader);
 		try {
 			CtClass localCtClass = localClassPool.get(className);
 			byte[] arrayOfByte = collector.transform(classLoader, className, classfileBuffer, localCtClass);
