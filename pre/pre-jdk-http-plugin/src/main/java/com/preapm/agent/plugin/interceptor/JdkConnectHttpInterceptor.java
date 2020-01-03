@@ -35,37 +35,39 @@ public class JdkConnectHttpInterceptor implements AroundInterceptor {
          System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		try {
 			HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
-			String headerField = connection.getHeaderField(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
-			if(headerField != null) {
-				return;
-			}
-			if (connection != null) {
-				URL url = connection.getURL();
-				int ipv4 = InetAddressUtils.localIpv4();
-				Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
-				methodInfo.setLocalVariable(new Object[] { endpoint });
-				ZipkinClientContext.getClient().startSpan(SPAN_NAME_STR);
-				ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
-				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,
-						Arrays.toString(methodInfo.getPlugins()), endpoint);
-				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,
-						url.toString(), endpoint);
-				String method = connection.getRequestMethod();
-				String host = url.getHost();
-				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_HOST,
-						host, endpoint);
-				ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,
-						method, endpoint);
-				Span span = ZipkinClientContext.getClient().getSpan();
-				if (span != null) {
-					logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));
-					logger.debug("放入SPAN_ID到http请求头：" + Long.toHexString(span.id));
-					connection.addRequestProperty(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID,
-							Long.toHexString(span.traceId));
-					connection.addRequestProperty(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID,
-							Long.toHexString(span.id));
-				} else {
-					logger.debug("ZipkinClientContext.getClient().getSpan() is null");
+			synchronized (connection) {
+				String headerField = connection.getHeaderField(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
+				if(headerField != null) {
+					return;
+				}
+				if (connection != null) {
+					URL url = connection.getURL();
+					int ipv4 = InetAddressUtils.localIpv4();
+					Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
+					methodInfo.setLocalVariable(new Object[] { endpoint });
+					ZipkinClientContext.getClient().startSpan(SPAN_NAME_STR);
+					ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_SEND, endpoint);
+					ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.PRE_NAME,
+							Arrays.toString(methodInfo.getPlugins()), endpoint);
+					ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_URL,
+							url.toString(), endpoint);
+					String method = connection.getRequestMethod();
+					String host = url.getHost();
+					ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_HOST,
+							host, endpoint);
+					ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,
+							method, endpoint);
+					Span span = ZipkinClientContext.getClient().getSpan();
+					if (span != null) {
+						logger.debug("放入traceId到http请求头：" + Long.toHexString(span.traceId));
+						logger.debug("放入SPAN_ID到http请求头：" + Long.toHexString(span.id));
+						connection.addRequestProperty(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID,
+								Long.toHexString(span.traceId));
+						connection.addRequestProperty(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID,
+								Long.toHexString(span.id));
+					} else {
+						logger.debug("ZipkinClientContext.getClient().getSpan() is null");
+					}
 				}
 			}
 		} catch (Exception e) {
