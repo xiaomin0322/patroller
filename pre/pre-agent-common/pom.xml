@@ -64,6 +64,15 @@
                                         <include name="${project.artifactId}.jar" />
                                     </fileset>
                                 </copy>
+                                
+                                 <copy todir="../../target/pre-agent/lib">
+                                    <!-- 从哪里拷贝 -->
+                                    <fileset dir="${project.build.directory}">
+                                        <!-- 拷贝内容 -->
+                                        <include name="${project.artifactId}.jar" />
+                                    </fileset>
+                                </copy>
+                                
                             </tasks>
                         </configuration>
                         <goals>
