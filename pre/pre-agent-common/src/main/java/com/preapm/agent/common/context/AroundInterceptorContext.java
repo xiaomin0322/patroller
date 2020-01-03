@@ -88,6 +88,22 @@ public class AroundInterceptorContext {
 		System.out.println("初始化成功 name:" + namePlugin);
 		return true;
 	}
+	
+	
+	public static MethodInfo loader(ClassLoader classLoader) {
+		try {
+			if(classLoader == null) {
+				classLoader = ClassLoader.getSystemClassLoader();
+			}
+			Class<?> classPlugin = Class.forName("com.preapm.agent.common.bean.MethodInfo",false,classLoader);
+			MethodInfo newInstance = (MethodInfo) classPlugin.newInstance();
+			return newInstance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 
 	public static List<AroundInterceptor> get(ClassLoader classLoader,String... names) {
 		Set<String> set = new HashSet<>();
