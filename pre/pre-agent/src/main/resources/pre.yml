@@ -99,7 +99,7 @@ patterns:
       - sun.net.www.protocol.https.DelegateHttpsURLConnection
     excludedPatterns:
     includedPatterns:
-        - key: .*getInputStream.*
+        - key: .*getInputStream\(\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.JdkHttpInterceptor
       
