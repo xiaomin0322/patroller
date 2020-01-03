@@ -35,7 +35,6 @@ public class JdkHttpInterceptor implements AroundInterceptor {
          System.out.println("com.preapm.agent.plugin.interceptor.JdkHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		try {
 			HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
-			
 			String headerField = connection.getHeaderField(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
 			if (connection != null && headerField == null) {
 				URL url = connection.getURL();
