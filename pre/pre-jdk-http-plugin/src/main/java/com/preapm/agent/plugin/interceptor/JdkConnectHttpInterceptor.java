@@ -24,19 +24,22 @@ import zipkin.Span;
  * @author Zengmin.Zhang
  *
  */
-public class JdkHttpInterceptor implements AroundInterceptor {
+public class JdkConnectHttpInterceptor implements AroundInterceptor {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkHttpInterceptor.class);
+	private static final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 
 	private static final String SPAN_NAME_STR = "jdkhttp";
 
 	@Override
 	public void before(MethodInfo methodInfo) {
-         System.out.println("com.preapm.agent.plugin.interceptor.JdkHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+         System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		try {
 			HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
 			String headerField = connection.getHeaderField(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
-			if (connection != null && headerField == null) {
+			if(headerField != null) {
+				return;
+			}
+			if (connection != null) {
 				URL url = connection.getURL();
 				int ipv4 = InetAddressUtils.localIpv4();
 				Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
@@ -77,11 +80,6 @@ public class JdkHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		if (methodInfo.getLocalVariable() != null) {
-			Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
-			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV, endpoint);
-			ZipkinClientContext.getClient().finishSpan();
-		}
 	}
 
 	@Override

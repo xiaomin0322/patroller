@@ -23,7 +23,8 @@ plugins:
   pre-jdk-http-plugin:
     jarName: pre-jdk-http-plugin
     interceptorNames:
-      - com.preapm.agent.plugin.interceptor.JdkHttpInterceptor
+      - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
+      - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
     loadPatterns:
       - sun.net.www.protocol.http.HttpURLConnection
           
@@ -93,15 +94,25 @@ patterns:
     interceptors:
       - com.preapm.agent.plugin.interceptor.Httpclient4Interceptor
       
-  jdk-http:
+  jdk-http-connect:
     patterns:
       - sun.net.www.protocol.http.HttpURLConnection
       - sun.net.www.protocol.https.DelegateHttpsURLConnection
     excludedPatterns:
     includedPatterns:
-        - key: .*getInputStream\(\)
+        - key: .*connect\(\)
     interceptors:
-      - com.preapm.agent.plugin.interceptor.JdkHttpInterceptor
+      - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
+        
+  jdk-http-response:
+    patterns:
+      - sun.net.www.protocol.http.HttpURLConnection
+      - sun.net.www.protocol.https.DelegateHttpsURLConnection
+    excludedPatterns:
+    includedPatterns:
+        - key: .*getResponseCode\(\)
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor    
       
 
   logback:
