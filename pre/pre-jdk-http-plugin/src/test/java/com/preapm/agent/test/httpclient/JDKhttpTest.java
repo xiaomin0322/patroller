@@ -29,10 +29,8 @@ public class JDKhttpTest {
 
 		long start = System.currentTimeMillis();
 		try (InputStream in = connection.getInputStream()) {
-			/*
-			 * while (in.read() != -1) { ; // skip }
-			 */
-
+			  while (in.read() != -1) { ; 
+			  }
 			System.out.println((System.currentTimeMillis() - start));
 		} catch (IOException e) {
 			try (InputStream err = connection.getErrorStream()) {
