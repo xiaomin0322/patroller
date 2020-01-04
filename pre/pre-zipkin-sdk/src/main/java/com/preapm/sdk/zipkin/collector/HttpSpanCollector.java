@@ -46,8 +46,8 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		//sendSpanByOkHttp(json);
-		sendSpansByJdk(json);
+		sendSpanByOkHttp(json);
+		//sendSpansByJdk(json);
 	}
 
 
@@ -90,6 +90,7 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 		connection.setReadTimeout(60 * 1000);
 		connection.setRequestMethod("POST");
 		connection.addRequestProperty("Content-Type", "application/json");
+		connection.addRequestProperty(TraceKeys.PRE_AGENT_NOT_TRACE_TAG, TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
 		connection.setDoOutput(true);
 		connection.setFixedLengthStreamingMode(json.length);
 		connection.getOutputStream().write(json);
