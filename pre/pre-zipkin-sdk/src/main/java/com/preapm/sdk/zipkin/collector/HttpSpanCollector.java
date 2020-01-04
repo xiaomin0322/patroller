@@ -46,8 +46,8 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		sendSpanByOkHttp(json);
-//		sendSpansByJdk(json);
+		//sendSpanByOkHttp(json);
+		sendSpansByJdk(json);
 	}
 
 
