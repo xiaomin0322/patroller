@@ -35,6 +35,13 @@ plugins:
     loadPatterns:
       - org.apache.catalina.core.StandardWrapperValve
 
+  pre-jetty-plugin:
+    jarName: pre-jetty-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.JettyInterceptor
+    loadPatterns:
+      - org.eclipse.jetty.servlet.ServletHandler
+
   pre-logback-plugin:
     jarName: pre-logback-plugin
     interceptorNames:
@@ -81,7 +88,16 @@ patterns:
        # - key: .*service\(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.TomcatInterceptor
-      
+
+  jetty:
+      patterns:
+        - org.eclipse.jetty.servlet.ServletHandler
+      excludedPatterns:
+      includedPatterns:
+         - key: org.eclipse.jetty.servlet.ServletHandler.doHandle\(java.lang.String,org.eclipse.jetty.server.Request,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse\)
+      interceptors:
+        - com.preapm.agent.plugin.interceptor.JettyInterceptor
+
   httpClient4:
     patterns:
       - org.apache.http.impl.client.InternalHttpClient

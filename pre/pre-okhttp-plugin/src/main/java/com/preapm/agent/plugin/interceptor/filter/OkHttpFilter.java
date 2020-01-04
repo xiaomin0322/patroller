@@ -25,7 +25,18 @@ public class OkHttpFilter implements Interceptor {
 
 	@Override
 	public Response intercept(Interceptor.Chain chain) throws IOException {
+
 		Request originalRequest = chain.request();
+
+		//filter not trace
+		String header = originalRequest.header(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
+		if(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG.equals(header)){
+			return chain.proceed(originalRequest);
+		}
+
+
+		logger.info("================ OkHttpFilter intercept:  {} ======================", originalRequest.url());
+
 		Builder newBuilder = originalRequest.newBuilder();
 		int ipv4 = InetAddressUtils.localIpv4();
 		Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>pre-jetty-plugin</artifactId>
+	<groupId>pre</groupId>
+	<version>1.0.0</version>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+	</properties>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-agent-common</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>pre</groupId>
+			<artifactId>pre-zipkin-sdk</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<failOnError>true</failOnError>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<compilerArgument>-nowarn</compilerArgument>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+			</plugin> -->
+			
+				 <!-- 复制生成的jar包到其他位置 -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-lib-src-webapps</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <!-- 你将要拷贝的位置 -->
+                               <copy todir="../../target/pre-agent/plugin">
+                                    <!-- 从哪里拷贝 -->
+                                    <fileset dir="${project.build.directory}">
+                                        <!-- 拷贝内容 -->
+                                        <include name="${project.artifactId}.jar" />
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+		</plugins>
+	</build>
+</project>

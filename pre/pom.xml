@@ -28,6 +28,7 @@
         <module>pre-httpclient4-plugin</module>
         <module>pre-sleuth-plugin</module>
         <module>pre-tomcat-plugin</module>
+		<module>pre-jetty-plugin</module>
         <module>pre-zipkin-plugin</module>
 		<module>pre-logback-plugin</module>
 		<module>pre-okhttp-plugin</module>

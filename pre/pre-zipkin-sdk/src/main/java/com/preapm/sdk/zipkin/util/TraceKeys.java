@@ -55,6 +55,8 @@ public class TraceKeys {
     
     public static final String PRE_NAME = "pre_name";
 
+    public static final String PRE_AGENT_NOT_TRACE_TAG = "pre_agent_not_trace_tag";
+
     private TraceKeys() {
     }
 }

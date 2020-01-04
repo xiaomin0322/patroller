@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.preapm.sdk.zipkin.util.TraceKeys;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,8 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		//sendSpanByOkHttp(json);
-		sendSpansByJdk(json);
+		sendSpanByOkHttp(json);
+//		sendSpansByJdk(json);
 	}
 
 
@@ -59,9 +60,10 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 
 		//request headers
-		Map<String,String> headerMap = new HashMap<>(2);
+		Map<String,String> headerMap = new HashMap<>(4);
 		headerMap.put("Content-Type", "application/json");
 		headerMap.put("Content-Length", String.valueOf(json.length));
+		headerMap.put(TraceKeys.PRE_AGENT_NOT_TRACE_TAG, TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
 		Headers headers = Headers.of(headerMap);
 
 		//request body
@@ -74,7 +76,7 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {
-			response.body().string();
+			logger.info("send span data response : {}", response);
 		}catch (Exception e){
 			logger.error(e.getMessage());
 			throw e;
