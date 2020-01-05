@@ -35,7 +35,7 @@ public class APMAgentPremain {
 				if (f.getName().endsWith(".jar")) {
 					log.info("load jar == " + f.getAbsolutePath());
 					inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
-					if (f.getName().contains("pre-agent-common")) {
+					if (f.getName().startsWith("pre")) {
 						ClassPool.getDefault().appendClassPath(f.getAbsolutePath());
 					}
 				}
