@@ -54,7 +54,6 @@ public class JdkConnectHttpInterceptor implements AroundInterceptor {
 							return;
 						}
 						System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-						connection.getHeaderField(name)
 						URL url = connection.getURL();
 						int ipv4 = InetAddressUtils.localIpv4();
 						Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
