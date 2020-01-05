@@ -50,9 +50,9 @@ public class ClassLoaderUtil {
 				log.info(
 						"className:" + className + "   加载插件包路径>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + pFile.getAbsolutePath());
 				if (pFile.exists()) {
-					if(p.getJarName().contains("jdk")) {
+					/*if(p.getJarName().contains("jdk")) {
 						classLoader = ClassLoader.getSystemClassLoader();
-					}
+					}*/
 					loadJar(classLoader, pFile.getAbsolutePath());
 					loadPluginsJar.add(p.getJarName());
 				}

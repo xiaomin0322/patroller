@@ -109,11 +109,19 @@ public class PreConfigUtil {
 	}
 
 	public static Set<JarBean> getPlugins(String className) {
+		Set<JarBean> jarBeansSet = new HashSet<>();
+			for (JarBean p:pluginConfigYaml.getPlugins().values()) {
+				List<String> list = new ArrayList<>();
+				list.addAll(p.getLoadPatterns());
+				boolean matchesPattern = JdkRegexpMethodPointcut.macth(list, className);
+				if(matchesPattern) {
+					jarBeansSet.add(p);
+				}
+			}
 		Patterns patterns = PreConfigUtil.get(className);
 		if (patterns == null) {
-			return null;
+			return jarBeansSet;
 		}
-		Set<JarBean> jarBeansSet = new HashSet<>();
 		List<String> interceptors = patterns.getInterceptors() == null ? new ArrayList<>() : patterns.getInterceptors();
 		List<PatternMethod> includedPatterns = patterns.getIncludedPatterns();
 		if (includedPatterns != null) {
@@ -129,7 +137,7 @@ public class PreConfigUtil {
 				jarBeansSet.add(jarBean);
 			}
 		}
-
+		
 		return jarBeansSet;
 	}
 

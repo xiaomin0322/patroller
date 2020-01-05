@@ -26,7 +26,7 @@ plugins:
       - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
       - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
     loadPatterns:
-      - sun.net.www.protocol.http.HttpURLConnection
+      - .*Integer.*
           
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin

@@ -34,11 +34,7 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		String longName = null;
 		try {
-			// 加载插件后，初始化插件
-			com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
-
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
-			Set<String> methodNameSet = new HashSet();
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				 longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
@@ -53,8 +49,6 @@ public class AroundInterceptorCollector extends Collector {
 					classWrapper.endSrc(endSrc);
 					classWrapper.errorSrc(errorSrc);
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
-					
-					methodNameSet.add(longName);
 				}
 			}
 			

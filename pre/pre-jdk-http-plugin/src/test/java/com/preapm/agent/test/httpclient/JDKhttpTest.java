@@ -21,6 +21,7 @@ import com.preapm.sdk.zipkin.util.TraceKeys;
 public class JDKhttpTest {
 
 	public static void main(String[] args) throws Exception {
+		new Integer(123);
 		String url = "http://www.github.com/";
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 		connection.setConnectTimeout(1000);

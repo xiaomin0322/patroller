@@ -14,7 +14,6 @@ import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
-import javassist.NotFoundException;
 
 public class APMAgent implements ClassFileTransformer {
 
@@ -43,6 +42,8 @@ public class APMAgent implements ClassFileTransformer {
 			return null;
 		}
 		className = className.replaceAll("/", ".");
+		// 加载插件后，初始化插件
+		com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
 		if (!collector.isTarget(className)) {
 			return null;
 		}
