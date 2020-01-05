@@ -1,8 +1,5 @@
 package com.preapm.agent.plugin.interceptor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.agent.plugin.interceptor.filter.BackLogFilter;
@@ -18,7 +15,7 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
  *
  */
 public class LogbackInterceptor implements AroundInterceptor {
-	private static final Logger logger = LoggerFactory.getLogger(LogbackInterceptor.class);
+	//private static final Logger logger = LoggerFactory.getLogger(LogbackInterceptor.class);
 
 	private static final BackLogFilter filter = new BackLogFilter();
 
@@ -40,8 +37,6 @@ public class LogbackInterceptor implements AroundInterceptor {
 		if (object instanceof Appender) {
 			Appender appender = (Appender) object;
 			appender.addFilter(filter);
-			logger.info(
-					"add com.preapm.agent.plugin.interceptor.LogbackInterceptor to appender >>>>>>>>>>>>>>>>>>>>>>");
 		}
 	}
 

@@ -40,18 +40,21 @@ public class JdkConnectHttpInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
-		   System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		 
 			try {
 				HttpURLConnection connection = (HttpURLConnection) methodInfo.getTarget();
 				if(connection == null) {
 					  System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start connection isull>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				}
+				
 				synchronized (connection) {
-					/*String headerField = connection.getHeaderField(com.preapm.sdk.zipkin.util.TraceKeys.TRACE_ID);
-					if(headerField != null) {
-						return;
-					}*/
 					if (connection != null) {
+						String headerField = JdkResponseHttpInterceptor.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
+						if(headerField != null) {
+							return;
+						}
+						System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+						connection.getHeaderField(name)
 						URL url = connection.getURL();
 						int ipv4 = InetAddressUtils.localIpv4();
 						Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();

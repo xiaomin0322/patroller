@@ -15,6 +15,7 @@ import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
+import sun.net.www.MessageHeader;
 import zipkin.Endpoint;
 import zipkin.Span;
 
@@ -48,7 +49,10 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 					|| responseCode.intValue() == 307 || responseCode.intValue() == 308){
                 return;
             }
-
+			String headerField = getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
+			if(headerField != null) {
+				return;
+			}
 			System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 			ZipkinClientContext.getClient().finishSpan();
@@ -57,14 +61,32 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 		}
 	}
 
+	public static String getHeader(String name, Object connection) {
+		try {
+			Field requestsField = connection.getClass().getDeclaredField("cachedHeaders");
+			requestsField.setAccessible(true);
+			MessageHeader messageHeader = (MessageHeader) requestsField.get(connection);
+			if (messageHeader == null) {
+				requestsField = connection.getClass().getDeclaredField("responses");
+				requestsField.setAccessible(true);
+				messageHeader = (MessageHeader) requestsField.get(connection);
+			}
+			String headerField = messageHeader.findValue(name);
+			return headerField;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	@Override
 	public String name() {
 		return this.getClass().getName();
 	}
 
-
-	private Class getSupperClass(Class clazz){
-		if(clazz == HttpURLConnection.class){
+	private Class getSupperClass(Class clazz) {
+		if (clazz == HttpURLConnection.class) {
 			return clazz;
 		}
 		return getSupperClass(clazz.getSuperclass());

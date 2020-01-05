@@ -46,8 +46,8 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		sendSpanByOkHttp(json);
-		//sendSpansByJdk(json);
+		//sendSpanByOkHttp(json);
+		sendSpansByJdk(json);
 	}
 
 
@@ -57,8 +57,6 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 				.readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
 				.callTimeout(10 * 1000, TimeUnit.MILLISECONDS)
 				.build();
-
-
 		//request headers
 		Map<String,String> headerMap = new HashMap<>(4);
 		headerMap.put("Content-Type", "application/json");
