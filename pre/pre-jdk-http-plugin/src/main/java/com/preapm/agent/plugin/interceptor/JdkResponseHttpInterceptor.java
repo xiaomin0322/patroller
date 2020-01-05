@@ -49,11 +49,11 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 					|| responseCode.intValue() == 307 || responseCode.intValue() == 308){
                 return;
             }
-			String headerField = getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
+			/*String headerField = getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
 			if(headerField != null) {
 				ZipkinClientContext.getClient().getSpanStore().removeSpan();
 				return;
-			}
+			}*/
 			System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 			ZipkinClientContext.getClient().finishSpan();
