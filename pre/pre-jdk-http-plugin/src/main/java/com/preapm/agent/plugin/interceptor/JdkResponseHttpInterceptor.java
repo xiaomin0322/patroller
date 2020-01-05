@@ -51,6 +51,7 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
             }
 			String headerField = getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
 			if(headerField != null) {
+				ZipkinClientContext.getClient().getSpanStore().removeSpan();
 				return;
 			}
 			System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
@@ -66,6 +67,11 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 			Field requestsField = connection.getClass().getDeclaredField("cachedHeaders");
 			requestsField.setAccessible(true);
 			MessageHeader messageHeader = (MessageHeader) requestsField.get(connection);
+			if (messageHeader == null) {
+				requestsField = connection.getClass().getDeclaredField("requests");
+				requestsField.setAccessible(true);
+				messageHeader = (MessageHeader) requestsField.get(connection);
+			}
 			if (messageHeader == null) {
 				requestsField = connection.getClass().getDeclaredField("responses");
 				requestsField.setAccessible(true);

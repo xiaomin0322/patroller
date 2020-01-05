@@ -88,6 +88,24 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.2.2</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>okio</artifactId>
+          <groupId>com.squareup.okio</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>kotlin-stdlib</artifactId>
+          <groupId>org.jetbrains.kotlin</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>

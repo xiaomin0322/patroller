@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
@@ -28,6 +30,8 @@ public class JDKhttpTest {
 		connection.addRequestProperty(TraceKeys.PRE_AGENT_NOT_TRACE_TAG, TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
 		connection.setDoOutput(true);
 		
+		Map<String, List<String>> headerFields = connection.getHeaderFields();
+		System.out.println("headerFields==="+headerFields);
 		System.out.println(connection.getClass().getName());
 
 		long start = System.currentTimeMillis();

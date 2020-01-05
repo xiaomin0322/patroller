@@ -49,10 +49,10 @@ public class JdkConnectHttpInterceptor implements AroundInterceptor {
 				
 				synchronized (connection) {
 					if (connection != null) {
-						String headerField = JdkResponseHttpInterceptor.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
+						/*String headerField = JdkResponseHttpInterceptor.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
 						if(headerField != null) {
 							return;
-						}
+						}*/
 						System.out.println("com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 						URL url = connection.getURL();
 						int ipv4 = InetAddressUtils.localIpv4();
