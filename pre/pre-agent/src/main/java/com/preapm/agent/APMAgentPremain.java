@@ -8,14 +8,14 @@ import java.util.logging.Logger;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PathUtil;
 
+import javassist.ClassPool;
 
 public class APMAgentPremain {
 
-	
 	private static Logger log = LogManager.getLogger(APMAgentPremain.class);
 
 	public static void premain(String agentArgs, Instrumentation inst) {
-		
+
 		log.info("Hello, world! JavaAgen");
 		log.info("agentArgs: " + agentArgs);
 
@@ -32,9 +32,12 @@ public class APMAgentPremain {
 		File jar = new File(libPath, "lib");
 		try {
 			for (File f : jar.listFiles()) {
-				if(f.getName().endsWith(".jar")) {
+				if (f.getName().endsWith(".jar")) {
 					log.info("load jar == " + f.getAbsolutePath());
 					inst.appendToBootstrapClassLoaderSearch(new JarFile(f));
+					if (f.getName().contains("pre-agent-common")) {
+						ClassPool.getDefault().appendClassPath(f.getAbsolutePath());
+					}
 				}
 			}
 		} catch (Exception e) {

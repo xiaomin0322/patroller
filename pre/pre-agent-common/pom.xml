@@ -57,13 +57,13 @@
                         <configuration>
                             <tasks>
                                    <!-- 你将要拷贝的位置 -->
-                               <copy todir="../../target/pre-agent/plugin">
-                                    <!-- 从哪里拷贝 -->
+                             <!--   <copy todir="../../target/pre-agent/plugin">
+                                    从哪里拷贝
                                     <fileset dir="${project.build.directory}">
-                                        <!-- 拷贝内容 -->
+                                        拷贝内容
                                         <include name="${project.artifactId}.jar" />
                                     </fileset>
-                                </copy>
+                                </copy> -->
                                 
                                  <copy todir="../../target/pre-agent/lib">
                                     <!-- 从哪里拷贝 -->

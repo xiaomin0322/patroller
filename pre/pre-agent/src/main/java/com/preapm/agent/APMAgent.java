@@ -14,6 +14,7 @@ import com.preapm.agent.weave.impl.AroundInterceptorCollector;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
+import javassist.NotFoundException;
 
 public class APMAgent implements ClassFileTransformer {
 
@@ -49,7 +50,7 @@ public class APMAgent implements ClassFileTransformer {
 		ClassPool localClassPool = ClassPool.getDefault();
 		if (classLoader != null) {
 			if (!this.classPoolMap.containsKey(classLoader)) {
-				localClassPool = new ClassPool();
+				localClassPool = new ClassPool(localClassPool);
 				localClassPool.insertClassPath(new LoaderClassPath(classLoader));
 				this.classPoolMap.put(classLoader, localClassPool);
 			} else {
