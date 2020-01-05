@@ -46,8 +46,9 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 
 	@Override
 	public void sendSpans(byte[] json) throws IOException {
-		//sendSpanByOkHttp(json);
-		sendSpansByJdk(json);
+		sendSpanByOkHttp(json);
+		System.out.println("=====================sendSpans=========================");
+		//sendSpansByJdk(json);
 	}
 
 
@@ -55,7 +56,7 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 		OkHttpClient client = new OkHttpClient().newBuilder()
 				.connectTimeout(10 * 1000, TimeUnit.MILLISECONDS)
 				.readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
-				.callTimeout(10 * 1000, TimeUnit.MILLISECONDS)
+				.writeTimeout(60 * 1000, TimeUnit.MILLISECONDS)
 				.build();
 		//request headers
 		Map<String,String> headerMap = new HashMap<>(4);
@@ -63,9 +64,9 @@ public class HttpSpanCollector extends AbstractSpanCollector {
 		headerMap.put("Content-Length", String.valueOf(json.length));
 		headerMap.put(TraceKeys.PRE_AGENT_NOT_TRACE_TAG, TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
 		Headers headers = Headers.of(headerMap);
-
+		MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 		//request body
-		RequestBody body = RequestBody.create(json);
+		RequestBody body = RequestBody.create(JSON, json);
 
 		Request request = new Request.Builder()
 				.url(url)
