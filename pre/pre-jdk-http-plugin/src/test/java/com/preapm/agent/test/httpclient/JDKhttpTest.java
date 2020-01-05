@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.preapm.sdk.zipkin.util.TraceKeys;
+
 
 
 /**
@@ -23,6 +25,7 @@ public class JDKhttpTest {
 		connection.setReadTimeout(1000);
 		connection.setRequestMethod("POST");
 		connection.addRequestProperty("Content-Type", "application/json");
+		connection.addRequestProperty(TraceKeys.PRE_AGENT_NOT_TRACE_TAG, TraceKeys.PRE_AGENT_NOT_TRACE_TAG);
 		connection.setDoOutput(true);
 		
 		System.out.println(connection.getClass().getName());
