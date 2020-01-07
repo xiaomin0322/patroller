@@ -21,6 +21,9 @@ public class ClassLoaderUtil {
 	private static volatile boolean initFlag = false;
 
 	public static synchronized void init(ClassLoader classLoader) {
+		if(initFlag) {
+			return ;
+		}
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
 		for (String name : com.preapm.agent.util.PreConfigUtil.getBasePlginName()) {
 			if (loadPluginsJar.contains(name)) {
@@ -35,9 +38,9 @@ public class ClassLoaderUtil {
 
 	public static void loadJarByClassName(ClassLoader classLoader, String className) {
 		//classLoader = ClassLoader.getSystemClassLoader();
-		if (!initFlag) {
+		/*if (!initFlag) {
 			init(classLoader);
-		}
+		}*/
 
 		File pluginDir = new File(PathUtil.getProjectPath(), "plugin");
 		Set<JarBean> plugins = PreConfigUtil.getPlugins(className);

@@ -43,6 +43,7 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
+					com.preapm.agent.util.ClassLoaderUtil.init(classLoader);
 					Patterns patterns = PreConfigUtil.get(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
