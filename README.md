@@ -67,6 +67,7 @@ mysql-jdbc-driver
 logback  
 druid  
 jedis  
+jetty
 
 
 QQ群：858951677
