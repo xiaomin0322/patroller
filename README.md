@@ -68,6 +68,7 @@ logback
 druid  
 jedis  
 jetty
+jdk-http
 
 
 QQ群：858951677
