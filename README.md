@@ -67,8 +67,8 @@ mysql-jdbc-driver
 logback  
 druid  
 jedis  
-jetty
-jdk-http
+jetty  
+jdk-http  
 
 
 QQ群：858951677
