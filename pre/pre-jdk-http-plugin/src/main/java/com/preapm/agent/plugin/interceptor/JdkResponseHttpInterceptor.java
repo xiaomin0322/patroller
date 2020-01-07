@@ -28,6 +28,7 @@ import zipkin.Span;
  *
  */
 public class JdkResponseHttpInterceptor implements AroundInterceptor {
+	private static final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 	@Override
 	public void before(MethodInfo methodInfo) {
 	}
