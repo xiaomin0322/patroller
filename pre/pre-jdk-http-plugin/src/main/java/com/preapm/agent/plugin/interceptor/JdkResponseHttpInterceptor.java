@@ -54,7 +54,7 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().getSpanStore().removeSpan();
 				return;
 			}*/
-			System.out.println("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
+			logger.info("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 			ZipkinClientContext.getClient().finishSpan();
 		} catch (Exception e) {
