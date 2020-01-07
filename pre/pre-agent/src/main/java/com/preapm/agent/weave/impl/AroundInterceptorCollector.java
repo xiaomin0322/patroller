@@ -43,6 +43,7 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
+					//放此处再初始化zipkin-sdk.jar。为了解决延迟slf4j初始化，找不到日志实现。优先让应用程序初始化slf4j
 					com.preapm.agent.util.ClassLoaderUtil.init(classLoader);
 					Patterns patterns = PreConfigUtil.get(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);

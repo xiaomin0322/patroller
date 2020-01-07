@@ -42,7 +42,7 @@ public class APMAgent implements ClassFileTransformer {
 			return null;
 		}
 		className = className.replaceAll("/", ".");
-		// 加载插件后，初始化插件
+		// 放在此处加载，优先匹配Plugin节点得loadPatterns字段
 		com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
 		if (!collector.isTarget(className)) {
 			return null;
