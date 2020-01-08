@@ -31,6 +31,7 @@
 		<module>pre-jetty-plugin</module>
         <module>pre-zipkin-plugin</module>
 		<module>pre-logback-plugin</module>
+		<module>pre-log4j2-plugin</module>
 		<module>pre-okhttp-plugin</module>
 		<module>pre-jdk-http-plugin</module>
 		<module>pre-druid-plugin</module>
