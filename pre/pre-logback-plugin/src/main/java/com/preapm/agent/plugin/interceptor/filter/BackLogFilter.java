@@ -27,7 +27,7 @@ public class BackLogFilter extends Filter<ILoggingEvent> {
 			MDC.put("X-B3-SpanId",Long.toHexString(sapn.id));
 		}
 		String message = event.getMessage();
-		if (message.startsWith("tracer")) {
+		if (message.startsWith(com.preapm.sdk.zipkin.util.TraceKeys.LOG_TRACER_PREFIX)) {
 			try {
 				Span span = ZipkinClientContext.getClient().getSpan();
 				if(span!=null) {
