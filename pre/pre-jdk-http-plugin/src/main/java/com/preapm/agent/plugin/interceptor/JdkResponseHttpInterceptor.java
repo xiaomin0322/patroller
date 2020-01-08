@@ -3,9 +3,6 @@ package com.preapm.agent.plugin.interceptor;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
@@ -22,7 +19,8 @@ import sun.net.www.MessageHeader;
  *
  */
 public class JdkResponseHttpInterceptor implements AroundInterceptor {
-	private  final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
+	// private final Logger logger =
+	// LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 	@Override
 	public void before(MethodInfo methodInfo) {
 	}
@@ -38,18 +36,18 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 			Class clazz = getSupperClass(connection.getClass());
 			Field responseCodeField = clazz.getDeclaredField("responseCode");
 			responseCodeField.setAccessible(true);
-			Integer responseCode = (Integer)responseCodeField.get(connection);
-			if(responseCode == null || responseCode.intValue() == -1 || responseCode.intValue() == 301
+			Integer responseCode = (Integer) responseCodeField.get(connection);
+			if (responseCode == null || responseCode.intValue() == -1 || responseCode.intValue() == 301
 					|| responseCode.intValue() == 302 || responseCode.intValue() == 303
-					|| responseCode.intValue() == 307 || responseCode.intValue() == 308){
-                return;
-            }
-			/*String headerField = getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG, connection);
-			if(headerField != null) {
-				ZipkinClientContext.getClient().getSpanStore().removeSpan();
+					|| responseCode.intValue() == 307 || responseCode.intValue() == 308) {
 				return;
-			}*/
-			logger.info("com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor  after");
+			}
+			/*
+			 * String headerField =
+			 * getHeader(com.preapm.sdk.zipkin.util.TraceKeys.PRE_AGENT_NOT_TRACE_TAG,
+			 * connection); if(headerField != null) {
+			 * ZipkinClientContext.getClient().getSpanStore().removeSpan(); return; }
+			 */
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 			ZipkinClientContext.getClient().finishSpan();
 		} catch (Exception e) {
