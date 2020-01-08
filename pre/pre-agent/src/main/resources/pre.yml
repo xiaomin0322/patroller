@@ -49,6 +49,13 @@ plugins:
     loadPatterns:
       - ch.qos.logback.core.joran.action.AppenderAction
       
+  pre-log4j2-plugin:
+    jarName: pre-log4j2-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.Log4j2Interceptor
+    loadPatterns:
+      - org.apache.logging.log4j.core.LoggerContext   
+      
   pre-okhttp-plugin:
     jarName: pre-okhttp-plugin
     interceptorNames:
@@ -137,6 +144,15 @@ patterns:
       - key: ch.qos.logback.core.joran.action.AppenderAction.begin\(ch.qos.logback.core.joran.spi.InterpretationContext,java.lang.String,org.xml.sax.Attributes\)
     interceptors:
       - com.preapm.agent.plugin.interceptor.LogbackInterceptor
+      
+  log4j2:
+    patterns:
+      - org.apache.logging.log4j.core.LoggerContext
+    excludedPatterns:
+    includedPatterns:
+      - key: org.apache.logging.log4j.core.LoggerContext.setConfiguration.*
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.Log4j2Interceptor
 
   okhttp:
     patterns:

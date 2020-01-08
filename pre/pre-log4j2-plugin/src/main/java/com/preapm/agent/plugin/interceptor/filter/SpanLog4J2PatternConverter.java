@@ -28,7 +28,7 @@ public class SpanLog4J2PatternConverter extends LogEventPatternConverter {
 	@Override
 	public void format(LogEvent logEvent, StringBuilder toAppendTo) {
 		ZipkinClient client = ZipkinClientContext.getClient();
-		String str = "";
+		String str = "SpanId";
 		if (client != null) {
 			Span span = client.getSpan();
 			if (span != null) {

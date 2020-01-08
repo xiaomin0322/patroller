@@ -33,7 +33,7 @@ public class PreLog4J2Filter extends AbstractFilter {
 				client.sendBinaryAnnotation(formattedMessage, Arrays.toString(p));
 			}
 		}
-		System.out.println("formattedMessage:" + formattedMessage + " getParameters:" + Arrays.toString(p));
+		//System.out.println("formattedMessage:" + formattedMessage + " getParameters:" + Arrays.toString(p));
 		return Result.ACCEPT;
 	}
 }

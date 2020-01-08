@@ -2,8 +2,9 @@
 
 <!-- status : 指定log4j本身的打印日志的级别.ALL< Trace < DEBUG < INFO < WARN < ERROR 
 	< FATAL < OFF。 monitorInterval : 用于指定log4j自动重新配置的监测间隔时间，单位是s,最小是5s. -->
-<Configuration status="WARN" monitorInterval="30"
-	packages="com.preapm.agent.plugin.interceptor.filter">
+<Configuration status="WARN" monitorInterval="30">
+	<!-- packages="com.preapm.agent.plugin.interceptor.filter" -->
+	
 
 	<Properties>
 		<!-- 配置日志文件输出目录 ${sys:user.home} -->
@@ -109,8 +110,7 @@
 			<appender-ref ref="RollingFileInfo" />
 			<appender-ref ref="RollingFileWarn" />
 			<appender-ref ref="RollingFileError" />
-			
-			<Log4JFilter />
+			<!-- <Log4JFilter /> -->
 		</root>
 
 	</Loggers>
