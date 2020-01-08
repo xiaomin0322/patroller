@@ -1,10 +1,7 @@
 package com.preapm.agent.plugin.interceptor;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
 import com.preapm.sdk.zipkin.ZipkinClientContext;
-import com.preapm.sdk.zipkin.util.InetAddressUtils;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
 import sun.net.www.MessageHeader;
-import zipkin.Endpoint;
-import zipkin.Span;
 
 /**
  * sun.net.www.protocol.http.HttpURLConnection.getInputStream()
@@ -28,7 +22,7 @@ import zipkin.Span;
  *
  */
 public class JdkResponseHttpInterceptor implements AroundInterceptor {
-	private static final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
+	private  final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 	@Override
 	public void before(MethodInfo methodInfo) {
 	}

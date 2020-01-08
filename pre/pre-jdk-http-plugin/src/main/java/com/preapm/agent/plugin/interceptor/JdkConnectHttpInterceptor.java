@@ -26,7 +26,7 @@ import zipkin.Span;
  */
 public class JdkConnectHttpInterceptor implements AroundInterceptor {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
+	private  final Logger logger = LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 
 	private static final String SPAN_NAME_STR = "jdkhttp";
 
