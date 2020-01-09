@@ -55,6 +55,8 @@ java -javaagent:具体目录\pre-agent\pre-agent.jar -javaagent:具体目录\pre
 ### log配置打印TraceId,SpanId
 logback:  
  %X{X-B3-TraceId:-} | %X{X-B3-SpanId:-}  
+log4j:  
+ %X{X-B3-TraceId} | %X{X-B3-SpanId}   
 log4j2:  
 %pt  %ps  
 ### 业务端埋点打标签
@@ -68,6 +70,7 @@ okhttp
 mysql-jdbc-driver  
 logback  
 log4j2  
+log4j  
 druid  
 jedis  
 jetty  
