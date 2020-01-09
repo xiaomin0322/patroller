@@ -55,6 +55,13 @@ plugins:
       - com.preapm.agent.plugin.interceptor.Log4j2Interceptor
     loadPatterns:
       - org.apache.logging.log4j.core.LoggerContext   
+  
+  pre-log4j-plugin:
+    jarName: pre-log4j-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.Log4jInterceptor
+    loadPatterns:
+      - org.apache.log4j.Logger
       
   pre-okhttp-plugin:
     jarName: pre-okhttp-plugin
@@ -153,6 +160,15 @@ patterns:
       - key: org.apache.logging.log4j.core.LoggerContext.setConfiguration.*
     interceptors:
       - com.preapm.agent.plugin.interceptor.Log4j2Interceptor
+      
+  log4j:
+    patterns:
+      - org.apache.log4j.*Configurator
+    excludedPatterns:
+    includedPatterns:
+      - key: org.apache.log4j.*parseAppender\(.*
+    interceptors:
+      - com.preapm.agent.plugin.interceptor.Log4jInterceptor    
 
   okhttp:
     patterns:
