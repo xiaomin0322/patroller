@@ -58,6 +58,8 @@ public class ClassLoaderUtil {
 					}*/
 					loadJar(classLoader, pFile.getAbsolutePath());
 					loadPluginsJar.add(p.getJarName());
+					//放此处再初始化zipkin-sdk.jar。为了解决延迟slf4j初始化，找不到日志实现。优先让应用程序初始化slf4j。以第一次插件加载器加载
+					com.preapm.agent.util.ClassLoaderUtil.init(classLoader);
 				}
 			}
 		}
