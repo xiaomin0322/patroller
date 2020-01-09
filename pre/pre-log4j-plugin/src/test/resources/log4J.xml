@@ -21,9 +21,9 @@
 			<param name="levelMax" value="ERROR" />
 		</filter>
 
-		<filter
+		<!-- <filter
 			class="com.preapm.agent.plugin.interceptor.filter.PreLog4JFilter">
-		</filter>
+		</filter> -->
 
 	</appender>
 
