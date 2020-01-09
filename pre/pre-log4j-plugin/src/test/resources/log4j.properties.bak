@@ -1,0 +1,35 @@
+### \u8BBE\u7F6E###
+log4j.rootLogger = debug,stdout
+
+### \u8F93\u51FA\u4FE1\u606F\u5230\u63A7\u5236\u62AC ###
+log4j.appender.stdout = org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target = System.out
+log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern = [%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} method:%l%n%m%n
+
+### \u8F93\u51FADEBUG \u7EA7\u522B\u4EE5\u4E0A\u7684\u65E5\u5FD7 ###
+log4j.appender.debugLog = org.apache.log4j.DailyRollingFileAppender
+log4j.appender.debugLog.File = C:/application/log/log.log
+log4j.appender.debugLog.DatePattern = '.'yyyy-MM-dd-HH-mm'.log'
+log4j.appender.debugLog.Append = true
+log4j.appender.debugLog.Threshold = DEBUG
+log4j.appender.debugLog.layout = org.apache.log4j.PatternLayout
+log4j.appender.debugLog.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
+
+### \u8F93\u51FAINFO \u7EA7\u522B\u4EE5\u4E0A\u7684\u65E5\u5FD7 ###
+log4j.appender.infoLog = org.apache.log4j.DailyRollingFileAppender
+log4j.appender.infoLog.File = C:/application/log/log.log
+log4j.appender.infoLog.DatePattern = '.'yyyy-MM-dd-HH-mm'.log'
+log4j.appender.infoLog.Append = true
+log4j.appender.infoLog.Threshold = INFO
+log4j.appender.infoLog.layout = org.apache.log4j.PatternLayout
+log4j.appender.infoLog.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
+
+### \u8F93\u51FAERROR \u7EA7\u522B\u4EE5\u4E0A\u7684\u65E5\u5FD7 ###
+log4j.appender.errorLog = org.apache.log4j.DailyRollingFileAppender
+log4j.appender.errorLog.File = C:/application/log/log.log
+log4j.appender.errorLog.DatePattern = '.'yyyy-MM-dd-HH-mm'.log'
+log4j.appender.errorLog.Append = true
+log4j.appender.errorLog.Threshold = ERROR
+log4j.appender.errorLog.layout = org.apache.log4j.PatternLayout
+log4j.appender.errorLog.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ] - [ %p ]  %m%n
