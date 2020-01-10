@@ -23,7 +23,7 @@ public class APMAgentPremain {
 		log.info("currentThreadClassLoader:  " + currentThread.getContextClassLoader());
 		addLib(inst);
 		APMAgent aPMAgentV1 = new APMAgent();
-		inst.addTransformer(aPMAgentV1);
+		inst.addTransformer(aPMAgentV1,true);
 	}
 
 	public static void addLib(Instrumentation inst) {
