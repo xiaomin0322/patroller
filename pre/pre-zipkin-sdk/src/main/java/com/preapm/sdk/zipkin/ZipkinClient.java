@@ -145,7 +145,7 @@ public class ZipkinClient {
 				long duration = nanoTime() - span.build().timestamp;
 				this.spanCollector.collect(span.duration(duration).build());
 			} else {
-				logger.error("you must use startSpan before finishSpan");
+				logger.warn("you must use startSpan before finishSpan");
 			}
 			this.spanStore.removeSpan();
 		} catch (Exception e) {
