@@ -89,6 +89,10 @@ public class ZipkinClient {
 	public void sendAnnotation(String value, Endpoint endpoint) {
 		try {
 			Span.Builder span = this.spanStore.getSpan();
+			if(span == null) {
+				logger.warn("span is null");
+				return;
+			}
 			span.addAnnotation(Annotation.create(nanoTime(), value, endpoint));
 		} catch (Exception e) {
 			logger.error("sendAnnotationException", e);
