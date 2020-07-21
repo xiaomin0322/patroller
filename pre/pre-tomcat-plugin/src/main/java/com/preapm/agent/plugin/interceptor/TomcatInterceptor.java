@@ -23,6 +23,12 @@ import zipkin.Endpoint;
  * org.apache.catalina.core.ApplicationFilterChain.doFilter(ServletRequest,
  * ServletResponse)
  * 
+ * tomcat要拦截最初的请求位置，因为tomcat servlet 内置拦截器，要在拦截器之前拦截：
+ *  
+ *      如果拦截 org.apache.catalina.core.StandardWrapperValve.invoke方法在拦截器之后，servlet之前的拦截器将得不到链路信息。
+ *     造成得后果是: 拦截器得 链路，和log打印得trace_id 错乱 
+ *   
+ * 
  * @author Zengmin.Zhang
  *
  */
