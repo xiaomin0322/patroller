@@ -94,7 +94,8 @@ public class TomcatInterceptor implements AroundInterceptor {
 		Endpoint endpoint = (Endpoint) methodInfo.getLocalVariable()[0];
 		ZipkinClientContext.getClient().sendAnnotation(TraceKeys.SERVER_RECV, endpoint );
 		ZipkinClientContext.getClient().finishSpan();
-		ZipkinClientContext.getClient().getSpanStore().removeAllSpan();
+		//TODO 此处不能全部删掉，因为在业务中使用多线程，线程池会有问题。
+		//ZipkinClientContext.getClient().getSpanStore().removeAllSpan();
 
 	}
 
