@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.preapm.agent.common.bean.MethodInfo;
 import com.preapm.agent.common.interceptor.AroundInterceptor;
@@ -68,9 +69,9 @@ public class TomcatInterceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().startRootSpan(TOMCAT_STR);
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
-			
-			logger.info("获取trace_id：" + trace_id);
-			logger.info("获取span_id：" + span_id);
+			//此处触发com.preapm.agent.plugin.interceptor.filter.BackLogFilter MDC.put("X-B3-TraceId"
+			logger.info("获取trace_id：{}" , trace_id);
+			logger.info("获取span_id：{}" , span_id);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_CLIENT_IP,clientIP, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_QUERY_STRING,queryString, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,method, endpoint);
