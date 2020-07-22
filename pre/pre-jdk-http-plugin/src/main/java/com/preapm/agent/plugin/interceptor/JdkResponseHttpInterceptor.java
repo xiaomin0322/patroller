@@ -9,6 +9,7 @@ import com.preapm.sdk.zipkin.ZipkinClientContext;
 import com.preapm.sdk.zipkin.util.TraceKeys;
 
 import sun.net.www.MessageHeader;
+import zipkin.Span;
 
 /**
  * sun.net.www.protocol.http.HttpURLConnection.getInputStream()
@@ -48,6 +49,13 @@ public class JdkResponseHttpInterceptor implements AroundInterceptor {
 			 * connection); if(headerField != null) {
 			 * ZipkinClientContext.getClient().getSpanStore().removeSpan(); return; }
 			 */
+			Span span = ZipkinClientContext.getClient().getSpan();
+			if(span == null) {
+				return;
+			}
+			if(!com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor.SPAN_NAME_STR.equals(span.name)) {
+				return;
+			}
 			ZipkinClientContext.getClient().sendAnnotation(TraceKeys.CLIENT_RECV);
 			ZipkinClientContext.getClient().finishSpan();
 		} catch (Exception e) {

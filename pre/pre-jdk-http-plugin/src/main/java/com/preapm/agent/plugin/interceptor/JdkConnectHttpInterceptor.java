@@ -26,7 +26,7 @@ public class JdkConnectHttpInterceptor implements AroundInterceptor {
 	// private final Logger logger =
 	// LoggerFactory.getLogger(JdkConnectHttpInterceptor.class);
 
-	private static final String SPAN_NAME_STR = "jdkhttp";
+	public static final String SPAN_NAME_STR = "jdkhttp";
 
 	@Override
 	public void before(MethodInfo methodInfo) {
