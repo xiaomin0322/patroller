@@ -52,9 +52,8 @@ public class TomcatInterceptor implements AroundInterceptor {
 			String span_id = request.getHeader(com.preapm.sdk.zipkin.util.TraceKeys.SPAN_ID);
 			String clientIP = com.preapm.sdk.zipkin.util.ClientUtil.getSpbillIp(request);
 			
-			logger.info("获取trace_id：" + trace_id);
-			logger.info("获取trace_id：" + span_id);
 			ZipkinClientContext.getClient().getSpanStore().removeAllSpan();
+			
 			if (trace_id != null && span_id != null) {
 				BigInteger trace_id_bi = new BigInteger(trace_id, 16);
 				BigInteger span_id_bi = new BigInteger(span_id, 16);
@@ -70,6 +69,8 @@ public class TomcatInterceptor implements AroundInterceptor {
 				ZipkinClientContext.getClient().sendBinaryAnnotation("traceRoot","true");
 			}
 			
+			logger.info("获取trace_id：" + trace_id);
+			logger.info("获取span_id：" + span_id);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_CLIENT_IP,clientIP, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_QUERY_STRING,queryString, endpoint);
 			ZipkinClientContext.getClient().sendBinaryAnnotation(com.preapm.sdk.zipkin.util.TraceKeys.HTTP_METHOD,method, endpoint);
