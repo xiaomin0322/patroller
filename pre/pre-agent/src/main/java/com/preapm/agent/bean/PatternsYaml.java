@@ -89,6 +89,15 @@ public class PatternsYaml {
 		private List<PatternMethod> excludedPatterns;
 		private List<PatternMethod> includedPatterns;
 		private List<String> interceptors;
+		private String superClass;
+		
+		public String getSuperClass() {
+			return superClass;
+		}
+
+		public void setSuperClass(String superClass) {
+			this.superClass = superClass;
+		}
 
 		public Track getTrack() {
 			return track;

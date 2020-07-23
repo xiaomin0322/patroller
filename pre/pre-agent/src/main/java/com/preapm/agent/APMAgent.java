@@ -26,7 +26,6 @@ public class APMAgent implements ClassFileTransformer {
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined,
 			ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-
 		if ((className == null)
 				// || (classLoader == null)
 				// ||
@@ -44,7 +43,7 @@ public class APMAgent implements ClassFileTransformer {
 		className = className.replaceAll("/", ".");
 		// 放在此处加载，优先匹配Plugin节点得loadPatterns字段
 		com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
-		if (!collector.isTarget(className)) {
+		if (!collector.isTarget(className,classBeingRedefined)) {
 			return null;
 		}
 		// 不同的ClassLoader使用不同的ClassPool

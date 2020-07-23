@@ -68,6 +68,11 @@ public class ThreadLocal2Test {
 
 			@Override
 			public void run() {
+				System.out.println(this.getClass().getName());
+				
+				System.out.println(this.getClass().getInterfaces()[0].getName());
+				
+				System.out.println(this.getClass().getTypeName());
 				System.out.println(Thread.currentThread().getId() + "=======GetRunnableSpan===========" + s);
 				System.out.println(Thread.currentThread().getId() + "=======getspan==========" + getSpan());
 			}
@@ -77,6 +82,7 @@ public class ThreadLocal2Test {
 
 			@Override
 			public String call() {
+				System.out.println(this.getClass().getInterfaces()[0].getName());
 				System.out.println(Thread.currentThread().getId() + "=======GetCallableSpan===========" + s);
 				System.out.println(Thread.currentThread().getId() + "=======getspan==========" + getSpan());
 				return null;

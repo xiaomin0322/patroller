@@ -1,11 +1,10 @@
 package com.preapm.agent.weave.impl;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
+import com.preapm.agent.common.context.ClassInterceptorContext;
 import com.preapm.agent.constant.BaseConstants;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PreConfigUtil;
@@ -34,6 +33,10 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		String longName = null;
 		try {
+			Patterns patterns = PreConfigUtil.get(className);
+			//拦截器中修改class
+			ClassInterceptorContext.call(patterns.getInterceptors(), ctClass);
+			
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				 longName = ctMethod.getLongName();
@@ -43,7 +46,7 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-					Patterns patterns = PreConfigUtil.get(className);
+					
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
@@ -79,7 +82,6 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-					Patterns patterns = PreConfigUtil.get(className);
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);

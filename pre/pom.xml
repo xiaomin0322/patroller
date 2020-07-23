@@ -38,7 +38,8 @@
 		<module>pre-druid-plugin</module>
 		<module>pre-mysql-jdbc-driver-plugin</module>
         <module>pre-zipkin-sdk</module>
-		
+		<module>pre-jdk-thread-plugin</module>
+
     </modules>
 
 	
