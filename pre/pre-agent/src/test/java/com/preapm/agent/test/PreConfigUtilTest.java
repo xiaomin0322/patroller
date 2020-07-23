@@ -39,7 +39,7 @@ public class PreConfigUtilTest {
 		 * ));
 		 */
 		
-		System.out.println(PreConfigUtil.get("com.preapm.agent").getSuperClass());
+		System.out.println(PreConfigUtil.get("com.preapm.sdk.zipkin.ThreadLocal3Test").getSuperClass());
 
 	/*	System.out.println(PreConfigUtil.isTargetR("org.apache.catalina.servlets.DefaultServlet",
 			"javax.servlet.http.HttpServlet.service(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)"));

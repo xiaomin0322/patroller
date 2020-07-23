@@ -33,20 +33,24 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		String longName = null;
 		try {
+			boolean target = isTarget(className, ctClass.getClass());
+			if (!target) {
+				return new byte[0];
+			}
 			Patterns patterns = PreConfigUtil.get(className);
-			//拦截器中修改class
+			// 拦截器中修改class
 			ClassInterceptorContext.call(patterns.getInterceptors(), ctClass);
-			
+
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
-				 longName = ctMethod.getLongName();
+				longName = ctMethod.getLongName();
 				if (/* (Modifier.isPublic(ctMethod.getModifiers())) && */(!Modifier.isStatic(ctMethod.getModifiers())
 						&& (!Modifier.isNative(ctMethod.getModifiers())))) {
 					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
 					if (patternMethod == null) {
 						continue;
 					}
-					
+
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
@@ -54,30 +58,27 @@ public class AroundInterceptorCollector extends Collector {
 					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
 				}
 			}
-			
-		/*	for (CtMethod ctMethod : ctClass.getMethods()) {
-				 longName = ctMethod.getLongName();
-				if ( (Modifier.isPublic(ctMethod.getModifiers())) && (!Modifier.isStatic(ctMethod.getModifiers())
-						&& (!Modifier.isNative(ctMethod.getModifiers())))  && !methodNameSet.contains(longName)) {
-					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
-					if (patternMethod == null) {
-						continue;
-					}
-					Patterns patterns = PreConfigUtil.get(className);
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
-					classWrapper.beginSrc(beginSrc);
-					classWrapper.endSrc(endSrc);
-					classWrapper.errorSrc(errorSrc);
-					replacer.replace(classLoader, classfileBuffer, ctClass, ctMethod, classWrapper);
-					
-					methodNameSet.add(longName);
-				}
-			}*/
-			
+
+			/*
+			 * for (CtMethod ctMethod : ctClass.getMethods()) { longName =
+			 * ctMethod.getLongName(); if ( (Modifier.isPublic(ctMethod.getModifiers())) &&
+			 * (!Modifier.isStatic(ctMethod.getModifiers()) &&
+			 * (!Modifier.isNative(ctMethod.getModifiers()))) &&
+			 * !methodNameSet.contains(longName)) { PatternMethod patternMethod =
+			 * PreConfigUtil.isTargetR(className, longName); if (patternMethod == null) {
+			 * continue; } Patterns patterns = PreConfigUtil.get(className); ClassWrapper
+			 * classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
+			 * classWrapper.beginSrc(beginSrc); classWrapper.endSrc(endSrc);
+			 * classWrapper.errorSrc(errorSrc); replacer.replace(classLoader,
+			 * classfileBuffer, ctClass, ctMethod, classWrapper);
+			 * 
+			 * methodNameSet.add(longName); } }
+			 */
+
 			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
 			if (constructors != null && constructors.length > 0) {
 				for (CtConstructor c : constructors) {
-					 longName = c.getLongName();
+					longName = c.getLongName();
 					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
 					if (patternMethod == null) {
 						continue;
@@ -93,8 +94,9 @@ public class AroundInterceptorCollector extends Collector {
 
 			return replacer.replace();
 		} catch (Exception e) {
-			
-			log.severe("methodName: "+longName + "\n "+org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
+
+			log.severe("methodName: " + longName + "\n "
+					+ org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e));
 		}
 
 		return new byte[0];

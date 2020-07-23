@@ -29,9 +29,11 @@ plugins:
       - java.net.HttpURLConnection
       
   pre-jdk-thread-class-plugin:
-    jarName: pre-jdk-thread-class-plugin
+    jarName: pre-jdk-thread-plugin
     interceptorNames:
-      - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor   
+      - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
+    loadPatterns:
+      - com.preapm.*
           
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
@@ -157,7 +159,7 @@ patterns:
         - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
     superClass:
         - java.util.concurrent.Callable
-        - java.lang.Runnable       
+        - java.lang.Runnable
 
   logback:
     patterns:

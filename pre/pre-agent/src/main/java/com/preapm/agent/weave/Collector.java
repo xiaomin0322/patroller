@@ -21,6 +21,9 @@ public abstract class Collector {
 
 	public boolean isTarget(String className, Class<?> clazz) {
 		Patterns patterns = PreConfigUtil.get(className);
+		if(className.contains("preapm")) {
+			System.out.println("===="+className);
+		}
 		if (patterns == null) {
 			return false;
 		}

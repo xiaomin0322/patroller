@@ -41,9 +41,13 @@ public class APMAgent implements ClassFileTransformer {
 			return null;
 		}
 		className = className.replaceAll("/", ".");
+		
+		if(className.contains("preapm")) {
+			System.out.println("======================="+className + "============class"+classBeingRedefined);
+		}
 		// 放在此处加载，优先匹配Plugin节点得loadPatterns字段
 		com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
-		if (!collector.isTarget(className,classBeingRedefined)) {
+		if (!collector.isTarget(className)) {
 			return null;
 		}
 		// 不同的ClassLoader使用不同的ClassPool
