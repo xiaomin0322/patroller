@@ -46,9 +46,9 @@ public class PatternsYaml {
 		private boolean outParam;
 		// 超过这个时间才记录
 		private int time = -1;
-		//序列化方式
-		private String serialize="def";
-		
+		// 序列化方式
+		private String serialize = "def";
+
 		public String getSerialize() {
 			return serialize;
 		}
@@ -89,13 +89,13 @@ public class PatternsYaml {
 		private List<PatternMethod> excludedPatterns;
 		private List<PatternMethod> includedPatterns;
 		private List<String> interceptors;
-		private String superClass;
-		
-		public String getSuperClass() {
+		private List<String> superClass;
+
+		public List<String> getSuperClass() {
 			return superClass;
 		}
 
-		public void setSuperClass(String superClass) {
+		public void setSuperClass(List<String> superClass) {
 			this.superClass = superClass;
 		}
 

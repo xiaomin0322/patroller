@@ -27,6 +27,11 @@ plugins:
       - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
     loadPatterns:
       - java.net.HttpURLConnection
+      
+  pre-jdk-thread-class-plugin:
+    jarName: pre-jdk-thread-class-plugin
+    interceptorNames:
+      - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor   
           
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
@@ -142,6 +147,17 @@ patterns:
         - key: .*getInputStream\(\)   
           interceptors:
           - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
+          
+  jdk-thead-class:
+    patterns:
+      - com.preapm.*
+    excludedPatterns:
+    includedPatterns:
+    interceptors:
+        - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
+    superClass:
+        - java.util.concurrent.Callable
+        - java.lang.Runnable       
 
   logback:
     patterns:
