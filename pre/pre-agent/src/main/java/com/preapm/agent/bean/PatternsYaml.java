@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.preapm.agent.enums.PatternEnum;
+
 public class PatternsYaml {
 
 	private Map<String, Patterns> patterns;
@@ -90,6 +92,16 @@ public class PatternsYaml {
 		private List<PatternMethod> includedPatterns;
 		private List<String> interceptors;
 		private List<String> superClass;
+		// PatternEnum 默认是拦截器
+		private String type = PatternEnum.Around.getCode();
+
+		public String getType() {
+			return type;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
 
 		public List<String> getSuperClass() {
 			return superClass;

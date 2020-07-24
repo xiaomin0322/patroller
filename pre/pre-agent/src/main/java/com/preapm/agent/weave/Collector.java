@@ -3,9 +3,9 @@ package com.preapm.agent.weave;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import com.preapm.agent.bean.PatternsYaml.Patterns;
+import com.preapm.agent.enums.PatternEnum;
 import com.preapm.agent.util.PreConfigUtil;
 
 import javassist.CtClass;
@@ -18,11 +18,19 @@ public abstract class Collector {
 	}
 
 	public boolean isTarget(String className) {
-		return PreConfigUtil.isTarget(className);
+		return PreConfigUtil.isTarget(className,PatternEnum.Around);
+	}
+	
+	public boolean isTarget(String className,PatternEnum patternEnum) {
+		return PreConfigUtil.isTarget(className,patternEnum);
 	}
 
 	public boolean isTarget(String className, CtClass ctClass) {
-		Patterns patterns = PreConfigUtil.get(className);
+		return  isTarget(className, ctClass, PatternEnum.Around.getCode());
+	}
+
+	public boolean isTarget(String className, CtClass ctClass,String type) {
+		Patterns patterns = PreConfigUtil.get(className,type);
 		if (patterns == null) {
 			return false;
 		}
@@ -45,35 +53,6 @@ public abstract class Collector {
 				return true;
 			}
 		}
-		return false;
-	}
-
-	public boolean isTargetC(String className) {
-		Patterns patterns = PreConfigUtil.get(className);
-		if (className.contains("preapm")) {
-			System.out.println("====" + className);
-		}
-		if (patterns == null) {
-			return false;
-		}
-		List<String> superClass = patterns.getSuperClass();
-		if (superClass == null) {
-			return true;
-		}
-		try {
-			Class<?> classSrc = Class.forName(className);
-			for (String superClazz : superClass) {
-
-				Class<?> classPlugin = Class.forName(superClazz);
-				boolean assignableFrom = classPlugin.isAssignableFrom(classSrc);
-				if (assignableFrom) {
-					return assignableFrom;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return false;
 	}
 

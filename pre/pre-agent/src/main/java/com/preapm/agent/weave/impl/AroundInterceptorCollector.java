@@ -6,6 +6,7 @@ import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.common.context.ClassInterceptorContext;
 import com.preapm.agent.constant.BaseConstants;
+import com.preapm.agent.enums.PatternEnum;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.util.PreConfigUtil;
 import com.preapm.agent.weave.ClassReplacer;
@@ -33,14 +34,14 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		String longName = null;
 		try {
-			boolean target = isTarget(className, ctClass);
-			if (!target) {
-				return new byte[0];
-			}
-			Patterns patterns = PreConfigUtil.get(className);
-			// 拦截器中修改class
-			ClassInterceptorContext.call(patterns.getInterceptors(), ctClass,classLoader);
 
+			// 处理植入classs拦截器逻辑
+			boolean target = isTarget(className, ctClass, PatternEnum.Class.getCode());
+			if (target) {
+				Patterns patterns = PreConfigUtil.get(className, PatternEnum.Class.getCode());
+				// 拦截器中修改class
+				ClassInterceptorContext.call(patterns.getInterceptors(), ctClass, classLoader);
+			}
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				longName = ctMethod.getLongName();
@@ -50,7 +51,7 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-
+					Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
@@ -83,6 +84,7 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
+					Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);

@@ -160,6 +160,7 @@ patterns:
     superClass:
         - java.util.concurrent.Callable
         - java.lang.Runnable
+    type: class    
 
   logback:
     patterns:

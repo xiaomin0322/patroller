@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.preapm.agent.enums.PatternEnum;
 import com.preapm.agent.util.LogManager;
 import com.preapm.agent.weave.Collector;
 import com.preapm.agent.weave.impl.AroundInterceptorCollector;
@@ -47,7 +48,7 @@ public class APMAgent implements ClassFileTransformer {
 		}*/
 		// 放在此处加载，优先匹配Plugin节点得loadPatterns字段
 		com.preapm.agent.util.ClassLoaderUtil.loadJarByClassName(classLoader, className);
-		if (!collector.isTarget(className)) {
+		if (!collector.isTarget(className,PatternEnum.ALL)) {
 			return null;
 		}
 		// 不同的ClassLoader使用不同的ClassPool

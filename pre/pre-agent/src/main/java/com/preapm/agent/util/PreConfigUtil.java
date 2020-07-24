@@ -11,6 +11,7 @@ import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.bean.PatternsYaml.Patterns;
 import com.preapm.agent.bean.PluginConfigYaml;
 import com.preapm.agent.bean.PluginConfigYaml.JarBean;
+import com.preapm.agent.enums.PatternEnum;
 import com.preapm.agent.weave.pattern.JdkRegexpMethodPointcut;
 
 public class PreConfigUtil {
@@ -25,7 +26,17 @@ public class PreConfigUtil {
 	}
 
 	public static Patterns get(String key) {
+		return get(key, PatternEnum.Around.getCode());
+	}
+
+	public static Patterns get(String key, String type) {
 		for (Patterns p : patternsYaml.getPatterns().values()) {
+			if (p == null) {
+				continue;
+			}
+			if (!p.getType().equals(type) && !PatternEnum.ALL.getCode().equals(type)) {
+				continue;
+			}
 			boolean matchesPattern = JdkRegexpMethodPointcut.macth(p.getPatterns(), key);
 			if (matchesPattern) {
 				return p;
@@ -93,9 +104,10 @@ public class PreConfigUtil {
 		if (patternsList != null && patternsList.size() > 0) {
 			matchesPattern = !JdkRegexpMethodPointcut.macth(patternsList, method);
 		}
-		//log.info("isTarget  :   calssName:" + className + " method:" + method + " matchesPattern:" + matchesPattern);
+		// log.info("isTarget : calssName:" + className + " method:" + method + "
+		// matchesPattern:" + matchesPattern);
 		String key = JdkRegexpMethodPointcut.macthR(patterns.getIncludedPatternsKey(), method);
-		if(patterns.getIncludedPatterns() == null) {
+		if (patterns.getIncludedPatterns() == null) {
 			return null;
 		}
 		for (PatternMethod m : patterns.getIncludedPatterns()) {
@@ -113,14 +125,14 @@ public class PreConfigUtil {
 
 	public static Set<JarBean> getPlugins(String className) {
 		Set<JarBean> jarBeansSet = new HashSet<>();
-			for (JarBean p:pluginConfigYaml.getPlugins().values()) {
-				List<String> list = new ArrayList<>();
-				list.addAll(p.getLoadPatterns());
-				boolean matchesPattern = JdkRegexpMethodPointcut.macth(list, className);
-				if(matchesPattern) {
-					jarBeansSet.add(p);
-				}
+		for (JarBean p : pluginConfigYaml.getPlugins().values()) {
+			List<String> list = new ArrayList<>();
+			list.addAll(p.getLoadPatterns());
+			boolean matchesPattern = JdkRegexpMethodPointcut.macth(list, className);
+			if (matchesPattern) {
+				jarBeansSet.add(p);
 			}
+		}
 		Patterns patterns = PreConfigUtil.get(className);
 		if (patterns == null) {
 			return jarBeansSet;
@@ -140,12 +152,12 @@ public class PreConfigUtil {
 				jarBeansSet.add(jarBean);
 			}
 		}
-		
+
 		return jarBeansSet;
 	}
 
-	public static boolean isTarget(String className) {
-		Patterns patterns = PreConfigUtil.get(className);
+	public static boolean isTarget(String className,PatternEnum patternEnum) {
+		Patterns patterns = PreConfigUtil.get(className,patternEnum.getCode());
 		if (patterns == null) {
 			return false;
 		}
