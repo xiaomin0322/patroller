@@ -27,10 +27,13 @@ public class Test {
 
 		List<String> s = new ArrayList<>();
 		s.add("run\\(\\) | call\\(\\)");
+		s.add("com.*Controller.*");
 		s.add(".*(run\\(\\)|call\\(\\))");
 		s.add(".*");
 		String key = JdkRegexpMethodPointcut.macthR(s, "com.preapm.sdk.zipkin.ThreadLocal3Test$2.run()");
 
+		 //key = JdkRegexpMethodPointcut.macthR(s, "com.dominos.cloud.im.controller.ProductController$1.run()");
+		
 		System.out.println(key);
 		
 		//System.out.println(JdkRegexpMethodPointcut.macthsR(s, "com.preapm.agent.test.patterns.Test"));
