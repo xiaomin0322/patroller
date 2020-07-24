@@ -213,34 +213,34 @@ patterns:
       
   jedis:
     patterns:
-      - redis.clients.jedis.BinaryJedis
+      #- redis.clients.jedis.BinaryJedis
       - redis.clients.jedis.BinaryJedisCluster
-      - redis.clients.jedis.JedisCluster
+      #- redis.clients.jedis.JedisCluster
+      # - redis.clients.jedis.Jedis
     excludedPatterns:
-       - key: ping.*
-       - key: close.*
-       - key: disconnect.*
-       - key: resetState.*
-       - key: getClient.*
-       - key: setClient.*
-       - key: getDB.*
-       - key: isInMulti.*
-       - key: isInWatch.*
-       - key: clear.*
-       - key: pipelined.*
-       - key: setDb.*
-       - key: setDataSource.*
-       - key: getClusterNodes.*
-       - key: getConnectionFromSlot.*
+       - key: .*ping.*
+       - key: .*close.*
+       - key: .*disconnect.*
+       - key: .*resetState.*
+       - key: .*getClient.*
+       - key: .*setClient.*
+       - key: .*getDB.*
+       - key: .*isInMulti.*
+       - key: .*isInWatch.*
+       - key: .*clear.*
+       - key: .*pipelined.*
+       - key: .*setDb.*
+       - key: .*setDataSource.*
+       - key: .*getClusterNodes.*
+       - key: .*getConnectionFromSlot.*
     includedPatterns:
-      - key: get.*
-      - key: set.*
-      - key: e.*
-      - key: h.*
-      - key: z.*
-      - key: eval.*
+      - key: .*get.*
+      - key: .*set.*
+      - key: .*hget.*
+      - key: .*hset.*
+      - key: .*eval.*
     interceptors:
-      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
+      - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       
   #==========================================================一下是具体业务配置根据具体项目路径修改================================     
   
