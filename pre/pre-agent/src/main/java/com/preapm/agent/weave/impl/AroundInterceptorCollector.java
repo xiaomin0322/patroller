@@ -43,6 +43,8 @@ public class AroundInterceptorCollector extends Collector {
 				ClassInterceptorContext.call(patterns.getInterceptors(), ctClass, classLoader);
 				//FileUtils.writeByteArrayToFile(new File("C:\\root\\"+className), ctClass.toBytecode());
 			}
+			Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
+			
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
 				longName = ctMethod.getLongName();
@@ -52,7 +54,6 @@ public class AroundInterceptorCollector extends Collector {
 					if (patternMethod == null) {
 						continue;
 					}
-					Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
 					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
 					classWrapper.beginSrc(beginSrc);
 					classWrapper.endSrc(endSrc);
@@ -76,24 +77,26 @@ public class AroundInterceptorCollector extends Collector {
 			 * 
 			 * methodNameSet.add(longName); } }
 			 */
+            //是否匹配构造方法
+			if(patterns.isConsMethod()) {
+				CtConstructor[] constructors = ctClass.getDeclaredConstructors();
+				if (constructors != null && constructors.length > 0) {
+					for (CtConstructor c : constructors) {
+						longName = c.getLongName();
+						PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
+						if (patternMethod == null) {
+							continue;
+						}
+						ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
+						classWrapper.beginSrc(beginSrc);
+						classWrapper.endSrc(endSrc);
+						classWrapper.errorSrc(errorSrc);
+						replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
 
-			CtConstructor[] constructors = ctClass.getDeclaredConstructors();
-			if (constructors != null && constructors.length > 0) {
-				for (CtConstructor c : constructors) {
-					longName = c.getLongName();
-					PatternMethod patternMethod = PreConfigUtil.isTargetR(className, longName);
-					if (patternMethod == null) {
-						continue;
 					}
-					Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
-					ClassWrapper classWrapper = new ClassWrapperAroundInterceptor(patterns, patternMethod);
-					classWrapper.beginSrc(beginSrc);
-					classWrapper.endSrc(endSrc);
-					classWrapper.errorSrc(errorSrc);
-					replacer.replace(classLoader, classfileBuffer, ctClass, c, classWrapper);
-
 				}
 			}
+			
 
 			return replacer.replace();
 		} catch (Exception e) {

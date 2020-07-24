@@ -94,6 +94,16 @@ public class PatternsYaml {
 		private List<String> superClass;
 		// PatternEnum 默认是拦截器
 		private String type = PatternEnum.Around.getCode();
+		// 是否匹配构造方法
+		private boolean consMethod = true;
+
+		public boolean isConsMethod() {
+			return consMethod;
+		}
+
+		public void setConsMethod(boolean consMethod) {
+			this.consMethod = consMethod;
+		}
 
 		public String getType() {
 			return type;
