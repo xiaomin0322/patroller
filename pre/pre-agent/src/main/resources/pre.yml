@@ -259,15 +259,15 @@ patterns:
   pre-controller:
     patterns:
       - com.preapm.sdk.zipkin.ThreadLocal3Test.*
-      - com.*Controller.*
+      - com.*Controller.
       - org.exampledriven.*Controller
     excludedPatterns:
-      - key: .*ThreadLocal3Test.*\(\)
-      - key: .*Controller.*\(\)
+      #- key: .*ThreadLocal3Test.*\(\)
+      #- key: .*Controller.*\(\)
     includedPatterns:
-      - key: .*(run\(\)|call\(\))
-        interceptors:
-           - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
+      #- key: .*(run\(\)|call\(\))
+      #  interceptors:
+      #     - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*
         interceptors:
            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
@@ -284,9 +284,9 @@ patterns:
       - com.*.service.impl.*
     excludedPatterns:
     includedPatterns:
-      - key: .*(run\(\)|call\(\))
-        interceptors:
-           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
+      #- key: .*(run\(\)|call\(\))
+      #  interceptors:
+      #     - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*
         interceptors:
            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
