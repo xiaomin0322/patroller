@@ -259,7 +259,7 @@ patterns:
   pre-controller:
     patterns:
       - com.preapm.sdk.zipkin.ThreadLocal3Test.*
-      - com.*Controller.
+      - com.*Controller
       - org.exampledriven.*Controller
     excludedPatterns:
       #- key: .*ThreadLocal3Test.*\(\)
