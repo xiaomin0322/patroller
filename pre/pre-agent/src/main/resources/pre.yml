@@ -33,7 +33,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
     loadPatterns:
-      - com.preapm.*
+      - com.preapm.agent.constant.BaseConstants
           
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
@@ -148,19 +148,7 @@ patterns:
            - com.preapm.agent.plugin.interceptor.JdkConnectHttpInterceptor
         - key: .*getInputStream\(\)   
           interceptors:
-          - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor
-          
-  jdk-thead-class:
-    patterns:
-      - com.preapm.*
-    excludedPatterns:
-    includedPatterns:
-    interceptors:
-        - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
-    superClass:
-        - java.util.concurrent.Callable
-        - java.lang.Runnable
-    type: class    
+          - com.preapm.agent.plugin.interceptor.JdkResponseHttpInterceptor 
 
   logback:
     patterns:
@@ -251,6 +239,19 @@ patterns:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
       
   #==========================================================一下是具体业务配置根据具体项目路径修改================================     
+  
+  jdk-thead-class:
+    patterns:
+      - com.*.service.impl.*
+      - com.*Controller
+    excludedPatterns:
+    includedPatterns:
+    interceptors:
+        - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
+    superClass:
+        - java.util.concurrent.Callable
+        - java.lang.Runnable
+    type: class
         
   #业务controller配置
   pre-controller:

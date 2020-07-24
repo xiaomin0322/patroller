@@ -11,7 +11,7 @@ public class JdkThreadInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
-			Class<? extends MethodInfo> class1 = methodInfo.getClass();
+			Class<?> class1 = methodInfo.getTarget().getClass();
 			Field declaredField = class1.getDeclaredField("span");
 			if (declaredField == null) {
 				return;

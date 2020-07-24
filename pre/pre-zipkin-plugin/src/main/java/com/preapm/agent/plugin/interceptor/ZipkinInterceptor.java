@@ -1,8 +1,10 @@
 package com.preapm.agent.plugin.interceptor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,31 @@ public class ZipkinInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
-			if (client.getSpan() == null) {
+			/*if (client.getSpan() == null ) {
+				//兼容多线程传递变量
+				if(Runnable.class.isAssignableFrom(methodInfo.getTarget().getClass())
+						&& Callable.class.isAssignableFrom(methodInfo.getTarget().getClass())) {
+					
+					Class<?> class1 = methodInfo.getTarget().getClass();
+					Field declaredField = class1.getDeclaredField("span");
+					if (declaredField == null) {
+						return;
+					}
+					zipkin.Span span = (zipkin.Span) declaredField.get(methodInfo.getTarget());
+					if(span == null) {
+						return ;
+					}
+					client.startSpan(span.traceId, span.id, methodInfo.getMethodName());
+				}else {
+					return;
+				}
+			}else {
+				client.startSpan(methodInfo.getMethodName());
+			}*/
+			if (client.getSpan() == null ) {
 				return;
 			}
+		
 			int ipv4 = InetAddressUtils.localIpv4();
 			Endpoint endpoint = Endpoint.builder().serviceName(ZipkinClientContext.serverName).ipv4(ipv4).build();
 			Long startTime = System.currentTimeMillis();
