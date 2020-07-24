@@ -32,6 +32,7 @@ plugins:
     jarName: pre-jdk-thread-plugin
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
+      - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
     loadPatterns:
       - com.*
           
@@ -256,11 +257,16 @@ patterns:
   #业务controller配置
   pre-controller:
     patterns:
-      - com.*Controller
+      - com.*Controller.*
       - org.exampledriven.*Controller
     excludedPatterns:
     includedPatterns:
+      - key: run\(\)|call\(\)
+        interceptors:
+           - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*
+        interceptors:
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     track:
@@ -274,7 +280,12 @@ patterns:
       - com.*.service.impl.*
     excludedPatterns:
     includedPatterns:
+      - key: run\(\)|call\(\)
+        interceptors:
+           - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*
+        interceptors:
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
     track:

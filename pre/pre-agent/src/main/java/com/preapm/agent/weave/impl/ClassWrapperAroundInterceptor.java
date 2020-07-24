@@ -1,6 +1,7 @@
 package com.preapm.agent.weave.impl;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -130,10 +131,12 @@ public class ClassWrapperAroundInterceptor extends ClassWrapper {
 	}
 
 	public void setPlugin(StringBuilder stringBuilder) {
-		Set<String> pluginNameSet = new HashSet<>();
+		Set<String> pluginNameSet = new LinkedHashSet<>();
+		//方法单独匹配的拦截器(优先级高)
 		if (patternMethod.getInterceptors() != null) {
 			pluginNameSet.addAll(patternMethod.getInterceptors());
 		} else {
+			//全局的拦截器
 			if (patterns.getInterceptors() != null && patterns.getInterceptors().size() != 0) {
 				pluginNameSet.addAll(patterns.getInterceptors());
 			}

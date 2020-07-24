@@ -1,5 +1,6 @@
 package com.preapm.agent.test;
 
+import com.preapm.agent.bean.PatternsYaml.PatternMethod;
 import com.preapm.agent.util.PreConfigUtil;
 
 public class PreConfigUtilTest {
@@ -39,7 +40,9 @@ public class PreConfigUtilTest {
 		 * ));
 		 */
 		
-		System.out.println(PreConfigUtil.get("com.preapm.sdk.zipkin.ThreadLocal3Test").getSuperClass());
+		//System.out.println(PreConfigUtil.get("com.preapm.sdk.zipkin.ThreadLocal3Test").getSuperClass());
+		PatternMethod patternMethod = PreConfigUtil.isTargetR("com.asd.Controller", "call()");
+		System.out.println(patternMethod.getInterceptors());
 
 	/*	System.out.println(PreConfigUtil.isTargetR("org.apache.catalina.servlets.DefaultServlet",
 			"javax.servlet.http.HttpServlet.service(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)"));

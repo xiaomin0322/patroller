@@ -11,8 +11,7 @@ public class JdkThreadInterceptor implements AroundInterceptor {
 	@Override
 	public void before(MethodInfo methodInfo) {
 		try {
-			Class<?> class1 = methodInfo.getTarget().getClass();
-			Field declaredField = class1.getDeclaredField("span");
+			Field declaredField = getField(methodInfo);
 			if (declaredField == null) {
 				return;
 			}
@@ -23,6 +22,19 @@ public class JdkThreadInterceptor implements AroundInterceptor {
 		}
 	}
 
+	public Field getField(MethodInfo methodInfo) {
+		try {
+			Class<?> class1 = methodInfo.getTarget().getClass();
+			Field declaredField = class1.getDeclaredField("span");
+			if (declaredField == null) {
+				return declaredField;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	@Override
 	public void exception(MethodInfo methodInfo) {
 		// TODO Auto-generated method stub
@@ -31,6 +43,10 @@ public class JdkThreadInterceptor implements AroundInterceptor {
 
 	@Override
 	public void after(MethodInfo methodInfo) {
+		Field declaredField = getField(methodInfo);
+		if (declaredField == null) {
+			return;
+		}
 		ZipkinClientContext.getClient().getSpanStore().removeSpan();
 
 	}

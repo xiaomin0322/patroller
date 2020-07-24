@@ -1,5 +1,6 @@
 package com.preapm.agent.weave.pattern;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -141,6 +142,23 @@ public class JdkRegexpMethodPointcut {
 		return null;
 	}
 
+	/**
+	 * 返回多个符合条件的结果
+	 * 
+	 * @param signatureString
+	 * @return
+	 */
+	public List<String> matchesPatternsR(String signatureString) {
+		List<String> rs = new ArrayList<String>();
+		for (int i = 0; i < this.patterns.length; i++) {
+			boolean matched = matches(signatureString, i);
+			if (matched) {
+				rs.add(patterns[i]);
+			}
+		}
+		return rs;
+	}
+
 	public static boolean macth(List<String> patterns, String matchKey) {
 		if (patterns == null || patterns.size() == 0) {
 			return false;
@@ -154,6 +172,13 @@ public class JdkRegexpMethodPointcut {
 		return matchesPattern;
 	}
 
+	/**
+	 * 返回符合条件的第一个
+	 * 
+	 * @param patterns
+	 * @param matchKey
+	 * @return
+	 */
 	public static String macthR(List<String> patterns, String matchKey) {
 		if (patterns == null || patterns.size() == 0) {
 			return null;
@@ -164,5 +189,24 @@ public class JdkRegexpMethodPointcut {
 		Pattern[] patternsP = jdkRegexpMethodPointcut.compilePatterns(patternStr);
 		jdkRegexpMethodPointcut.setCompiledPatterns(patternsP);
 		return jdkRegexpMethodPointcut.matchesPatternR(matchKey);
+	}
+
+	/**
+	 * 返回符合条件的第一个
+	 * 
+	 * @param patterns
+	 * @param matchKey
+	 * @return
+	 */
+	public static List<String> macthsR(List<String> patterns, String matchKey) {
+		if (patterns == null || patterns.size() == 0) {
+			return null;
+		}
+		JdkRegexpMethodPointcut jdkRegexpMethodPointcut = new JdkRegexpMethodPointcut();
+		String[] patternStr = patterns.toArray(new String[] {});
+		jdkRegexpMethodPointcut.setPatterns(patternStr);
+		Pattern[] patternsP = jdkRegexpMethodPointcut.compilePatterns(patternStr);
+		jdkRegexpMethodPointcut.setCompiledPatterns(patternsP);
+		return jdkRegexpMethodPointcut.matchesPatternsR(matchKey);
 	}
 }

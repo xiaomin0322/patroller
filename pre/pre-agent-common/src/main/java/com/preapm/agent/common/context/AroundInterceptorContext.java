@@ -3,9 +3,9 @@ package com.preapm.agent.common.context;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,12 +58,18 @@ public class AroundInterceptorContext {
 		// System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)参数："+names.size());
 		// System.out.println("com.preapm.agent.common.context.AroundInterceptorContext.get(Set<String>)interceptorsMap参数："+interceptorsMap.size());
 		List<AroundInterceptor> list = new ArrayList<AroundInterceptor>();
-		for (Entry<String, AroundInterceptor> e : interceptorsMap.entrySet()) {
+		/*for (Entry<String, AroundInterceptor> e : interceptorsMap.entrySet()) {
 			String name = e.getKey();
 			// System.out.println("插件map包的名字："+name);
 			if (names.contains(name)) {
 				list.add(e.getValue());
 				// System.out.println("执行插件名称："+name);
+			}
+		}*/
+		for(String n:names) {
+			AroundInterceptor aroundInterceptor = interceptorsMap.get(n);
+			if(aroundInterceptor!=null) {
+				list.add(aroundInterceptor);
 			}
 		}
 		return list;
@@ -106,7 +112,7 @@ public class AroundInterceptorContext {
 	}
 
 	public static List<AroundInterceptor> get(ClassLoader classLoader,String... names) {
-		Set<String> set = new HashSet<>();
+		Set<String> set = new LinkedHashSet<>();
 		for (String n : names) {
 			set.add(n);
 		}
