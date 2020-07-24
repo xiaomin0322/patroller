@@ -261,7 +261,7 @@ patterns:
       - org.exampledriven.*Controller
     excludedPatterns:
     includedPatterns:
-      - key: run\(\)|call\(\)
+      - key: .*(run\(\)|call\(\))
         interceptors:
            - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*
@@ -280,7 +280,7 @@ patterns:
       - com.*.service.impl.*
     excludedPatterns:
     includedPatterns:
-      - key: run\(\)|call\(\)
+      - key: .*(run\(\)|call\(\))
         interceptors:
            - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
       - key: .*

@@ -26,13 +26,14 @@ public class Test {
 		System.out.println(pointcut.matchesPattern("com.preapm.agent.Bootstrap.print2(java.lang.String)"));
 
 		List<String> s = new ArrayList<>();
-		s.add("com.p.*");
-		s.add("com.*");
-		String key = JdkRegexpMethodPointcut.macthR(s, "com.preapm.agent.test.patterns.Test");
+		s.add("run\\(\\) | call\\(\\)");
+		s.add(".*(run\\(\\)|call\\(\\))");
+		s.add(".*");
+		String key = JdkRegexpMethodPointcut.macthR(s, "com.preapm.sdk.zipkin.ThreadLocal3Test$2.run()");
 
 		System.out.println(key);
 		
-		System.out.println(JdkRegexpMethodPointcut.macthsR(s, "com.preapm.agent.test.patterns.Test"));
+		//System.out.println(JdkRegexpMethodPointcut.macthsR(s, "com.preapm.agent.test.patterns.Test"));
 
 	}
 }
