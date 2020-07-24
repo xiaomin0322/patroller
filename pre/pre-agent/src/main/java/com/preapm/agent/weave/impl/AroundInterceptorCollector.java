@@ -44,6 +44,9 @@ public class AroundInterceptorCollector extends Collector {
 				//FileUtils.writeByteArrayToFile(new File("C:\\root\\"+className), ctClass.toBytecode());
 			}
 			Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
+			if(patterns == null) {
+				return new byte[0];
+			}
 			
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
