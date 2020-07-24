@@ -25,13 +25,13 @@ public class JdkThreadClassInterceptor implements ClassInterceptor {
 			ctClass.addField(f);
 			
 			//也可在外面通用拦截器配置
-	/*		CtMethod declaredMethod = ctClass.getDeclaredMethod("run");
+		/*	CtMethod declaredMethod = ctClass.getDeclaredMethod("run");
 			if(declaredMethod == null) {
 				declaredMethod = ctClass.getDeclaredMethod("call");
 			}
 			declaredMethod.insertBefore("com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().setSpan(span.toBuilder());");
-			declaredMethod.insertAfter("com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().removeSpan();");
-*/		} catch (Exception e) {
+			declaredMethod.insertAfter("com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().removeSpan();");*/
+	  } catch (Exception e) {
 			e.printStackTrace();
 		}
 

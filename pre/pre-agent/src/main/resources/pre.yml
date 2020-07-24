@@ -243,6 +243,7 @@ patterns:
   
   jdk-thead-class:
     patterns:
+      - com.preapm.sdk.zipkin.ThreadLocal3Test.*
       - com.*.service.impl.*
       - com.*Controller.*
     excludedPatterns:
@@ -257,9 +258,12 @@ patterns:
   #业务controller配置
   pre-controller:
     patterns:
+      - com.preapm.sdk.zipkin.ThreadLocal3Test.*
       - com.*Controller.*
       - org.exampledriven.*Controller
     excludedPatterns:
+      - key: .*ThreadLocal3Test.*\(\)
+      - key: .*Controller.*\(\)
     includedPatterns:
       - key: .*(run\(\)|call\(\))
         interceptors:
@@ -282,7 +286,7 @@ patterns:
     includedPatterns:
       - key: .*(run\(\)|call\(\))
         interceptors:
-           - com.preapm.agent.plugin.interceptor.JdkThreadInterceptor
+           - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
       - key: .*
         interceptors:
            - com.preapm.agent.plugin.interceptor.ZipkinInterceptor
