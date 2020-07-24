@@ -27,6 +27,7 @@ public class JdkThreadInterceptor implements AroundInterceptor {
 			Class<?> class1 = methodInfo.getTarget().getClass();
 			Field declaredField = class1.getDeclaredField("span");
 			if (declaredField != null) {
+				declaredField.setAccessible(true);
 				return declaredField;
 			}
 		} catch (Exception e) {
