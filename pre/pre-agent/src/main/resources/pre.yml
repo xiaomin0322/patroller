@@ -215,6 +215,7 @@ patterns:
     patterns:
       - redis.clients.jedis.BinaryJedis
       - redis.clients.jedis.BinaryJedisCluster
+      - redis.clients.jedis.JedisCluster
     excludedPatterns:
        - key: ping.*
        - key: close.*
