@@ -236,6 +236,7 @@ patterns:
       - key: e.*
       - key: h.*
       - key: z.*
+      - key: eval.*
     interceptors:
       - com.preapm.agent.plugin.interceptor.ZipkinInterceptor    
       
