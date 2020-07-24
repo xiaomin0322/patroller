@@ -45,7 +45,7 @@ public class AroundInterceptorCollector extends Collector {
 			}
 			Patterns patterns = PreConfigUtil.get(className, PatternEnum.Around.getCode());
 			if(patterns == null) {
-				return new byte[0];
+				return ctClass.toBytecode();
 			}
 			
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
