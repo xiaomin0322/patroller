@@ -244,7 +244,6 @@ patterns:
     patterns:
       - com.*.service.impl.*
       - com.*Controller
-      - com.*
     excludedPatterns:
     includedPatterns:
     interceptors:
