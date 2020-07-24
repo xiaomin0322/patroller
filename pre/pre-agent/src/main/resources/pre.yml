@@ -33,7 +33,7 @@ plugins:
     interceptorNames:
       - com.preapm.agent.plugin.interceptor.JdkThreadClassInterceptor
     loadPatterns:
-      - com.preapm.agent.constant.BaseConstants
+      - com.*
           
   pre-tomcat-plugin:
     jarName: pre-tomcat-plugin
@@ -244,6 +244,7 @@ patterns:
     patterns:
       - com.*.service.impl.*
       - com.*Controller
+      - com.*
     excludedPatterns:
     includedPatterns:
     interceptors:

@@ -41,6 +41,7 @@ public class AroundInterceptorCollector extends Collector {
 				Patterns patterns = PreConfigUtil.get(className, PatternEnum.Class.getCode());
 				// 拦截器中修改class
 				ClassInterceptorContext.call(patterns.getInterceptors(), ctClass, classLoader);
+				//FileUtils.writeByteArrayToFile(new File("C:\\root\\"+className), ctClass.toBytecode());
 			}
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
