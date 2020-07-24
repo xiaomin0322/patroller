@@ -18,6 +18,7 @@ public class JdkThreadClassInterceptor implements ClassInterceptor {
 		try {
 			CtField f = CtField.make(
 					"private zipkin.Span span =  com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpan();",
+					//"private zipkin.Span span = null;",
 					ctClass);
 			ctClass.addField(f);
 		} catch (CannotCompileException e) {

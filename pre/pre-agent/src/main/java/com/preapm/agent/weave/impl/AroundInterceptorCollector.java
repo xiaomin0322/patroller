@@ -33,13 +33,13 @@ public class AroundInterceptorCollector extends Collector {
 	public byte[] transform(ClassLoader classLoader, String className, byte[] classfileBuffer, CtClass ctClass) {
 		String longName = null;
 		try {
-			boolean target = isTarget(className, ctClass.getClass());
+			boolean target = isTarget(className, ctClass);
 			if (!target) {
 				return new byte[0];
 			}
 			Patterns patterns = PreConfigUtil.get(className);
 			// 拦截器中修改class
-			ClassInterceptorContext.call(patterns.getInterceptors(), ctClass);
+			ClassInterceptorContext.call(patterns.getInterceptors(), ctClass,classLoader);
 
 			ClassReplacer replacer = new ClassReplacer(className, classLoader, ctClass);
 			for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {

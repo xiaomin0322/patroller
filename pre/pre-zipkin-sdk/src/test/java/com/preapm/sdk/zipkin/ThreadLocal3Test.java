@@ -57,7 +57,6 @@ public class ThreadLocal3Test {
 		String uid = UUID.randomUUID().toString();
 		setSpan("test_" + uid);
 		executorService.submit(new Runnable() {
-
 			@Override
 			public void run() {
 				System.out.println(Thread.currentThread().getId() + "=======getspan==========" + getSpan());

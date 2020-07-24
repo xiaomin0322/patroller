@@ -1,9 +1,7 @@
 package com.preapm.agent.common.context;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.preapm.agent.common.interceptor.ClassInterceptor;
@@ -14,36 +12,36 @@ public class ClassInterceptorContext {
 
 	public static Map<String, ClassInterceptor> interceptorsMap = new ConcurrentHashMap<String, ClassInterceptor>();
 
-	static {
-		init();
-	}
-
-	public static void init() {
-		synchronized (ClassInterceptorContext.class) {
-			ServiceLoader<ClassInterceptor> serviceLoader = ServiceLoader.loadInstalled(ClassInterceptor.class);
-			Iterator<ClassInterceptor> iterator = serviceLoader.iterator();
-			while (iterator.hasNext()) {
-				ClassInterceptor animal = iterator.next();
-				String name = animal.name();
-				interceptorsMap.put(name, animal);
-			}
-		}
-	}
-
-	public static void call(List<String> names, CtClass ctClass) {
+	public static void call(List<String> names, CtClass ctClass,ClassLoader classLoader) {
 		if (names == null || ctClass == null) {
 			return;
 		}
 		for (String name : names) {
-			call(name, ctClass);
+			call(name, ctClass,classLoader);
 		}
 	}
 
-	public static void call(String name, CtClass ctClass) {
-		if (!interceptorsMap.containsKey(name)) {
-			return;
+	public static ClassInterceptor get(String name,ClassLoader classLoader) {
+		ClassInterceptor newInstance = interceptorsMap.get(name);
+		if (newInstance != null) {
+			return newInstance;
 		}
-		interceptorsMap.get(name).callback(ctClass);
+		try {
+			if(classLoader == null) {
+				classLoader = ClassLoader.getSystemClassLoader();
+			}
+			Class<?> classPlugin = Class.forName(name,false,classLoader);
+			newInstance = (ClassInterceptor) classPlugin.newInstance();
+			interceptorsMap.put(name, newInstance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return newInstance;
+	}
+
+	public static void call(String name, CtClass ctClass,ClassLoader classLoader) {
+		get(name,classLoader).callback(ctClass);
 
 	}
+
 }
