@@ -29,8 +29,8 @@ public class JdkThreadClassInterceptor implements ClassInterceptor {
 			if(declaredMethod == null) {
 				declaredMethod = ctClass.getDeclaredMethod("call");
 			}
-			declaredMethod.insertBefore("com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().setSpan(span.toBuilder());");
-			declaredMethod.insertAfter("com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().removeSpan();");
+			declaredMethod.insertBefore("if(span!=null){com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().setSpan(span.toBuilder());}");
+			declaredMethod.insertAfter("if(span!=null){com.preapm.sdk.zipkin.ZipkinClientContext.getClient().getSpanStore().removeSpan();}");
 	  } catch (Exception e) {
 			e.printStackTrace();
 		}
