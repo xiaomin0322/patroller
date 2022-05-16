@@ -83,7 +83,10 @@ QQ群：858951677
 1.opentracing client 支持多种服务端上报  
 2.线程问题(已修复)  
 目前用的阿里的https://github.com/alibaba/transmittable-thread-local,某些场景会出现问题，需要自己实现一个基于jdk thead的agent解决，参考https://github.com/naver/pinpoint/blob/master/plugins/thread/src/main/java/com/navercorp/pinpoint/plugin/thread/ThreadPlugin.java    
-
+3.artchas功能
+4.影子库
+5.流量录制回访
+6.测试脚本录制（jmeter定制）
 
 
  
